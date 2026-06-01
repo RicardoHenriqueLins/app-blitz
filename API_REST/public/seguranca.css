@@ -1,0 +1,419 @@
+*{
+    /* Reset básico */
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+
+:root {
+    --verde-principal: #1b5e20;
+    --verde-secundario: #2e7d32;
+    --verde-claro: #e8f5e9;
+    --texto-escuro: #263238;
+    --texto-medio: #616161;
+    --branco: #ffffff;
+}
+
+
+
+header{
+    display: flex;
+    flex-flow: nowrap;
+    justify-content: space-between;
+    background-color: green;
+    text-align: center; 
+    
+}
+
+#cabecalho{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+#listcabecalho{
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    justify-content: space-around;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    margin: 10px;
+    color: white;
+}
+
+li {
+    font-size: 20px;
+}
+
+#cabecalhobutton{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-left: 10px;
+    gap: 20px;   
+}
+
+
+#buttoncabecalho {
+    width: 90px;
+    height: 45px;
+    border-radius: 8px;
+    border: none;
+    margin: 5px;
+    background-color: var(--branco);
+    color: var(--verde-principal);
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#buttoncabecalho:hover {
+    background-color: var(--verde-claro);
+    transform: translateY(-2px);
+}
+
+#titulo1{
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;  
+}
+
+#logo{
+    width: 200px;
+    height: 100px;
+}
+
+#banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 380px;
+    background-image: linear-gradient(
+        rgba(0, 0, 0, 0.45),
+        rgba(0, 0, 0, 0.45)
+    ),
+    url("https://conect.online/wp-content/uploads/2019/04/284577-profissional-de-seguranca-do-trabalho-voce-realmente-se-preocupa-com-a-seguranca-dos-funcionarios.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+
+#formatarh2cabecalho {
+    color: var(--branco);
+    text-align: center;
+    max-width: 800px;
+    line-height: 1.6;
+    margin: 5px;
+}
+
+
+
+#footer {
+    display: flex;  
+    flex-direction: column;                   /* Flexbox para centralizar conteúdo interno */
+    justify-content: center;          /* Centraliza o conteúdo horizontalmente */
+    align-items: center;              /* Centraliza o conteúdo verticalmente */
+    background-color: green;        /* Cor de fundo do rodapé */
+    position: fixed;                  /* Fixa na parte inferior da tela */
+    bottom: 0;                        /* Gruda no rodapé da janela */
+    left: 0;                          /* Começa na borda esquerda */
+    right: 0;                         /* Termina na borda direita */
+    margin: 0 auto;                   /* Centraliza o footer horizontalmente */
+    width: 100%;                   /* Largura máxima: 95% da tela (5% de margem total) */
+    border-radius: 0 0 5px 5px;       /* Arredonda os cantos inferiores */
+    padding: 3px 23px;                /* Espaço interno (topo/baixo e laterais) */
+    z-index: 1000;                    /* Garante que fique sobre outros elementos */
+    
+}
+
+#titulo-footer {
+    display: flex;
+    font-size: 1.1rem;
+    color: white;
+}
+
+#contato-footer {
+    display: flex;
+    flex-direction: column;   /* email em cima, telefone embaixo */
+    align-items: center;
+    gap: 5px;
+    color: white;
+}
+
+#section-card {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+#politica-seg {
+    display: flex;
+    flex-direction: column;
+    background-color: #f6fdf79b; /* fundo claro */
+    padding: 50px 40px;
+    margin: 60px auto;
+    max-width: 400px;
+    
+    color: rgb(103, 103, 103);
+
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(19, 19, 19, 0.08);
+
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+#politica-seg:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+}
+
+#politica-seg::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 80px;
+  height: 80px;
+
+  background-color: #f8fff9;
+  background-image: url("https://cdn-icons-png.flaticon.com/512/2345/2345454.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 45px;
+
+  border-radius: 50%;
+  box-shadow: 0 10px 25px rgba(51, 124, 64, 0.4);
+}
+
+#politica-seg:hover::before {
+  transform: translateX(-50%) scale(1.1);
+}
+#OlPoliticaseg{
+    padding: 5px;
+    font-size: 16px;
+    color: rgb(103, 103, 103);
+}
+
+#regras-seg {
+    display: flex;
+    flex-direction: column;
+    background-color: #f6fdf79b; /* fundo claro */
+    padding: 50px 40px;
+    margin: 60px auto;
+    max-width: 400px;
+    
+    color: rgb(103, 103, 103);
+
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(19, 19, 19, 0.08);
+
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+#regras-seg:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+}
+
+#regras-seg::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 80px;
+  height: 80px;
+
+  background-color: #f8fff9;
+  
+  background-image: url("Regras\ e\ Boas\ Praticas.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 45px;
+
+  border-radius: 50%;
+  box-shadow: 0 10px 25px rgba(51, 124, 64, 0.4);
+}
+
+#regras-seg:hover::before {
+  transform: translateX(-50%) scale(1.1);
+}
+#Olregraseg{
+    padding: 5px;
+    font-size: 16px;
+    color: rgb(103, 103, 103);
+}
+
+#saude-seg {
+    display: flex;
+    flex-direction: column;
+    background-color: #f6fdf79b; /* fundo claro */
+    padding: 50px 40px;
+    margin: 60px auto;
+    max-width: 400px;
+    
+    color: rgb(103, 103, 103);
+
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(19, 19, 19, 0.08);
+
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+#saude-seg:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+}
+
+#saude-seg::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 80px;
+  height: 80px;
+
+  background-color: #f8fff9;
+  
+  background-image: url("saude-seg.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 45px;
+
+  border-radius: 50%;
+  box-shadow: 0 10px 25px rgba(51, 124, 64, 0.4);
+}
+
+#saude-seg:hover::before {
+  transform: translateX(-50%) scale(1.1);
+}
+#Olsaudeseg{
+    padding: 5px;
+    font-size: 16px;
+    color: rgb(103, 103, 103);
+}
+
+#gestao-seg {
+    display: flex;
+    flex-direction: column;
+    background-color: #f6fdf79b; /* fundo claro */
+    padding: 50px 40px;
+    margin: 60px auto;
+    max-width: 400px;
+    
+    color: rgb(103, 103, 103);
+
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(19, 19, 19, 0.08);
+
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+#gestao-seg:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+}
+
+#gestao-seg::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 80px;
+  height: 80px;
+
+  background-color: #f8fff9;
+  
+  background-image: url("gestão_risco.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 45px;
+
+  border-radius: 50%;
+  box-shadow: 0 10px 25px rgba(51, 124, 64, 0.4);
+}
+
+#gestao-seg:hover::before {
+  transform: translateX(-50%) scale(1.1);
+}
+#Olgestaoseg{
+    padding: 5px;
+    font-size: 16px;
+    color: rgb(103, 103, 103);
+}
+
+#Responsabilidade-seg {
+    display: flex;
+    flex-direction: column;
+    background-color: #f6fdf79b; /* fundo claro */
+    padding: 50px 40px;
+    margin: 60px auto;
+    max-width: 400px;
+    
+    color: rgb(103, 103, 103);
+
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(19, 19, 19, 0.08);
+
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+#Responsabilidade-seg:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+}
+
+#Responsabilidade-seg::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 80px;
+  height: 80px;
+
+  background-color: #f8fff9;
+  
+  background-image: url("Responsabilidade.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 45px;
+
+  border-radius: 50%;
+  box-shadow: 0 10px 25px rgba(51, 124, 64, 0.4);
+}
+
+#Responsabilidade-seg:hover::before {
+  transform: translateX(-50%) scale(1.1);
+}
+#OlResponsabilidade{
+    padding: 5px;
+    font-size: 16px;
+    color: rgb(103, 103, 103);
+}

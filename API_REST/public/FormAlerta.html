@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Alerta de Segurança</title>
+
+<link rel="stylesheet" href="seguranca.css">
+<link rel="stylesheet" href="formarBlitiz.css">
+
+
+
+</head>
+
+<body>
+    <header> <div> <a href="index.html"><img id="logo" src="LOGO-M.-DIAS-BRANCO-2021-BRANCA.png" alt="Logo M Dias Branco" ></a>
+        </div> <div id="cabecalho"><h1 id="titulo1">Segurança e Saúde no Trabalho</h1></div>
+        <div > <nav id="cabecalhobutton"> 
+            <ul id="listcabecalho"> 
+                <li><a id="listcabecalho" href="FormBlitiz.html">Blitz</a></li>
+                <li><a id="listcabecalho" href="FormAlerta.html">Alertas</a></li>
+            </ul> 
+        </div> 
+        </nav> 
+</header>
+
+<div class="container">
+
+<h1>Alerta de Segurança - Regional BA</h1>
+
+<form>
+
+<!-- DADOS DO EMITENTE -->
+<section>
+
+<h2>Dados do Emitente</h2>
+
+<label>Nome</label>
+<input type="text" name="nome">
+
+<label>RE</label>
+<input type="text" name="re">
+
+<label>Área do Emitente</label>
+<select name="area_emitente">
+<option>Administrativo</option>
+<option>Almoxarifado</option>
+<option>Fábrica de Biscoito</option>
+<option>Fábrica de Massas</option>
+<option>CD GMA</option>
+<option>CD Moinho</option>
+<option>CD Simões Filho</option>
+<option>Qualidade</option>
+<option>Manutenção</option>
+<option>Meio Ambiente</option>
+<option>Refeitório</option>
+<option>Recursos Humanos</option>
+<option>Serviço Médico</option>
+<option>Segurança do Trabalho</option>
+<option>Utilidades</option>
+<option>Portaria</option>
+<option>Balança</option>
+<option>Moinho</option>
+<option>P&D</option>
+</select>
+
+<label>Turno</label>
+<select name="turno">
+<option>ADM</option>
+<option>T1</option>
+<option>T2</option>
+<option>T3</option>
+<option>12X36</option>
+</select>
+
+</section>
+
+
+<!-- DADOS DA OCORRÊNCIA -->
+<section>
+
+<h2>Dados da Ocorrência</h2>
+
+<label>Data da Ocorrência</label>
+<input type="date" name="data">
+
+<label>Horário da Ocorrência</label>
+<input type="time" name="horario" placeholder="Exemplo: 13:58">
+
+<label>Tipo de Colaborador</label>
+
+<label>
+<input type="radio" name="tipo_colaborador" value="proprio" checked onclick="alternarTipo()"> Próprio
+</label>
+
+<label>
+<input type="radio" name="tipo_colaborador" value="terceiro" onclick="alternarTipo()"> Terceiro
+</label>
+
+</section>
+
+
+<!-- COLABORADOR PRÓPRIO -->
+<section id="sec_proprio">
+
+<h2>Informações do Colaborador</h2>
+
+<label>Área da Ocorrência</label>
+<select name="area_ocorrencia">
+<option>Administrativo</option>
+<option>Almoxarifado</option>
+<option>Fábrica de Biscoito</option>
+<option>Fábrica de Massas</option>
+<option>CD GMA</option>
+<option>CD Simões Filho</option>
+<option>Qualidade</option>
+<option>Manutenção</option>
+<option>Meio Ambiente</option>
+<option>Refeitório</option>
+<option>Recursos Humanos</option>
+<option>Serviço Médico</option>
+<option>Segurança do Trabalho</option>
+<option>Utilidades</option>
+<option>Portaria</option>
+<option>Balança</option>
+<option>Moinho</option>
+<option>P&D</option>
+<option>Área externa</option>
+</select>
+
+</section>
+
+
+<!-- TERCEIRO -->
+<section id="sec_terceiro" style="display:none;">
+
+<h2>Informações do Terceiro</h2>
+
+<label>Nome da Empresa Terceira</label>
+<input type="text" name="empresa">
+
+<label>Área da Ocorrência</label>
+<select name="area_ocorrencia_terceiro">
+<option>Administrativo</option>
+<option>Almoxarifado</option>
+<option>Fábrica de Biscoito</option>
+<option>Fábrica de Massas</option>
+<option>CD GMA</option>
+<option>CD Simões Filho</option>
+<option>Qualidade</option>
+<option>Manutenção</option>
+<option>Meio Ambiente</option>
+<option>Refeitório</option>
+<option>Recursos Humanos</option>
+<option>Serviço Médico</option>
+<option>Segurança do Trabalho</option>
+<option>Utilidades</option>
+<option>Portaria</option>
+<option>Balança</option>
+<option>Moinho</option>
+<option>P&D</option>
+<option>Área externa</option>
+</select>
+
+</section>
+
+
+<!-- DETALHES -->
+<section>
+
+<h2>Detalhes da Ocorrência</h2>
+
+<label>Local Específico</label>
+<input type="text" name="local" maxlength="100">
+
+<label>Descrição detalhada da ocorrência</label>
+<textarea name="descricao"></textarea>
+
+<label>Ações imediatas / Sugestão</label>
+<textarea name="acoes"></textarea>
+
+<label>Tipo de Relato</label>
+
+<label>
+<input type="radio" name="tipo_relato" value="elogio"> Abordagem positiva (Elogio)
+</label>
+
+<label>
+<input type="radio" name="tipo_relato" value="ato"> ATO (Comportamento de Risco)
+</label>
+
+<label>
+<input type="radio" name="tipo_relato" value="condicao"> Condição (Condição de Risco)
+</label>
+
+<label>
+<input type="radio" name="tipo_relato" value="incidente">  Incidente
+</label>
+
+</section>
+
+
+<button type="submit">Enviar Alerta</button>
+
+</form>
+
+</div>
+
+<footer id="footer">
+    <p id="titulo-footer">Fale com a Segurança do Trabalho</p>
+    <div id="contato-footer">
+        <span>📧 seguranca@empresa.com</span>
+        <span>📞 (11) 99999-9999</span>
+    </div>
+</footer>
+
+<script src="FormAlerta.js"></script>
+
+
+</body>
+</html>

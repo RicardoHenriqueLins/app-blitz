@@ -1,0 +1,220 @@
+/* ===== CARROSSEL DE FOTOS ===== */
+
+#carrossel-section {
+    width: 100%;
+    padding: 48px 0 56px;
+    background: linear-gradient(180deg, #f4f6f9 0%, #eaecf1 100%);
+    overflow: hidden;
+}
+
+#carrossel-section h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #1a2a4a;
+    margin-bottom: 36px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+}
+
+.carrossel-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 340px;
+    perspective: 1000px;
+}
+
+/* Cada slot do carrossel */
+.carrossel-slot {
+    position: absolute;
+    transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.13);
+}
+
+.carrossel-slot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* CENTRO — em destaque */
+.carrossel-slot.pos-center {
+    width: 420px;
+    height: 300px;
+    z-index: 10;
+    transform: translateX(0) scale(1);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.32);
+    filter: brightness(1);
+    
+}
+
+/* LATERAL PRÓXIMA */
+.carrossel-slot.pos-left1 {
+    width: 300px;
+    height: 220px;
+    z-index: 6;
+    transform: translateX(-340px) scale(0.92);
+    filter: brightness(0.72) saturate(0.7);
+    box-shadow: 0 6px 22px rgba(0,0,0,0.18);
+    border: 2px solid transparent;
+}
+
+.carrossel-slot.pos-right1 {
+    width: 300px;
+    height: 220px;
+    z-index: 6;
+    transform: translateX(340px) scale(0.92);
+    filter: brightness(0.72) saturate(0.7);
+    box-shadow: 0 6px 22px rgba(0,0,0,0.18);
+    border: 2px solid transparent;
+}
+
+/* LATERAL DISTANTE */
+.carrossel-slot.pos-left2 {
+    width: 210px;
+    height: 160px;
+    z-index: 3;
+    transform: translateX(-590px) scale(0.82);
+    filter: brightness(0.50) saturate(0.5);
+    box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    border: 2px solid transparent;
+}
+
+.carrossel-slot.pos-right2 {
+    width: 210px;
+    height: 160px;
+    z-index: 3;
+    transform: translateX(590px) scale(0.82);
+    filter: brightness(0.50) saturate(0.5);
+    box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    border: 2px solid transparent;
+}
+
+/* Ocultas */
+.carrossel-slot.pos-hidden {
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+    transform: translateX(0) scale(0.6);
+}
+
+/* Hover no centro */
+.carrossel-slot.pos-center img:hover {
+    transform: scale(1.035);
+}
+
+/* Label sobre a imagem central */
+.carrossel-label {
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+    background: linear-gradient(0deg, rgba(0,0,0,0.62) 0%, transparent 100%);
+    color: #fff;
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 18px 20px 14px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.carrossel-slot.pos-center .carrossel-label {
+    opacity: 1;
+}
+
+/* ---- Controles ---- */
+.carrossel-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 28px;
+}
+
+.carrossel-btn {
+    background: #c8102e;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.15s;
+    box-shadow: 0 2px 8px rgba(200,16,46,0.28);
+}
+
+.carrossel-btn:hover {
+    background: #a00c24;
+    transform: scale(1.1);
+}
+
+/* Dots */
+.carrossel-dots {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.carrossel-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #b0b8c9;
+    transition: background 0.3s, transform 0.3s;
+    cursor: pointer;
+}
+
+.carrossel-dot.active {
+    background: #c8102e;
+    transform: scale(1.35);
+}
+
+/* Barra de progresso automática */
+.carrossel-progress {
+    width: 180px;
+    height: 3px;
+    background: #d1d8e4;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 auto;
+    margin-top: 16px;
+}
+
+.carrossel-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #c8102e;
+    border-radius: 4px;
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+    .carrossel-wrapper { height: 260px; }
+    .carrossel-slot.pos-center { width: 300px; height: 220px; }
+    .carrossel-slot.pos-left1  { width: 210px; height: 160px; transform: translateX(-240px) scale(0.92); }
+    .carrossel-slot.pos-right1 { width: 210px; height: 160px; transform: translateX(240px)  scale(0.92); }
+    .carrossel-slot.pos-left2,
+    .carrossel-slot.pos-right2  { display: none; }
+}
+
+@media (max-width: 560px) {
+    .carrossel-wrapper { height: 200px; }
+    .carrossel-slot.pos-center { width: 240px; height: 170px; }
+    .carrossel-slot.pos-left1  { transform: translateX(-180px) scale(0.88); width: 160px; height: 120px; }
+    .carrossel-slot.pos-right1 { transform: translateX(180px)  scale(0.88); width: 160px; height: 120px; }
+}
