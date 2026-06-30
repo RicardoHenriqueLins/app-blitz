@@ -3,41 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Segurança</title>
+    <title>Segurança e Saúde no Trabalho — M. Dias Branco</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="seguranca.css">
     <link rel="stylesheet" href="carrossel.css">
     <script src="carrossel.js"></script>
-
 </head>
 <body>
-    <header>
-        <div> <img id="logo" src="LOGO-M.-DIAS-BRANCO-2021-BRANCA.png" alt="Logo M Dias Branco"></div>
-        <div id="cabecalho"><h1 id="titulo1">Segurança e Saúde no Trabalho</h1></div>
-        <div id="navcabecalho">
-        <nav id="cabecalhobutton">
-            <ul id="listcabecalho">
-                <li><a id="listcabecalho" href="FormBlitiz.html">Blitz</a></li>
-                <li><a id="listcabecalho" href="FormAlerta.html">Alertas</a></li>
-            </ul>
-            
-       </div>
-    </nav>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="brand">
+                <img id="logo" src="LOGO-M.-DIAS-BRANCO-2021-BRANCA.png" alt="Logo M Dias Branco">
+            </div>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="main-nav" id="mainNav">
+                <a href="index.html" class="nav-link active">Início</a>
+                <a href="Dashboard.html" class="nav-link">Dashboard</a>
+                <a href="FormBlitiz.html" class="nav-link">Blitz</a>
+                <a href="FormAlerta.html" class="nav-link">Alertas</a>
+                <a href="Dashboard.html" class="nav-cta">Acessar painel</a>
+            </nav>
+        </div>
     </header>
 
     <main>
-        
+        <!-- HERO -->
         <section id="banner">
-            <h2 id="formatarh2cabecalho">Nosso Compromisso com a Segurança.<br>
-            Na M. Dias Branco S/A, a segurança no trabalho é um valor inegociável. Atuamos diariamente na prevenção de riscos, no cuidado com as pessoas e na construção de um ambiente seguro, saudável e produtivo, porque proteger vidas é essencial para crescer de forma sustentável.</h2>
+            <div class="banner-overlay-content">
+                <span class="banner-tag">M. Dias Branco S/A</span>
+                <h1 class="banner-title">Nosso compromisso com a segurança</h1>
+                <p id="formatarh2cabecalho">
+                    A segurança no trabalho é um valor inegociável. Atuamos diariamente na
+                    prevenção de riscos, no cuidado com as pessoas e na construção de um
+                    ambiente seguro, saudável e produtivo — porque proteger vidas é essencial
+                    para crescer de forma sustentável.
+                </p>
+                <div class="banner-actions">
+                    <a href="Dashboard.html" class="btn-primary">Ver Dashboard</a>
+                    <a href="FormBlitiz.html" class="btn-ghost">Registrar Blitz</a>
+                </div>
+            </div>
         </section>
 
+        <!-- ACESSO RÁPIDO -->
+        <section class="quick-access">
+            <a href="Dashboard.html" class="qa-card">
+                <div class="qa-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                </div>
+                <h3>Dashboard</h3>
+                <p>Indicadores, dias sem acidente, Pareto e aderência das lideranças.</p>
+                <span class="qa-link">Acessar →</span>
+            </a>
 
+            <a href="FormBlitiz.html" class="qa-card">
+                <div class="qa-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                </div>
+                <h3>Blitz de Segurança</h3>
+                <p>Registre inspeções de distribuição e armazém com checklist completo.</p>
+                <span class="qa-link">Preencher →</span>
+            </a>
+
+            <a href="FormAlerta.html" class="qa-card">
+                <div class="qa-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </div>
+                <h3>Alerta de Segurança</h3>
+                <p>Comunique atos inseguros, condições de risco e incidentes na hora.</p>
+                <span class="qa-link">Reportar →</span>
+            </a>
+        </section>
+
+        <!-- CARDS DE CONTEÚDO -->
         <div id="section-card">
-            
+
         <section id="politica-seg">
             <h2>Política de Segurança</h2>
             <p>Nossa Política de Segurança e Saúde no Trabalho é guiada pelos seguintes princípios:</p>
-            <ol >
+            <ol>
                 <li id="OlPoliticaseg">Prevenir acidentes, incidentes e doenças ocupacionais;</li>
                 <li id="OlPoliticaseg">Atender rigorosamente às normas legais e regulamentadoras aplicáveis;</li>
                 <li id="OlPoliticaseg">Identificar, avaliar e controlar riscos operacionais;</li>
@@ -46,7 +99,6 @@
             </ol>
         </section>
 
-        
         <section id="regras-seg">
             <h2>Regras e Boas Práticas de Segurança</h2>
             <p>Para garantir um ambiente seguro, todos devem seguir as orientações abaixo:</p>
@@ -59,6 +111,7 @@
                 <li id="Olregraseg">Manutenção da organização e limpeza do local de trabalho.</li>
             </ol>
         </section>
+
         <section id="saude-seg">
             <h2>Saúde Ocupacional</h2>
             <p>Promovemos ações voltadas à preservação da saúde física e mental, incluindo:</p>
@@ -67,9 +120,9 @@
                 <li id="Olsaudeseg">Avaliações periódicas de saúde;</li>
                 <li id="Olsaudeseg">Ações de ergonomia;</li>
                 <li id="Olsaudeseg">Incentivo ao bem-estar e à qualidade de vida no trabalho.</li>
-
             </ol>
         </section>
+
         <section id="gestao-seg">
             <h2>Gestão de Riscos e Emergências</h2>
             <p>Contamos com planos estruturados para prevenção e resposta a emergências, tais como:</p>
@@ -81,6 +134,7 @@
                 <li id="Olgestaoseg">Monitoramento contínuo das condições operacionais.</li>
             </ol>
         </section>
+
         <section id="Responsabilidade-seg">
             <h2>Responsabilidade de Todos</h2>
             <p>A segurança é um compromisso coletivo. Cada colaborador tem o dever de:</p>
@@ -94,14 +148,25 @@
         </section>
         </div>
     </main>
-    
-<footer id="footer">
-    <p id="titulo-footer">Fale com a Segurança do Trabalho</p>
-    <div id="contato-footer">
-        <span>📧 seguranca@empresa.com</span>
-        <span>📞 (11) 99999-9999</span>
-    </div>
-</footer>
-    
-</body> 
+
+    <footer id="footer">
+        <p id="titulo-footer">Fale com a Segurança do Trabalho</p>
+        <div id="contato-footer">
+            <span>📧 seguranca@empresa.com</span>
+            <span>📞 (11) 99999-9999</span>
+        </div>
+    </footer>
+
+    <script>
+        // Menu mobile
+        const toggle = document.getElementById('menuToggle');
+        const nav = document.getElementById('mainNav');
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                nav.classList.toggle('open');
+                toggle.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
 </html>

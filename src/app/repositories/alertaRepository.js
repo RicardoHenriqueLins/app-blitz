@@ -7,7 +7,7 @@ class alertaRepository {
     }
 
     findAll() {
-        const sql = 'SELECT * FROM alerta;'
+        const sql = 'SELECT * FROM alerta ORDER BY id DESC;'
         return consulta(sql, [], 'Não foi possível localizar')
     }
 

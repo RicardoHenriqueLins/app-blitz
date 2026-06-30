@@ -7,7 +7,7 @@ class BlitizRepository {
     }
 
     findAll() {
-        const sql = 'SELECT * FROM blitiz;'
+        const sql = 'SELECT * FROM blitiz ORDER BY id DESC;'
         return consulta(sql, [], 'Não foi possível localizar')
     }
 

@@ -1,5 +1,5 @@
 {
-  "watch": ["src"],
-  "ext": "js",
-  "ignore": ["node_modules"]
+  "watch": ["API_REST"],
+  "ext": "js,json",
+  "ignore": ["node_modules", "API_REST/public"]
 }

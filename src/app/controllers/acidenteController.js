@@ -1,6 +1,6 @@
 import acidenteRepository from '../repositories/acidenteRepository.js'
 
-class acidenteController {
+class AcidenteController {
 
     async index(req, res) {
         try {
@@ -33,4 +33,4 @@ class acidenteController {
     }
 }
 
-export default new acidenteController()
+export default new AcidenteController()

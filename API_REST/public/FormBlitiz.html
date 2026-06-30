@@ -2,37 +2,43 @@
 <html lang="pt-br">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Blitz de Segurança REG-BA</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="seguranca.css">
 <link rel="stylesheet" href="formarBlitiz.css">
 
 <style>
-.hidden{
-display:none;
-}
+.hidden { display: none; }
 </style>
-
 </head>
 
 <body>
 
-<header> <div> <a href="index.html"><img id="logo" src="LOGO-M.-DIAS-BRANCO-2021-BRANCA.png" alt="Logo M Dias Branco" ></a>
-</div> <div id="cabecalho"><h1 id="titulo1">Segurança e Saúde no Trabalho</h1></div>
- <div > <nav id="cabecalhobutton"> 
-    <ul id="listcabecalho"> 
-        <li><a id="listcabecalho" href="FormBlitiz.html">Blitz</a></li>
-        <li><a id="listcabecalho" href="FormAlerta.html">Alertas</a></li>
-    </ul> 
-</div> 
-</nav> 
+<header class="site-header">
+    <div class="header-inner">
+        <div class="brand">
+            <a href="index.html"><img id="logo" src="LOGO-M.-DIAS-BRANCO-2021-BRANCA.png" alt="Logo M Dias Branco"></a>
+        </div>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+            <span></span><span></span><span></span>
+        </button>
+
+        <nav class="main-nav" id="mainNav">
+            <a href="index.html" class="nav-link">Início</a>
+            <a href="Dashboard.html" class="nav-link">Dashboard</a>
+            <a href="FormBlitiz.html" class="nav-link active">Blitz</a>
+            <a href="FormAlerta.html" class="nav-link">Alertas</a>
+            <a href="Dashboard.html" class="nav-cta">Acessar painel</a>
+        </nav>
+    </div>
 </header>
-
-
 
 <main>
 
@@ -40,7 +46,7 @@ display:none;
 
 <div class="container">
 
-<h1>Blitiz de Segurança – Regional BA</h1>
+<h1>Blitz de Segurança – Regional BA</h1>
 
 <!-- IDENTIFICAÇÃO -->
 <section>
@@ -75,6 +81,7 @@ display:none;
 </select>
 
 </section>
+
 <!-- SETOR -->
 <section>
 <h2>Setor</h2>
@@ -89,7 +96,6 @@ display:none;
 </section>
 
 <!-- DISTRIBUIÇÃO -->
-
 <section id="distribuicao" class="hidden">
 
 <h2>Checklist – Distribuição</h2>
@@ -108,16 +114,12 @@ display:none;
 <label><input type="checkbox" value="Condição Insegura no Local de Entrega."> Condição Insegura no Local de Entrega.</label>
 <label><input type="checkbox" value="Colaborador trabalhando sob os efeitos de álcool e/ou drogas."> Colaborador trabalhando sob os efeitos de álcool e/ou drogas.</label>
 
-
-
 <label>7. Outros Pontos de Oportunidades - Distribuição</label>
 <textarea name="oportunidadesDistribuicao"></textarea>
 
 </section>
 
-
 <!-- ARMAZÉM -->
-
 <section id="armazem" class="hidden">
 
 <h2>Checklist – Armazém</h2>
@@ -133,33 +135,24 @@ display:none;
 <label><input type="checkbox" value="Colaborador desrespeitando sinalizações de segurança"> Colaborador desrespeitando sinalizações de segurança</label>
 <label><input type="checkbox" value="Colaborador sob efeito de álcool ou drogas"> Colaborador sob efeito de álcool ou drogas</label>
 
-
-
-
-
 <label>7. Outros Pontos de Oportunidades - Armazém</label>
 <textarea name="oportunidadesArmazem"></textarea>
 </section>
-
 
 <!-- PERGUNTAS GERAIS -->
 <section>
 <h2>Avaliação da Blitz</h2>
 
 <label>8. Houve reforço positivo?</label>
-
 <label><input type="radio" name="reforco_positivo" value="Sim"> Sim</label>
 <label><input type="radio" name="reforco_positivo" value="Não"> Não</label>
 
-
 <label>9. Houve Feedback positivo?</label>
-
 <label><input type="radio" name="feedback_positivo" value="Sim"> Sim</label>
 <label><input type="radio" name="feedback_positivo" value="Não"> Não</label>
 
 <label>10. Orientações passadas</label>
 <textarea name="orientacoes"></textarea>
-
 
 <label>11. Pontos de melhoria na segurança</label>
 <textarea name="melhorias"></textarea>
@@ -169,30 +162,25 @@ display:none;
 
 </section>
 
-
+<section>
 <label>Tipo de Relato</label>
-
-
-
 <select name="tipoRelato">
 <option>ATO</option>
 <option>Condição</option>
 </select>
 
-
 <label>Observações</label>
 <textarea name="observacoes"></textarea>
+</section>
 
-
-<button id="ButtonBlitiz" type="submit">
-Enviar Blitz
-</button>
+<button id="ButtonBlitiz" type="submit">Enviar Blitz</button>
 
 </div>
 
 </form>
 
 </main>
+
 <footer id="footer">
     <p id="titulo-footer">Fale com a Segurança do Trabalho</p>
     <div id="contato-footer">
@@ -200,6 +188,17 @@ Enviar Blitz
         <span>📞 (11) 99999-9999</span>
     </div>
 </footer>
+
+<script>
+    const toggle = document.getElementById('menuToggle');
+    const nav = document.getElementById('mainNav');
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            nav.classList.toggle('open');
+            toggle.classList.toggle('active');
+        });
+    }
+</script>
 
 <script src="fomsblitiz.js"></script>
 

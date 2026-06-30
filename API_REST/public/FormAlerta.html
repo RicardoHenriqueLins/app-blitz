@@ -2,26 +2,40 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Alerta de Segurança</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="seguranca.css">
 <link rel="stylesheet" href="formarBlitiz.css">
-
-
-
 </head>
 
 <body>
-    <header> <div> <a href="index.html"><img id="logo" src="LOGO-M.-DIAS-BRANCO-2021-BRANCA.png" alt="Logo M Dias Branco" ></a>
-        </div> <div id="cabecalho"><h1 id="titulo1">Segurança e Saúde no Trabalho</h1></div>
-        <div > <nav id="cabecalhobutton"> 
-            <ul id="listcabecalho"> 
-                <li><a id="listcabecalho" href="FormBlitiz.html">Blitz</a></li>
-                <li><a id="listcabecalho" href="FormAlerta.html">Alertas</a></li>
-            </ul> 
-        </div> 
-        </nav> 
+
+<header class="site-header">
+    <div class="header-inner">
+        <div class="brand">
+            <a href="index.html"><img id="logo" src="LOGO-M.-DIAS-BRANCO-2021-BRANCA.png" alt="Logo M Dias Branco"></a>
+        </div>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+            <span></span><span></span><span></span>
+        </button>
+
+        <nav class="main-nav" id="mainNav">
+            <a href="index.html" class="nav-link">Início</a>
+            <a href="Dashboard.html" class="nav-link">Dashboard</a>
+            <a href="FormBlitiz.html" class="nav-link">Blitz</a>
+            <a href="FormAlerta.html" class="nav-link active">Alertas</a>
+            <a href="Dashboard.html" class="nav-cta">Acessar painel</a>
+        </nav>
+    </div>
 </header>
+
+<main>
 
 <div class="container">
 
@@ -31,7 +45,6 @@
 
 <!-- DADOS DO EMITENTE -->
 <section>
-
 <h2>Dados do Emitente</h2>
 
 <label>Nome</label>
@@ -74,10 +87,8 @@
 
 </section>
 
-
 <!-- DADOS DA OCORRÊNCIA -->
 <section>
-
 <h2>Dados da Ocorrência</h2>
 
 <label>Data da Ocorrência</label>
@@ -98,10 +109,8 @@
 
 </section>
 
-
 <!-- COLABORADOR PRÓPRIO -->
 <section id="sec_proprio">
-
 <h2>Informações do Colaborador</h2>
 
 <label>Área da Ocorrência</label>
@@ -126,13 +135,10 @@
 <option>P&D</option>
 <option>Área externa</option>
 </select>
-
 </section>
-
 
 <!-- TERCEIRO -->
 <section id="sec_terceiro" style="display:none;">
-
 <h2>Informações do Terceiro</h2>
 
 <label>Nome da Empresa Terceira</label>
@@ -160,13 +166,10 @@
 <option>P&D</option>
 <option>Área externa</option>
 </select>
-
 </section>
-
 
 <!-- DETALHES -->
 <section>
-
 <h2>Detalhes da Ocorrência</h2>
 
 <label>Local Específico</label>
@@ -193,17 +196,18 @@
 </label>
 
 <label>
-<input type="radio" name="tipo_relato" value="incidente">  Incidente
+<input type="radio" name="tipo_relato" value="incidente"> Incidente
 </label>
 
 </section>
-
 
 <button type="submit">Enviar Alerta</button>
 
 </form>
 
 </div>
+
+</main>
 
 <footer id="footer">
     <p id="titulo-footer">Fale com a Segurança do Trabalho</p>
@@ -213,8 +217,18 @@
     </div>
 </footer>
 
-<script src="FormAlerta.js"></script>
+<script>
+    const toggle = document.getElementById('menuToggle');
+    const nav = document.getElementById('mainNav');
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            nav.classList.toggle('open');
+            toggle.classList.toggle('active');
+        });
+    }
+</script>
 
+<script src="FormAlerta.js"></script>
 
 </body>
 </html>

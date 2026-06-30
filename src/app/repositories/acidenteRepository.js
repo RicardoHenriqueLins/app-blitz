@@ -2,8 +2,6 @@ import { consulta } from '../../database/conexao.js'
 
 class acidenteRepository {
 
-    
-
     findAll() {
         const sql = 'SELECT * FROM acidente ORDER BY unidade;'
         return consulta(sql, [], 'Não foi possível localizar')

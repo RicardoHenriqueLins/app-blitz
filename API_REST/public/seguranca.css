@@ -1,419 +1,520 @@
-*{
-    /* Reset básico */
+/* ============================================================
+   SEGURANÇA E SAÚDE NO TRABALHO — M. DIAS BRANCO
+   seguranca.css  (visual modernizado)
+   ============================================================ */
 
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
-
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
 }
 
 :root {
-    --verde-principal: #1b5e20;
-    --verde-secundario: #2e7d32;
+    --verde-principal: #0a3d1a;
+    --verde-secundario: #1b5e20;
+    --verde-terciario: #2e7d32;
+    --verde-vivo: #43a047;
     --verde-claro: #e8f5e9;
-    --texto-escuro: #263238;
-    --texto-medio: #616161;
+    --texto-escuro: #1a231b;
+    --texto-medio: #4a5e4c;
+    --texto-claro: #7a907c;
     --branco: #ffffff;
+    --bg: #f4f7f3;
+    --borda: #e3e9e0;
+    --display: 'Sora', sans-serif;
 }
 
+body {
+    background: var(--bg);
+    color: var(--texto-escuro);
+    line-height: 1.6;
+}
 
+/* ============================================================
+   HEADER MODERNO
+   ============================================================ */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(100deg, var(--verde-principal) 0%, var(--verde-secundario) 100%);
+    box-shadow: 0 2px 20px rgba(10, 61, 26, 0.25);
+}
 
-header{
+.header-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 14px 28px;
     display: flex;
-    flex-flow: nowrap;
+    align-items: center;
     justify-content: space-between;
-    background-color: green;
-    text-align: center; 
-    
+    gap: 20px;
 }
 
-#cabecalho{
+.brand {
     display: flex;
-    justify-content: center;
     align-items: center;
 }
 
+#logo {
+    width: auto;
+    height: 52px;
+    display: block;
+}
 
-
-#listcabecalho{
+.main-nav {
     display: flex;
-    flex-wrap: wrap;
-    list-style: none;
-    justify-content: space-around;
     align-items: center;
-    gap: 15px;
-    padding: 10px;
-    margin: 10px;
-    color: white;
+    gap: 6px;
 }
 
-li {
-    font-size: 20px;
-}
-
-#cabecalhobutton{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-content: center;
-    align-items: center;
-    margin-top: 10px;
-    margin-left: 10px;
-    gap: 20px;   
-}
-
-
-#buttoncabecalho {
-    width: 90px;
-    height: 45px;
+.nav-link {
+    color: rgba(255, 255, 255, 0.82);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 9px 16px;
     border-radius: 8px;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link.active {
+    color: #fff;
+}
+
+.nav-link.active::after {
+    content: "";
+    position: absolute;
+    bottom: 2px;
+    left: 16px;
+    right: 16px;
+    height: 2px;
+    background: var(--verde-vivo);
+    border-radius: 2px;
+}
+
+.nav-cta {
+    margin-left: 10px;
+    background: var(--branco);
+    color: var(--verde-secundario);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    font-family: var(--display);
+}
+
+.nav-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    background: var(--verde-claro);
+}
+
+/* Menu hambúrguer (mobile) */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
     border: none;
-    margin: 5px;
-    background-color: var(--branco);
-    color: var(--verde-principal);
-    font-weight: bold;
     cursor: pointer;
+    padding: 6px;
+}
+
+.menu-toggle span {
+    width: 26px;
+    height: 3px;
+    background: #fff;
+    border-radius: 3px;
     transition: 0.3s;
 }
 
-#buttoncabecalho:hover {
-    background-color: var(--verde-claro);
-    transform: translateY(-2px);
-}
+.menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.menu-toggle.active span:nth-child(2) { opacity: 0; }
+.menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-#titulo1{
-    height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;  
-}
-
-#logo{
-    width: 200px;
-    height: 100px;
-}
-
+/* ============================================================
+   HERO / BANNER
+   ============================================================ */
 #banner {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 380px;
+    min-height: 480px;
+    padding: 80px 24px;
     background-image: linear-gradient(
-        rgba(0, 0, 0, 0.45),
-        rgba(0, 0, 0, 0.45)
+        rgba(10, 61, 26, 0.82),
+        rgba(27, 94, 32, 0.78)
     ),
     url("https://conect.online/wp-content/uploads/2019/04/284577-profissional-de-seguranca-do-trabalho-voce-realmente-se-preocupa-com-a-seguranca-dos-funcionarios.jpg");
     background-size: cover;
     background-position: center;
 }
 
-
-#formatarh2cabecalho {
-    color: var(--branco);
+.banner-overlay-content {
+    max-width: 820px;
     text-align: center;
-    max-width: 800px;
-    line-height: 1.6;
-    margin: 5px;
+    color: #fff;
+    animation: fadeUp 0.8s ease;
 }
 
+.banner-tag {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--verde-vivo);
+    background: rgba(67, 160, 71, 0.18);
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 22px;
+    border: 1px solid rgba(67, 160, 71, 0.4);
+}
 
+.banner-title {
+    font-family: var(--display);
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 22px;
+    letter-spacing: -0.02em;
+}
 
+#formatarh2cabecalho {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    max-width: 720px;
+    margin: 0 auto 34px;
+    font-weight: 400;
+}
+
+.banner-actions {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-primary {
+    background: var(--verde-vivo);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 14px 30px;
+    border-radius: 12px;
+    font-family: var(--display);
+    transition: all 0.25s ease;
+    box-shadow: 0 8px 24px rgba(67, 160, 71, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(67, 160, 71, 0.55);
+}
+
+.btn-ghost {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 14px 30px;
+    border-radius: 12px;
+    font-family: var(--display);
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    transition: all 0.25s ease;
+    backdrop-filter: blur(4px);
+}
+
+.btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.22);
+    transform: translateY(-3px);
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   ACESSO RÁPIDO
+   ============================================================ */
+.quick-access {
+    max-width: 1180px;
+    margin: -60px auto 0;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 22px;
+    position: relative;
+    z-index: 10;
+}
+
+.qa-card {
+    background: var(--branco);
+    border-radius: 18px;
+    padding: 30px 26px;
+    text-decoration: none;
+    color: var(--texto-escuro);
+    box-shadow: 0 12px 40px rgba(10, 61, 26, 0.1);
+    border: 1px solid var(--borda);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.qa-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 24px 60px rgba(10, 61, 26, 0.18);
+    border-color: var(--verde-vivo);
+}
+
+.qa-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    background: var(--verde-claro);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+.qa-icon svg {
+    width: 26px;
+    height: 26px;
+    color: var(--verde-secundario);
+}
+
+.qa-card h3 {
+    font-family: var(--display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--verde-principal);
+    margin-bottom: 10px;
+}
+
+.qa-card p {
+    color: var(--texto-medio);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 18px;
+}
+
+.qa-link {
+    color: var(--verde-secundario);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: 0.2s;
+}
+
+.qa-card:hover .qa-link {
+    color: var(--verde-vivo);
+    letter-spacing: 0.02em;
+}
+
+/* ============================================================
+   CARDS DE CONTEÚDO
+   ============================================================ */
+#section-card {
+    max-width: 1180px;
+    margin: 70px auto 60px;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    gap: 28px;
+}
+
+#politica-seg,
+#regras-seg,
+#saude-seg,
+#gestao-seg,
+#Responsabilidade-seg {
+    display: flex;
+    flex-direction: column;
+    background: var(--branco);
+    padding: 50px 34px 36px;
+    margin: 30px 0 0;
+    color: var(--texto-medio);
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(10, 61, 26, 0.07);
+    border: 1px solid var(--borda);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+#politica-seg:hover,
+#regras-seg:hover,
+#saude-seg:hover,
+#gestao-seg:hover,
+#Responsabilidade-seg:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 24px 50px rgba(10, 61, 26, 0.14);
+}
+
+#politica-seg h2,
+#regras-seg h2,
+#saude-seg h2,
+#gestao-seg h2,
+#Responsabilidade-seg h2 {
+    font-family: var(--display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--verde-principal);
+    margin-bottom: 12px;
+}
+
+#politica-seg p,
+#regras-seg p,
+#saude-seg p,
+#gestao-seg p,
+#Responsabilidade-seg p {
+    margin-bottom: 16px;
+    font-size: 0.96rem;
+}
+
+#politica-seg ol,
+#regras-seg ol,
+#saude-seg ol,
+#gestao-seg ol,
+#Responsabilidade-seg ol {
+    padding-left: 20px;
+}
+
+#OlPoliticaseg, #Olregraseg, #Olsaudeseg, #Olgestaoseg, #OlResponsabilidade {
+    padding: 5px 0;
+    font-size: 0.94rem;
+    color: var(--texto-medio);
+    line-height: 1.55;
+}
+
+/* Ícone circular no topo de cada card */
+#politica-seg::before,
+#regras-seg::before,
+#saude-seg::before,
+#gestao-seg::before,
+#Responsabilidade-seg::before {
+    content: "";
+    position: absolute;
+    top: -28px;
+    left: 34px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--verde-secundario), var(--verde-vivo));
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 30px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(27, 94, 32, 0.35);
+    transition: transform 0.3s ease;
+}
+
+#politica-seg:hover::before,
+#regras-seg:hover::before,
+#saude-seg:hover::before,
+#gestao-seg:hover::before,
+#Responsabilidade-seg:hover::before {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
 #footer {
-    display: flex;  
-    flex-direction: column;                   /* Flexbox para centralizar conteúdo interno */
-    justify-content: center;          /* Centraliza o conteúdo horizontalmente */
-    align-items: center;              /* Centraliza o conteúdo verticalmente */
-    background-color: green;        /* Cor de fundo do rodapé */
-    position: fixed;                  /* Fixa na parte inferior da tela */
-    bottom: 0;                        /* Gruda no rodapé da janela */
-    left: 0;                          /* Começa na borda esquerda */
-    right: 0;                         /* Termina na borda direita */
-    margin: 0 auto;                   /* Centraliza o footer horizontalmente */
-    width: 100%;                   /* Largura máxima: 95% da tela (5% de margem total) */
-    border-radius: 0 0 5px 5px;       /* Arredonda os cantos inferiores */
-    padding: 3px 23px;                /* Espaço interno (topo/baixo e laterais) */
-    z-index: 1000;                    /* Garante que fique sobre outros elementos */
-    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(100deg, var(--verde-principal) 0%, var(--verde-secundario) 100%);
+    width: 100%;
+    padding: 32px 24px;
+    margin-top: 40px;
 }
 
 #titulo-footer {
-    display: flex;
-    font-size: 1.1rem;
-    color: white;
+    font-family: var(--display);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff;
 }
 
 #contato-footer {
     display: flex;
-    flex-direction: column;   /* email em cima, telefone embaixo */
+    flex-direction: column;
     align-items: center;
-    gap: 5px;
-    color: white;
+    gap: 6px;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.95rem;
 }
 
-#section-card {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-evenly;
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+@media (max-width: 860px) {
+    .menu-toggle {
+        display: flex;
+    }
+
+    .main-nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--verde-principal);
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px;
+        gap: 4px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .main-nav.open {
+        max-height: 400px;
+    }
+
+    .nav-link {
+        padding: 14px 16px;
+    }
+
+    .nav-link.active::after {
+        display: none;
+    }
+
+    .nav-cta {
+        margin: 6px 0 0;
+        text-align: center;
+    }
 }
 
-#politica-seg {
-    display: flex;
-    flex-direction: column;
-    background-color: #f6fdf79b; /* fundo claro */
-    padding: 50px 40px;
-    margin: 60px auto;
-    max-width: 400px;
-    
-    color: rgb(103, 103, 103);
+@media (max-width: 560px) {
+    #banner {
+        min-height: 420px;
+        padding: 60px 20px;
+    }
 
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(19, 19, 19, 0.08);
+    .quick-access {
+        margin-top: -40px;
+    }
 
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-#politica-seg:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
-}
-
-#politica-seg::before {
-  content: "";
-  position: absolute;
-  top: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-
-  width: 80px;
-  height: 80px;
-
-  background-color: #f8fff9;
-  background-image: url("https://cdn-icons-png.flaticon.com/512/2345/2345454.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 45px;
-
-  border-radius: 50%;
-  box-shadow: 0 10px 25px rgba(51, 124, 64, 0.4);
-}
-
-#politica-seg:hover::before {
-  transform: translateX(-50%) scale(1.1);
-}
-#OlPoliticaseg{
-    padding: 5px;
-    font-size: 16px;
-    color: rgb(103, 103, 103);
-}
-
-#regras-seg {
-    display: flex;
-    flex-direction: column;
-    background-color: #f6fdf79b; /* fundo claro */
-    padding: 50px 40px;
-    margin: 60px auto;
-    max-width: 400px;
-    
-    color: rgb(103, 103, 103);
-
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(19, 19, 19, 0.08);
-
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-#regras-seg:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
-}
-
-#regras-seg::before {
-  content: "";
-  position: absolute;
-  top: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-
-  width: 80px;
-  height: 80px;
-
-  background-color: #f8fff9;
-  
-  background-image: url("Regras\ e\ Boas\ Praticas.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 45px;
-
-  border-radius: 50%;
-  box-shadow: 0 10px 25px rgba(51, 124, 64, 0.4);
-}
-
-#regras-seg:hover::before {
-  transform: translateX(-50%) scale(1.1);
-}
-#Olregraseg{
-    padding: 5px;
-    font-size: 16px;
-    color: rgb(103, 103, 103);
-}
-
-#saude-seg {
-    display: flex;
-    flex-direction: column;
-    background-color: #f6fdf79b; /* fundo claro */
-    padding: 50px 40px;
-    margin: 60px auto;
-    max-width: 400px;
-    
-    color: rgb(103, 103, 103);
-
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(19, 19, 19, 0.08);
-
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-#saude-seg:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
-}
-
-#saude-seg::before {
-  content: "";
-  position: absolute;
-  top: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-
-  width: 80px;
-  height: 80px;
-
-  background-color: #f8fff9;
-  
-  background-image: url("saude-seg.jpg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 45px;
-
-  border-radius: 50%;
-  box-shadow: 0 10px 25px rgba(51, 124, 64, 0.4);
-}
-
-#saude-seg:hover::before {
-  transform: translateX(-50%) scale(1.1);
-}
-#Olsaudeseg{
-    padding: 5px;
-    font-size: 16px;
-    color: rgb(103, 103, 103);
-}
-
-#gestao-seg {
-    display: flex;
-    flex-direction: column;
-    background-color: #f6fdf79b; /* fundo claro */
-    padding: 50px 40px;
-    margin: 60px auto;
-    max-width: 400px;
-    
-    color: rgb(103, 103, 103);
-
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(19, 19, 19, 0.08);
-
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-#gestao-seg:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
-}
-
-#gestao-seg::before {
-  content: "";
-  position: absolute;
-  top: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-
-  width: 80px;
-  height: 80px;
-
-  background-color: #f8fff9;
-  
-  background-image: url("gestão_risco.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 45px;
-
-  border-radius: 50%;
-  box-shadow: 0 10px 25px rgba(51, 124, 64, 0.4);
-}
-
-#gestao-seg:hover::before {
-  transform: translateX(-50%) scale(1.1);
-}
-#Olgestaoseg{
-    padding: 5px;
-    font-size: 16px;
-    color: rgb(103, 103, 103);
-}
-
-#Responsabilidade-seg {
-    display: flex;
-    flex-direction: column;
-    background-color: #f6fdf79b; /* fundo claro */
-    padding: 50px 40px;
-    margin: 60px auto;
-    max-width: 400px;
-    
-    color: rgb(103, 103, 103);
-
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(19, 19, 19, 0.08);
-
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-#Responsabilidade-seg:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
-}
-
-#Responsabilidade-seg::before {
-  content: "";
-  position: absolute;
-  top: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-
-  width: 80px;
-  height: 80px;
-
-  background-color: #f8fff9;
-  
-  background-image: url("Responsabilidade.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 45px;
-
-  border-radius: 50%;
-  box-shadow: 0 10px 25px rgba(51, 124, 64, 0.4);
-}
-
-#Responsabilidade-seg:hover::before {
-  transform: translateX(-50%) scale(1.1);
-}
-#OlResponsabilidade{
-    padding: 5px;
-    font-size: 16px;
-    color: rgb(103, 103, 103);
+    #section-card {
+        grid-template-columns: 1fr;
+    }
 }

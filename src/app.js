@@ -9,8 +9,9 @@ const __dirname = dirname(__filename)
 
 const app = express()
 
+// CORS: se ALLOWED_ORIGINS estiver vazio, libera todas as origens (modo dev)
 const allowedOrigins = process.env.ALLOWED_ORIGINS
-    ? process.env.ALLOWED_ORIGINS.split(',')
+    ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
     : []
 
 app.use(cors({
@@ -27,7 +28,8 @@ app.use(cors({
 
 app.use(express.json())
 
-app.use(express.static(join(process.cwd(), 'API_REST', 'public')))
+// Serve o frontend de API_REST/public
+app.use(express.static(join(__dirname, 'public')))
 
 app.use(routes)
 
