@@ -29,7 +29,7 @@ app.use(cors({
 app.use(express.json())
 
 // Serve o frontend de API_REST/public
-app.use(express.static(join(__dirname, 'public')))
+app.use(express.static(join(__dirname, '..', 'API_REST', 'public')))
 
 app.use(routes)
 
