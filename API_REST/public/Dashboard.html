@@ -4,311 +4,161 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Segurança — M. Dias Branco</title>
-
-  <!-- Fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-  <!-- Estilos -->
   <link rel="stylesheet" href="dashboard.css">
-
-  <!-- Chart.js (carregado antes do JS para garantir que o global Chart exista) -->
+  <link rel="stylesheet" href="dashboard-extra.css">
+  <link rel="stylesheet" href="piramide.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 </head>
 <body>
-
 <div class="shell">
 
-  <!-- SIDEBAR (desktop) -->
   <aside class="sidebar">
     <div class="sidebar-logo">
-      <img src="LOGO-M.-DIAS-BRANCO-2021-BRANCA.png"
-           alt="M. Dias Branco"
-           onerror="this.style.display='none'">
+      <img src="LOGO-M.-DIAS-BRANCO-2021-BRANCA.png" alt="M. Dias Branco" onerror="this.style.display='none'">
       <div class="app-label">Segurança do Trabalho</div>
     </div>
-
     <nav class="nav-group">
       <div class="nav-label">Monitoramento</div>
-
-      <div class="nav-item active" onclick="showSection('acidentes')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="4" width="18" height="18" rx="2"/>
-          <path d="M16 2v4M8 2v4M3 10h18"/>
-          <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/>
-        </svg>
-        Dias sem acidente
-      </div>
-
-      <div class="nav-item" onclick="showSection('indicadores')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="3" width="7" height="7" rx="1"/>
-          <rect x="14" y="3" width="7" height="7" rx="1"/>
-          <rect x="3" y="14" width="7" height="7" rx="1"/>
-          <rect x="14" y="14" width="7" height="7" rx="1"/>
-        </svg>
-        Indicadores
-      </div>
-
-      <div class="nav-item" onclick="showSection('pareto')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M3 20h18M5 20V10M9 20V6M13 20V12M17 20V4"/>
-        </svg>
-        Pareto
-      </div>
-
-      <div class="nav-item" onclick="showSection('aderencia')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-          <circle cx="9" cy="7" r="4"/>
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-        </svg>
-        Aderência
-      </div>
+      <div class="nav-item active" onclick="showSection('acidentes')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg> Dias sem acidente</div>
+      <div class="nav-item" onclick="showSection('indicadores')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Indicadores</div>
+      <div class="nav-item" onclick="showSection('pareto')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 20h18M5 20V10M9 20V6M13 20V12M17 20V4"/></svg> Pareto</div>
+      <div class="nav-item" onclick="showSection('aderencia')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg> Aderência</div>
+      <div class="nav-item" onclick="showSection('piramide-seg')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 22h20L12 2z"/></svg> Pirâmide</div>
     </nav>
-
     <nav class="nav-group">
       <div class="nav-label">Formulários</div>
-      <a class="nav-item" href="FormBlitiz.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M9 11l3 3L22 4"/>
-          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-        </svg>
-        Blitz
-      </a>
-      <a class="nav-item" href="FormAlerta.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-          <line x1="12" y1="9" x2="12" y2="13"/>
-          <line x1="12" y1="17" x2="12.01" y2="17"/>
-        </svg>
-        Alertas
-      </a>
+      <a class="nav-item" href="FormBlitiz.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Blitz</a>
+      <a class="nav-item" href="FormAlerta.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Alertas</a>
+      <a class="nav-item" href="FormOcorrencia.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 22h20L12 2z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Ocorrência</a>
     </nav>
-
-    <div class="sidebar-footer">
-      <p>Regional BA · 2025</p>
-    </div>
+    <nav class="nav-group">
+      <div class="nav-label">Navegação</div>
+      <a class="nav-item" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg> Início</a>
+    </nav>
+    <div class="sidebar-footer"><p>Regional BA · 2025</p></div>
   </aside>
 
-  <!-- ÁREA PRINCIPAL -->
   <div class="main">
-
     <div class="topbar">
       <h1 id="topbar-title">Dias sem Acidente</h1>
       <div class="topbar-right">
+        <a class="refresh-btn" href="index.html" title="Voltar para o início"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg> Início</a>
         <span class="status-badge" id="last-updated">Carregando...</span>
-        <button class="refresh-btn" onclick="loadAll()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M23 4v6h-6"/>
-            <path d="M1 20v-6h6"/>
-            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
-          </svg>
-          Atualizar
-        </button>
+        <button class="refresh-btn" onclick="loadAll()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Atualizar</button>
       </div>
     </div>
 
-    <!-- SEÇÃO: DIAS SEM ACIDENTE -->
+    <!-- DIAS SEM ACIDENTE -->
     <div class="content active" id="sec-acidentes">
-      <div class="kpi-grid" id="kpi-acidentes">
-        <div class="loader"><div class="spinner"></div><span>Carregando...</span></div>
-      </div>
-      <div class="units-grid" id="units-grid"></div>
+      <div class="kpi-grid" id="kpi-acidentes"><div class="loader"><div class="spinner"></div><span>Carregando...</span></div></div>
+      <div id="units-grid"></div>
     </div>
 
-    <!-- SEÇÃO: INDICADORES -->
+    <!-- INDICADORES -->
     <div class="content" id="sec-indicadores">
       <div class="filter-bar">
+        <label>Visualizar:</label>
+        <select id="fil-visualizar" onchange="renderIndicadores()"><option value="todos">Todos</option><option value="alerta">Alertas</option><option value="blitz">Blitz</option></select>
         <label>Unidade:</label>
-        <select id="fil-unidade" onchange="renderIndicadores()">
-          <option value="todas">Todas</option>
-          <option>432 - Salvador</option>
-          <option>GMA - 31M</option>
-          <option>Distribuição</option>
-          <option>GMA - Almoxarifado</option>
-          <option>GMA - 31F</option>
-        </select>
+        <select id="fil-unidade" onchange="renderIndicadores()"><option value="todas">Todas</option></select>
         <label>Turno:</label>
-        <select id="fil-turno" onchange="renderIndicadores()">
-          <option value="todos">Todos</option>
-          <option>ADM</option>
-          <option>1º Turno</option>
-          <option>2º Turno</option>
-          <option>3º Turno</option>
-          <option>12x36</option>
-        </select>
+        <select id="fil-turno" onchange="renderIndicadores()"><option value="todos">Todos</option></select>
         <label>Mês:</label>
         <select id="fil-mes" onchange="renderIndicadores()">
-          <option value="0">Todos</option>
-          <option value="1">Jan</option>  <option value="2">Fev</option>
-          <option value="3">Mar</option>  <option value="4">Abr</option>
-          <option value="5">Mai</option>  <option value="6">Jun</option>
-          <option value="7">Jul</option>  <option value="8">Ago</option>
-          <option value="9">Set</option>  <option value="10">Out</option>
-          <option value="11">Nov</option> <option value="12">Dez</option>
+          <option value="0">Todos</option><option value="1">Jan</option><option value="2">Fev</option><option value="3">Mar</option><option value="4">Abr</option><option value="5">Mai</option><option value="6">Jun</option><option value="7">Jul</option><option value="8">Ago</option><option value="9">Set</option><option value="10">Out</option><option value="11">Nov</option><option value="12">Dez</option>
         </select>
       </div>
-
       <div class="kpi-grid" id="kpi-indicadores"></div>
-
       <div class="chart-grid">
-        <div class="chart-card">
-          <div class="card-title">Alertas por unidade</div>
-          <div class="chart-wrap" style="height:220px">
-            <canvas id="ch-alerta-unidade" role="img" aria-label="Alertas por unidade"></canvas>
-          </div>
-        </div>
-        <div class="chart-card">
-          <div class="card-title">Alertas por turno</div>
-          <div class="chart-wrap" style="height:220px">
-            <canvas id="ch-alerta-turno" role="img" aria-label="Alertas por turno"></canvas>
-          </div>
-        </div>
-        <div class="chart-card">
-          <div class="card-title">Blitz por unidade</div>
-          <div class="chart-wrap" style="height:220px">
-            <canvas id="ch-blitz-unidade" role="img" aria-label="Blitz por unidade"></canvas>
-          </div>
-        </div>
-        <div class="chart-card">
-          <div class="card-title">Blitz por turno</div>
-          <div class="chart-wrap" style="height:220px">
-            <canvas id="ch-blitz-turno" role="img" aria-label="Blitz por turno"></canvas>
-          </div>
-        </div>
-        <div class="chart-card full">
-          <div class="card-title">
-            Evolução mensal
-            <div class="legend">
-              <div class="legend-item"><div class="legend-dot" style="background:#1b5e20"></div>Alertas</div>
-              <div class="legend-item"><div class="legend-dot" style="background:#1565c0"></div>Blitz</div>
-            </div>
-          </div>
-          <div class="chart-wrap" style="height:240px">
-            <canvas id="ch-mensal" role="img" aria-label="Evolução mensal de alertas e blitz"></canvas>
-          </div>
-        </div>
+        <div class="chart-card"><div class="card-title">Alertas por unidade</div><div class="chart-wrap" style="height:220px"><canvas id="ch-alerta-unidade"></canvas></div></div>
+        <div class="chart-card"><div class="card-title">Alertas por turno</div><div class="chart-wrap" style="height:220px"><canvas id="ch-alerta-turno"></canvas></div></div>
+        <div class="chart-card"><div class="card-title">Blitz por unidade</div><div class="chart-wrap" style="height:220px"><canvas id="ch-blitz-unidade"></canvas></div></div>
+        <div class="chart-card"><div class="card-title">Blitz por turno</div><div class="chart-wrap" style="height:220px"><canvas id="ch-blitz-turno"></canvas></div></div>
+        <div class="chart-card full"><div class="card-title">Alertas por área do emitente</div><div class="chart-wrap" style="height:260px"><canvas id="ch-alerta-area"></canvas></div></div>
+        <div class="chart-card full"><div class="card-title">Distribuição por semana<div class="legend"><div class="legend-item"><div class="legend-dot" style="background:#1b5e20"></div>Alertas</div><div class="legend-item"><div class="legend-dot" style="background:#1565c0"></div>Blitz</div></div></div><div class="chart-wrap" style="height:240px"><canvas id="ch-semanal"></canvas></div></div>
+        <div class="chart-card full"><div class="card-title">Evolução mensal<div class="legend"><div class="legend-item"><div class="legend-dot" style="background:#1b5e20"></div>Alertas</div><div class="legend-item"><div class="legend-dot" style="background:#1565c0"></div>Blitz</div></div></div><div class="chart-wrap" style="height:240px"><canvas id="ch-mensal"></canvas></div></div>
       </div>
     </div>
 
-    <!-- SEÇÃO: PARETO -->
+    <!-- PARETO -->
     <div class="content" id="sec-pareto">
       <div class="filter-bar">
         <label>Tipo:</label>
-        <select id="fil-pareto-tipo" onchange="renderPareto()">
-          <option value="alerta">Alertas</option>
-          <option value="blitz">Blitz</option>
-        </select>
+        <select id="fil-pareto-tipo" onchange="renderPareto()"><option value="alerta">Alertas (tipo relato)</option><option value="area">Alertas (área do emitente)</option><option value="blitz">Blitz (checklist)</option></select>
       </div>
-
-      <div class="chart-card" style="margin-bottom:16px">
-        <div class="card-title">
-          Pareto — principais motivos
-          <div class="legend">
-            <div class="legend-item"><div class="legend-dot" style="background:#1b5e20"></div>Ocorrências</div>
-            <div class="legend-item"><div class="legend-dot" style="background:#e65100"></div>% Acumulado</div>
-          </div>
-        </div>
-        <div class="chart-wrap" style="height:320px">
-          <canvas id="ch-pareto" role="img" aria-label="Gráfico de Pareto dos principais motivos"></canvas>
-        </div>
-      </div>
-
-      <div class="chart-card">
-        <div class="card-title">Ranking de ocorrências</div>
-        <div id="pareto-ranking" class="pareto-ranking"></div>
-      </div>
+      <div class="chart-card" style="margin-bottom:16px"><div class="card-title">Pareto — principais motivos<div class="legend"><div class="legend-item"><div class="legend-dot" style="background:#1b5e20"></div>Ocorrências</div><div class="legend-item"><div class="legend-dot" style="background:#e65100"></div>% Acumulado</div></div></div><div class="chart-wrap" style="height:320px"><canvas id="ch-pareto"></canvas></div></div>
+      <div class="chart-card"><div class="card-title">Ranking de ocorrências</div><div id="pareto-ranking" class="pareto-ranking"></div></div>
     </div>
 
-    <!-- SEÇÃO: ADERÊNCIA -->
+    <!-- ADERÊNCIA -->
     <div class="content" id="sec-aderencia">
       <div class="filter-bar">
         <label>Unidade:</label>
-        <select id="fil-adh-unidade" onchange="renderAderencia()">
-          <option value="todas">Todas</option>
-          <option>432 - Salvador</option>
-          <option>GMA - Aratu</option>
-          <option>GMA - Almoxarifado</option>
-          <option>GMA - 31F</option>
+        <select id="fil-adh-unidade" onchange="renderAderencia()"><option value="todas">Todas</option></select>
+        <label>Mês:</label>
+        <select id="fil-adh-mes" onchange="renderAderencia()"><option value="0">Mês atual</option><option value="1">Jan</option><option value="2">Fev</option><option value="3">Mar</option><option value="4">Abr</option><option value="5">Mai</option><option value="6">Jun</option><option value="7">Jul</option><option value="8">Ago</option><option value="9">Set</option><option value="10">Out</option><option value="11">Nov</option><option value="12">Dez</option></select>
+        <label>Semana:</label>
+        <select id="fil-adh-semana" onchange="renderAderencia()"><option value="0">Todas</option><option value="1">Semana 1</option><option value="2">Semana 2</option><option value="3">Semana 3</option><option value="4">Semana 4</option><option value="5">Semana 5</option></select>
+      </div>
+      <div class="kpi-grid" id="kpi-aderencia"></div>
+      <div class="chart-card"><div class="card-title">Aderência individual — blitz por colaborador</div><div class="table-wrap"><table class="adh-table"><thead><tr><th>Colaborador</th><th>Turno</th><th>Unidade</th><th style="text-align:center">Realizado/Meta</th><th style="text-align:center">Meta mínima</th><th style="min-width:130px">Aderência</th><th>Status</th></tr></thead><tbody id="adh-tbody"></tbody></table></div></div>
+    </div>
+
+    <!-- PIRÂMIDE DE SEGURANÇA -->
+    <div class="content" id="sec-piramide-seg">
+      <div class="filter-bar">
+        <label>Unidade:</label>
+        <select id="fil-pir-unidade" onchange="renderPiramide()"><option value="todas">Todas</option></select>
+        <label>Mês:</label>
+        <select id="fil-pir-mes" onchange="renderPiramide()">
+          <option value="0">Todos</option><option value="1">Jan</option><option value="2">Fev</option><option value="3">Mar</option><option value="4">Abr</option><option value="5">Mai</option><option value="6">Jun</option><option value="7">Jul</option><option value="8">Ago</option><option value="9">Set</option><option value="10">Out</option><option value="11">Nov</option><option value="12">Dez</option>
+        </select>
+        <label>Ano:</label>
+        <select id="fil-pir-ano" onchange="renderPiramide()">
+          <option value="">Todos</option><option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option>
         </select>
       </div>
 
-      <div class="kpi-grid" id="kpi-aderencia"></div>
+      <div class="kpi-grid" id="kpi-piramide"></div>
+
+      <div class="piramide-container">
+        <div class="piramide-visual">
+          <h3>Pirâmide de Segurança</h3>
+          <div id="piramide-svg-container"></div>
+        </div>
+        <div class="piramide-resumo">
+          <h3>Indicadores de Segurança — Mensal</h3>
+          <div class="table-wrap">
+          <table class="pir-table">
+            <thead><tr><th>Tipo</th><th>Indicador</th><th>Unid.</th><th>Meta</th><th>Jan</th><th>Fev</th><th>Mar</th><th>Abr</th><th>Mai</th><th>Jun</th><th>Jul</th><th>Ago</th><th>Set</th><th>Out</th><th>Nov</th><th>Dez</th></tr></thead>
+            <tbody id="pir-table-body"></tbody>
+          </table>
+          </div>
+        </div>
+      </div>
 
       <div class="chart-card">
-        <div class="card-title">Aderência individual — líderes e supervisores</div>
-        <div class="table-wrap">
-          <table class="adh-table">
-            <thead>
-              <tr>
-                <th>Colaborador</th>
-                <th>Cargo</th>
-                <th>Unidade</th>
-                <th style="text-align:center">Alertas</th>
-                <th style="text-align:center">Meta</th>
-                <th style="min-width:130px">Aderência</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="adh-tbody"></tbody>
-          </table>
-        </div>
+        <div class="card-title">Últimas ocorrências registradas</div>
+        <div id="pir-recentes" class="pir-recentes"></div>
       </div>
     </div>
 
-  </div><!-- /main -->
-</div><!-- /shell -->
+  </div>
+</div>
 
-<!-- NAVEGAÇÃO MOBILE -->
+<!-- MOBILE NAV -->
 <div class="mobile-nav">
-  <div class="mobile-nav-item active" onclick="showSection('acidentes')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <rect x="3" y="4" width="18" height="18" rx="2"/>
-      <path d="M16 2v4M8 2v4M3 10h18"/>
-    </svg>
-    Acidente
-  </div>
-  <div class="mobile-nav-item" onclick="showSection('indicadores')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M3 20h18M5 20V14M9 20V8M13 20V11M17 20V5"/>
-    </svg>
-    Indicadores
-  </div>
-  <div class="mobile-nav-item" onclick="showSection('pareto')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M3 20h18M5 20V10M9 20V6M13 20V12M17 20V4"/>
-    </svg>
-    Pareto
-  </div>
-  <div class="mobile-nav-item" onclick="showSection('aderencia')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-      <circle cx="9" cy="7" r="4"/>
-      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-    </svg>
-    Aderência
-  </div>
+  <div class="mobile-nav-item active" onclick="showSection('acidentes')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> Acidente</div>
+  <div class="mobile-nav-item" onclick="showSection('indicadores')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 20h18M5 20V14M9 20V8M13 20V11M17 20V5"/></svg> Indicadores</div>
+  <div class="mobile-nav-item" onclick="showSection('pareto')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 20h18M5 20V10M9 20V6M13 20V12M17 20V4"/></svg> Pareto</div>
+  <div class="mobile-nav-item" onclick="showSection('aderencia')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg> Aderência</div>
+  <div class="mobile-nav-item" onclick="showSection('piramide-seg')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 22h20L12 2z"/></svg> Pirâmide</div>
 </div>
 
-<!-- MODAL -->
-<div class="modal-bg" id="modal-bg">
-  <div class="modal">
-    <h3 id="modal-title">Registrar data do acidente</h3>
-    <label>Data do último acidente</label>
-    <input type="date" id="modal-date">
-    <label>Recorde da unidade (dias)</label>
-    <input type="number" id="modal-record" placeholder="Ex: 180" min="0">
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
-      <button class="btn-save"   onclick="salvarModal()">Salvar</button>
-    </div>
-  </div>
-</div>
-
-<!-- JS carregado após o DOM -->
 <script src="dashboard.js"></script>
-
+<script src="piramide.js"></script>
 </body>
 </html>

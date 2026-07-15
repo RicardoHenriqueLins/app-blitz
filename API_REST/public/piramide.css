@@ -1,0 +1,219 @@
+/* ============================================================
+   PIRÂMIDE DE SEGURANÇA — CSS
+   Adicionar ao projeto (link no Dashboard.html)
+   ============================================================ */
+
+.piramide-container {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+/* ── Pirâmide SVG ── */
+.piramide-visual {
+    background: var(--card, #fff);
+    border: 1px solid var(--border, #e0e4db);
+    border-radius: 12px;
+    padding: 24px 16px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,.07);
+}
+
+.piramide-visual h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text, #1a231b);
+    margin-bottom: 16px;
+}
+
+.piramide-svg {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.piramide-svg text {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    fill: #fff;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+.piramide-svg .pir-label {
+    font-size: 11px;
+    fill: var(--text2, #4a5e4c);
+    font-weight: 400;
+    text-anchor: start;
+}
+
+.piramide-svg .pir-count {
+    font-size: 18px;
+    fill: #fff;
+    font-family: 'DM Mono', monospace;
+}
+
+.piramide-svg .pir-name {
+    font-size: 10px;
+    fill: rgba(255,255,255,.9);
+}
+
+/* ── Resumo / Tabela ── */
+.piramide-resumo {
+    background: var(--card, #fff);
+    border: 1px solid var(--border, #e0e4db);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.07);
+    overflow-x: auto;
+}
+
+.piramide-resumo h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text, #1a231b);
+    margin-bottom: 14px;
+}
+
+.pir-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.pir-table th {
+    padding: 8px 6px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text3, #7a907c);
+    border-bottom: 2px solid var(--border, #e0e4db);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    white-space: nowrap;
+}
+
+.pir-table th:first-child,
+.pir-table th:nth-child(2) {
+    text-align: left;
+}
+
+.pir-table td {
+    padding: 8px 6px;
+    text-align: center;
+    border-bottom: 1px solid var(--border, #e0e4db);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text, #1a231b);
+}
+
+.pir-table td:first-child {
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    color: var(--text2, #4a5e4c);
+    white-space: nowrap;
+}
+
+.pir-table td:nth-child(2) {
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    color: var(--text, #1a231b);
+}
+
+.pir-table tr:last-child td {
+    border-bottom: none;
+}
+
+.pir-table tbody tr:hover {
+    background: var(--bg, #f2f4f0);
+}
+
+.pir-tipo-tag {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.pir-tipo-reativo  { background: #ffebee; color: #c62828; }
+.pir-tipo-proativo { background: #e8f5e9; color: #1b5e20; }
+
+.pir-arrow-down { color: #c62828; }
+.pir-arrow-up   { color: #1b5e20; }
+
+/* ── Cards de ocorrências recentes ── */
+.pir-recentes {
+    margin-top: 20px;
+}
+
+.pir-recente-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border, #e0e4db);
+    margin-bottom: 8px;
+    transition: background .15s;
+}
+
+.pir-recente-item:hover {
+    background: var(--bg, #f2f4f0);
+}
+
+.pir-recente-tipo {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.pir-recente-tipo.fatal     { background: #b71c1c; color: #fff; }
+.pir-recente-tipo.caf       { background: #e65100; color: #fff; }
+.pir-recente-tipo.saf       { background: #f9a825; color: #333; }
+.pir-recente-tipo.incidente { background: #66bb6a; color: #fff; }
+
+.pir-recente-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.pir-recente-nome {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text, #1a231b);
+}
+
+.pir-recente-desc {
+    font-size: 12px;
+    color: var(--text3, #7a907c);
+    margin-top: 2px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.pir-recente-meta {
+    font-size: 11px;
+    color: var(--text3, #7a907c);
+    margin-top: 4px;
+}
+
+/* ── Responsivo ── */
+@media (max-width: 768px) {
+    .piramide-container {
+        grid-template-columns: 1fr;
+    }
+}

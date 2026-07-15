@@ -339,7 +339,7 @@ html, body {
   font-weight: 500;
 }
 
-/* ── DIAS SEM ACIDENTE ── */
+/* ── DIAS SEM ACIDENTE (fallback genérico — sobrescrito por dashboard-extra.css) ── */
 .units-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -431,6 +431,26 @@ html, body {
 .unit-card.verde   .uc-record { background: var(--g6);    color: var(--g2); }
 .unit-card.amarelo .uc-record { background: #fff3e0;      color: var(--amber); }
 .unit-card.vermelho .uc-record{ background: #ffebee;      color: var(--red); }
+
+/* botão de editar reutilizado dentro do novo layout .acc-unit
+   (estilos de posição/aparência do botão em si) */
+.edit-btn {
+  position: absolute;
+  background: rgba(0,0,0,.04);
+  border: none;
+  cursor: pointer;
+  color: var(--text3);
+  padding: 4px;
+  border-radius: 6px;
+  transition: .15s;
+  display: flex;
+  align-items: center;
+}
+
+.edit-btn:hover {
+  background: var(--bg);
+  color: var(--g3);
+}
 
 /* ── PARETO ── */
 .pareto-ranking { margin-top: 4px; }

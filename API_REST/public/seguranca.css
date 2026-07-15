@@ -1,6 +1,6 @@
 /* ============================================================
    SEGURANÇA E SAÚDE NO TRABALHO — M. DIAS BRANCO
-   seguranca.css  (visual modernizado)
+   seguranca.css  (visual profissional)
    ============================================================ */
 
 * {
@@ -32,7 +32,7 @@ body {
 }
 
 /* ============================================================
-   HEADER MODERNO
+   HEADER
    ============================================================ */
 .site-header {
     position: sticky;
@@ -45,31 +45,23 @@ body {
 .header-inner {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 14px 28px;
+    padding: 12px 28px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
 }
 
-.brand {
-    display: flex;
-    align-items: center;
-}
+.brand { display: flex; align-items: center; }
 
-#logo {
-    width: auto;
-    height: 52px;
-    display: block;
-}
+#logo { width: auto; height: 100px; display: block; }
 
-.main-nav {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
+.main-nav { display: flex; align-items: center; gap: 6px; }
 
 .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 7px;
     color: rgba(255, 255, 255, 0.82);
     text-decoration: none;
     font-size: 15px;
@@ -80,46 +72,26 @@ body {
     position: relative;
 }
 
-.nav-link:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.1);
+.nav-link svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    stroke: currentColor;
 }
 
-.nav-link.active {
-    color: #fff;
-}
+.nav-link:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
+
+.nav-link.active { color: #fff; }
 
 .nav-link.active::after {
     content: "";
     position: absolute;
-    bottom: 2px;
-    left: 16px;
-    right: 16px;
+    bottom: 2px; left: 16px; right: 16px;
     height: 2px;
     background: var(--verde-vivo);
     border-radius: 2px;
 }
 
-.nav-cta {
-    margin-left: 10px;
-    background: var(--branco);
-    color: var(--verde-secundario);
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 600;
-    padding: 10px 20px;
-    border-radius: 10px;
-    transition: all 0.2s ease;
-    font-family: var(--display);
-}
-
-.nav-cta:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-    background: var(--verde-claro);
-}
-
-/* Menu hambúrguer (mobile) */
 .menu-toggle {
     display: none;
     flex-direction: column;
@@ -131,8 +103,7 @@ body {
 }
 
 .menu-toggle span {
-    width: 26px;
-    height: 3px;
+    width: 26px; height: 3px;
     background: #fff;
     border-radius: 3px;
     transition: 0.3s;
@@ -152,10 +123,7 @@ body {
     justify-content: center;
     min-height: 480px;
     padding: 80px 24px;
-    background-image: linear-gradient(
-        rgba(10, 61, 26, 0.82),
-        rgba(27, 94, 32, 0.78)
-    ),
+    background-image: linear-gradient(rgba(10, 61, 26, 0.82), rgba(27, 94, 32, 0.78)),
     url("https://conect.online/wp-content/uploads/2019/04/284577-profissional-de-seguranca-do-trabalho-voce-realmente-se-preocupa-com-a-seguranca-dos-funcionarios.jpg");
     background-size: cover;
     background-position: center;
@@ -200,12 +168,7 @@ body {
     font-weight: 400;
 }
 
-.banner-actions {
-    display: flex;
-    gap: 14px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
+.banner-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 
 .btn-primary {
     background: var(--verde-vivo);
@@ -220,10 +183,7 @@ body {
     box-shadow: 0 8px 24px rgba(67, 160, 71, 0.4);
 }
 
-.btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(67, 160, 71, 0.55);
-}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(67, 160, 71, 0.55); }
 
 .btn-ghost {
     background: rgba(255, 255, 255, 0.12);
@@ -239,10 +199,7 @@ body {
     backdrop-filter: blur(4px);
 }
 
-.btn-ghost:hover {
-    background: rgba(255, 255, 255, 0.22);
-    transform: translateY(-3px);
-}
+.btn-ghost:hover { background: rgba(255, 255, 255, 0.22); transform: translateY(-3px); }
 
 @keyframes fadeUp {
     from { opacity: 0; transform: translateY(24px); }
@@ -283,8 +240,7 @@ body {
 }
 
 .qa-icon {
-    width: 54px;
-    height: 54px;
+    width: 54px; height: 54px;
     border-radius: 14px;
     background: var(--verde-claro);
     display: flex;
@@ -293,11 +249,7 @@ body {
     margin-bottom: 18px;
 }
 
-.qa-icon svg {
-    width: 26px;
-    height: 26px;
-    color: var(--verde-secundario);
-}
+.qa-icon svg { width: 26px; height: 26px; color: var(--verde-secundario); }
 
 .qa-card h3 {
     font-family: var(--display);
@@ -315,20 +267,11 @@ body {
     margin-bottom: 18px;
 }
 
-.qa-link {
-    color: var(--verde-secundario);
-    font-weight: 600;
-    font-size: 0.95rem;
-    transition: 0.2s;
-}
-
-.qa-card:hover .qa-link {
-    color: var(--verde-vivo);
-    letter-spacing: 0.02em;
-}
+.qa-link { color: var(--verde-secundario); font-weight: 600; font-size: 0.95rem; transition: 0.2s; }
+.qa-card:hover .qa-link { color: var(--verde-vivo); letter-spacing: 0.02em; }
 
 /* ============================================================
-   CARDS DE CONTEÚDO
+   CARDS DE CONTEÚDO — Design profissional
    ============================================================ */
 #section-card {
     max-width: 1180px;
@@ -355,6 +298,7 @@ body {
     border: 1px solid var(--borda);
     position: relative;
     transition: all 0.3s ease;
+    overflow: visible;
 }
 
 #politica-seg:hover,
@@ -366,6 +310,7 @@ body {
     box-shadow: 0 24px 50px rgba(10, 61, 26, 0.14);
 }
 
+/* Títulos dos cards */
 #politica-seg h2,
 #regras-seg h2,
 #saude-seg h2,
@@ -376,6 +321,8 @@ body {
     font-weight: 700;
     color: var(--verde-principal);
     margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--verde-claro);
 }
 
 #politica-seg p,
@@ -383,26 +330,96 @@ body {
 #saude-seg p,
 #gestao-seg p,
 #Responsabilidade-seg p {
-    margin-bottom: 16px;
+    margin-bottom: 18px;
     font-size: 0.96rem;
+    color: var(--texto-medio);
 }
 
+/* ── Listas com ícones ── */
 #politica-seg ol,
 #regras-seg ol,
 #saude-seg ol,
 #gestao-seg ol,
 #Responsabilidade-seg ol {
-    padding-left: 20px;
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
-#OlPoliticaseg, #Olregraseg, #Olsaudeseg, #Olgestaoseg, #OlResponsabilidade {
-    padding: 5px 0;
+#OlPoliticaseg,
+#Olregraseg,
+#Olsaudeseg,
+#Olgestaoseg,
+#OlResponsabilidade {
+    padding: 10px 14px 10px 42px;
     font-size: 0.94rem;
     color: var(--texto-medio);
     line-height: 1.55;
+    position: relative;
+    border-radius: 10px;
+    transition: background 0.2s;
 }
 
-/* Ícone circular no topo de cada card */
+#OlPoliticaseg:hover,
+#Olregraseg:hover,
+#Olsaudeseg:hover,
+#Olgestaoseg:hover,
+#OlResponsabilidade:hover {
+    background: var(--verde-claro);
+}
+
+/* Ícone check verde em cada item da lista */
+#OlPoliticaseg::before,
+#Olregraseg::before,
+#Olsaudeseg::before,
+#Olgestaoseg::before,
+#OlResponsabilidade::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background-size: 14px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Ícone: check dentro de círculo verde (Política) */
+#OlPoliticaseg::before {
+    background-color: #e8f5e9;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231b5e20' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 12l2 2 4-4'/%3E%3C/svg%3E");
+}
+
+/* Ícone: check-square (Regras) */
+#Olregraseg::before {
+    background-color: #e3f2fd;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231565c0' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='3'/%3E%3Cpath d='M9 12l2 2 4-4'/%3E%3C/svg%3E");
+}
+
+/* Ícone: coração (Saúde) */
+#Olsaudeseg::before {
+    background-color: #fce4ec;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c62828' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z'/%3E%3C/svg%3E");
+}
+
+/* Ícone: alerta triângulo (Gestão de Riscos) */
+#Olgestaoseg::before {
+    background-color: #fff3e0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e65100' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z'/%3E%3C/svg%3E");
+}
+
+/* Ícone: pessoas (Responsabilidade) */
+#OlResponsabilidade::before {
+    background-color: #ede7f6;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235e35b1' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='9' cy='7' r='4'/%3E%3C/svg%3E");
+}
+
+/* ── Ícone circular no topo de cada card ── */
 #politica-seg::before,
 #regras-seg::before,
 #saude-seg::before,
@@ -414,12 +431,11 @@ body {
     left: 34px;
     width: 60px;
     height: 60px;
-    background: linear-gradient(135deg, var(--verde-secundario), var(--verde-vivo));
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 30px;
+    background-size: 28px;
     border-radius: 16px;
-    box-shadow: 0 8px 20px rgba(27, 94, 32, 0.35);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease;
 }
 
@@ -430,6 +446,43 @@ body {
 #Responsabilidade-seg:hover::before {
     transform: scale(1.1) rotate(-5deg);
 }
+
+/* Card: Política — verde */
+#politica-seg::before {
+    background-color: var(--verde-secundario);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3l7 4v5c0 5-3.5 8.5-7 9-3.5-.5-7-4-7-9V7l7-4z'/%3E%3Cpath d='M9 12l2 2 4-4'/%3E%3C/svg%3E");
+}
+
+/* Card: Regras — azul */
+#regras-seg::before {
+    background-color: #1565c0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='6' y='4' width='12' height='16' rx='2'/%3E%3Cpath d='M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1'/%3E%3Cline x1='9' y1='10' x2='15' y2='10'/%3E%3Cline x1='9' y1='14' x2='15' y2='14'/%3E%3Cline x1='9' y1='18' x2='13' y2='18'/%3E%3C/svg%3E");
+}
+
+/* Card: Saúde — vermelho */
+#saude-seg::before {
+    background-color: #c62828;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 21s-7-4.35-9.5-8.5C.9 9 2 5.5 5.5 5c2-.3 3.5.9 4.5 2.3C11 5.9 12.5 4.7 14.5 5c3.5.5 4.6 4 3 7.5C19 16.65 12 21 12 21z'/%3E%3Cpath d='M6.5 12H9l1.5-3 2 6 1.5-3h3'/%3E%3C/svg%3E");
+}
+
+/* Card: Gestão — laranja */
+#gestao-seg::before {
+    background-color: #e65100;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86'/%3E%3Cline x1='12' y1='8' x2='12' y2='12'/%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'/%3E%3C/svg%3E");
+}
+
+/* Card: Responsabilidade — roxo */
+#Responsabilidade-seg::before {
+    background-color: #5e35b1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='9' cy='7' r='4'/%3E%3Cpath d='M23 21v-2a4 4 0 0 0-3-3.87'/%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'/%3E%3C/svg%3E");
+}
+
+/* ── Borda lateral colorida por card ── */
+#politica-seg        { border-left: 4px solid var(--verde-secundario); }
+#regras-seg          { border-left: 4px solid #1565c0; }
+#saude-seg           { border-left: 4px solid #c62828; }
+#gestao-seg          { border-left: 4px solid #e65100; }
+#Responsabilidade-seg { border-left: 4px solid #5e35b1; }
 
 /* ============================================================
    FOOTER
@@ -466,15 +519,11 @@ body {
    RESPONSIVO
    ============================================================ */
 @media (max-width: 860px) {
-    .menu-toggle {
-        display: flex;
-    }
+    .menu-toggle { display: flex; }
 
     .main-nav {
         position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
+        top: 100%; left: 0; right: 0;
         background: var(--verde-principal);
         flex-direction: column;
         align-items: stretch;
@@ -486,35 +535,14 @@ body {
         box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
     }
 
-    .main-nav.open {
-        max-height: 400px;
-    }
-
-    .nav-link {
-        padding: 14px 16px;
-    }
-
-    .nav-link.active::after {
-        display: none;
-    }
-
-    .nav-cta {
-        margin: 6px 0 0;
-        text-align: center;
-    }
+    .main-nav.open { max-height: 350px; }
+    .nav-link { padding: 14px 16px; }
+    .nav-link.active::after { display: none; }
+    #logo { height: 54px; }
 }
 
 @media (max-width: 560px) {
-    #banner {
-        min-height: 420px;
-        padding: 60px 20px;
-    }
-
-    .quick-access {
-        margin-top: -40px;
-    }
-
-    #section-card {
-        grid-template-columns: 1fr;
-    }
+    #banner { min-height: 420px; padding: 60px 20px; }
+    .quick-access { margin-top: -40px; }
+    #section-card { grid-template-columns: 1fr; }
 }

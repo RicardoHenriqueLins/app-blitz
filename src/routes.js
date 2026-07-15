@@ -2,6 +2,8 @@ import { Router } from 'express'
 import blitizController from './app/controllers/blitizController.js'
 import AlertaController from './app/controllers/alertaController.js'
 import AcidenteController from './app/controllers/acidenteController.js'
+import UnidadeController from './app/controllers/unidadeController.js'
+import OcorrenciaController from './app/controllers/ocorrenciaController.js'
 
 const router = Router()
 
@@ -20,5 +22,20 @@ router.delete('/alerta/:id', AlertaController.delete)
 router.get('/acidente', AcidenteController.index)
 router.get('/acidente/:unidade', AcidenteController.show)
 router.put('/acidente/:unidade', AcidenteController.update)
+
+router.get('/unidade', UnidadeController.index)
+router.get('/unidade/:id', UnidadeController.show)
+router.post('/unidade', UnidadeController.store)
+router.put('/unidade/:id', UnidadeController.update)
+router.delete('/unidade/:id', UnidadeController.delete)
+
+router.get('/ocorrencia', OcorrenciaController.index)
+router.get('/ocorrencia/piramide', OcorrenciaController.piramide)
+router.get('/ocorrencia/mensal', OcorrenciaController.mensal)
+router.get('/ocorrencia/tipo/:tipo', OcorrenciaController.byTipo)
+router.get('/ocorrencia/:id', OcorrenciaController.show)
+router.post('/ocorrencia', OcorrenciaController.store)
+router.put('/ocorrencia/:id', OcorrenciaController.update)
+router.delete('/ocorrencia/:id', OcorrenciaController.delete)
 
 export default router

@@ -10,7 +10,6 @@ function alternarTipo() {
         document.getElementById("sec_proprio").style.display = "block";
         document.getElementById("sec_terceiro").style.display = "none";
 
-        // limpa empresa
         const empresa = document.querySelector('input[name="empresa"]');
         if (empresa) empresa.value = "";
 
@@ -41,6 +40,11 @@ form.addEventListener("submit", async (e) => {
     // ===============================
     if (!formData.get("nome")) {
         alert("Preencha o nome.");
+        return;
+    }
+
+    if (!formData.get("unidade")) {
+        alert("Selecione a unidade.");
         return;
     }
 
@@ -79,10 +83,10 @@ form.addEventListener("submit", async (e) => {
     }
 
     // ===============================
-    // DATA REGISTRO (FORMATO MYSQL CORRETO)
+    // DATA REGISTRO
     // ===============================
     const dataRegistro = new Date()
-        .toLocaleString('sv-SE') // formato YYYY-MM-DD HH:mm:ss
+        .toLocaleString('sv-SE')
         .replace('T', ' ');
 
     // ===============================
@@ -92,6 +96,7 @@ form.addEventListener("submit", async (e) => {
 
         nome: formData.get("nome"),
         re: formData.get("re"),
+        unidade: formData.get("unidade"),
         area_emitente: formData.get("area_emitente"),
         turno: formData.get("turno"),
 
@@ -113,11 +118,9 @@ form.addEventListener("submit", async (e) => {
         acoes: formData.get("acoes"),
         tipo_relato: formData.get("tipo_relato"),
 
-        // ✅ CORRIGIDO
         data_registro: dataRegistro
     };
 
-    // DEBUG
     console.log("DADOS ENVIADOS:", dados);
 
     // ===============================
@@ -138,7 +141,6 @@ form.addEventListener("submit", async (e) => {
             alert("Alerta enviado com sucesso!");
             form.reset();
 
-            // volta padrão
             document.getElementById("sec_proprio").style.display = "block";
             document.getElementById("sec_terceiro").style.display = "none";
 
@@ -173,4 +175,3 @@ form.addEventListener("submit", async (e) => {
 document.addEventListener("DOMContentLoaded", () => {
     alternarTipo();
 });
-

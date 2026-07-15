@@ -1,163 +1,180 @@
+/* ============================================================
+   FORM BLITZ — M. DIAS BRANCO
+   formarBlitiz.css
+   Alinhado ao mesmo padrão visual do dashboard.css
+   ============================================================ */
+
 /* RESET */
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family: Arial, sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* CORES PADRÃO */
-:root{
---verde-principal:#1b5e20;
---verde-secundario:#2e7d32;
---verde-claro:#e8f5e9;
---cinza-bg:#f4f6f8;
---cinza-card:#ffffff;
---cinza-borda:#e0e0e0;
---texto-escuro:#263238;
---texto-secundario:#546e7a;
+/* CORES / TOKENS — mesmas variáveis do dashboard.css */
+:root {
+  --g1: #0a2e0f;
+  --g2: #1b5e20;
+  --g3: #2e7d32;
+  --g4: #43a047;
+  --g5: #a5d6a7;
+  --g6: #e8f5e9;
+  --red: #c62828;
+  --amber: #e65100;
+  --blue: #1565c0;
+  --bg: #f2f4f0;
+  --card: #ffffff;
+  --border: #e0e4db;
+  --text: #1a231b;
+  --text2: #4a5e4c;
+  --text3: #7a907c;
+  --font: 'DM Sans', sans-serif;
+  --mono: 'DM Mono', monospace;
+  --radius: 12px;
+  --shadow: 0 2px 12px rgba(0, 0, 0, .07);
+  --shadow-md: 0 4px 24px rgba(0, 0, 0, .10);
 }
 
 /* FUNDO */
-body{
-background:var(--cinza-bg);
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.5;
 }
 
 /* CONTAINER */
-.container{
-max-width:900px;
-margin:40px auto;
-background:var(--cinza-card);
-padding:40px;
-border-radius:12px;
-box-shadow:0 10px 30px rgba(0,0,0,0.08);
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  background: var(--card);
+  padding: 40px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
 }
 
 /* TITULO */
-h1{
-text-align:center;
-color:var(--verde-principal);
-margin-bottom:25px;
+h1 {
+  text-align: center;
+  color: var(--g2);
+  font-weight: 600;
+  margin-bottom: 25px;
 }
 
 /* SUBTITULO */
-h2{
-margin-bottom:15px;
-color:var(--verde-secundario);
-font-size:20px;
-border-left:5px solid var(--verde-secundario);
-padding-left:10px;
+h2 {
+  margin-bottom: 15px;
+  color: var(--g3);
+  font-size: 18px;
+  font-weight: 600;
+  border-left: 3px solid var(--g3);
+  padding-left: 10px;
 }
 
 /* SEÇÕES */
-section{
-background:#fafafa;
-border:1px solid var(--cinza-borda);
-border-radius:10px;
-padding:22px;
-margin-top:25px;
-transition:.25s;
-position:relative;
+section {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  margin-top: 20px;
+  transition: .2s;
+  position: relative;
 }
 
-section:hover{
-border-color:var(--verde-secundario);
-box-shadow:0 6px 18px rgba(0,0,0,0.08);
-transform:translateY(-2px);
-background:#fff;
-}
-
-section::before{
-content:"";
-position:absolute;
-left:0;
-top:0;
-height:100%;
-width:5px;
-background:var(--verde-secundario);
-border-radius:10px 0 0 10px;
-opacity:.6;
+section:hover {
+  border-color: var(--g3);
+  box-shadow: var(--shadow);
+  background: var(--card);
 }
 
 /* LABEL */
-label{
-display:block;
-margin-top:14px;
-font-weight:600;
-color:var(--texto-secundario);
+label {
+  display: block;
+  margin-top: 14px;
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--text2);
 }
 
 /* INPUT */
 input[type="text"],
+input[type="number"],
 input[type="date"],
 input[type="time"],
 select,
-textarea{
-width:100%;
-margin-top:6px;
-padding:12px;
-border-radius:8px;
-border:1px solid var(--cinza-borda);
-font-size:14px;
-background:#fff;
-transition:.2s;
+textarea {
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 14px;
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--card);
+  outline: none;
+  transition: .15s;
 }
 
 input:focus,
 select:focus,
-textarea:focus{
-outline:none;
-border-color:var(--verde-secundario);
-box-shadow:0 0 0 3px rgba(46,125,50,0.15);
+textarea:focus {
+  border-color: var(--g3);
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, .12);
 }
 
-/* RADIO */
-.radio-group{
-margin-top:10px;
+/* RADIO / CHECKBOX */
+.radio-group {
+  margin-top: 10px;
 }
 
-.radio-group label{
-display:block;
-margin-top:8px;
-font-weight:normal;
+.radio-group label {
+  display: block;
+  margin-top: 8px;
+  font-weight: 400;
+  color: var(--text);
 }
 
 input[type="radio"],
-input[type="checkbox"]{
-margin-right:8px;
-accent-color:var(--verde-secundario);
+input[type="checkbox"] {
+  margin-right: 8px;
+  accent-color: var(--g3);
 }
 
 /* TEXTAREA */
-textarea{
-min-height:100px;
-resize:vertical;
+textarea {
+  min-height: 100px;
+  resize: vertical;
 }
 
 /* BOTÃO */
-button{
-width:100%;
-margin-top:30px;
-padding:15px;
-background:linear-gradient(135deg,#2e7d32,#1b5e20);
-color:#fff;
-border:none;
-border-radius:8px;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
-transition:.25s;
+button {
+  width: 100%;
+  margin-top: 26px;
+  padding: 13px;
+  background: var(--g2);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: .2s;
 }
 
-button:hover{
-transform:translateY(-2px);
-box-shadow:0 6px 18px rgba(0,0,0,0.15);
+button:hover {
+  background: var(--g1);
+  box-shadow: var(--shadow-md);
 }
 
 /* RESPONSIVO */
-@media(max-width:768px){
-.container{
-padding:25px;
-margin:20px;
-}
+@media (max-width: 768px) {
+  .container {
+    padding: 22px;
+    margin: 16px;
+  }
 }
