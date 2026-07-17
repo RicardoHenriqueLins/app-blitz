@@ -565,23 +565,29 @@ function renderAderencia() {
     let anoRef = now.getFullYear();
     let meta = getWeeksInMonth(anoRef, mesRef);
 
+    // Filtra por mês e unidade (a semana é tratada à parte, para não perder o detalhamento semanal)
     let bf = allBlitz.filter(function(r) {
         return new Date(r.data_registro || '').getMonth() + 1 === mesRef;
     });
     if (uFilt !== 'todas') bf = bf.filter(function(r) { return r.unidade === uFilt; });
-    if (wFilt > 0) bf = bf.filter(function(r) { return r.data_registro && getWeekOfMonth(r.data_registro) === wFilt; });
 
     let pp = {};
     bf.forEach(function(r) {
         let n = (r.nome || 'Sem nome').trim();
-        if (!pp[n]) pp[n] = { nome: n, unidade: r.unidade || '—', turno: r.turno || '—', blitz: 0, semanas: new Set() };
+        if (!pp[n]) {
+            pp[n] = { nome: n, unidade: r.unidade || '—', turno: r.turno || '—', blitz: 0, semanas: {} };
+            for (let w = 1; w <= meta; w++) pp[n].semanas[w] = 0;
+        }
         pp[n].blitz++;
-        if (r.data_registro) pp[n].semanas.add(getWeekOfMonth(r.data_registro));
+        if (r.data_registro) {
+            let w = getWeekOfMonth(r.data_registro);
+            if (w >= 1 && w <= meta) pp[n].semanas[w] = (pp[n].semanas[w] || 0) + 1;
+        }
     });
 
     let lista = Object.values(pp).map(function(p) {
         let mf = wFilt > 0 ? 1 : meta;
-        let real = wFilt > 0 ? p.blitz : p.semanas.size;
+        let real = wFilt > 0 ? (p.semanas[wFilt] || 0) : p.blitz;
         return Object.assign({}, p, { meta: mf, realizado: real, pct: mf > 0 ? Math.round(real / mf * 100) : 0 });
     }).sort(function(a, b) { return b.pct - a.pct; });
 
@@ -596,8 +602,20 @@ function renderAderencia() {
         '<div class="kpi-card ok"><div class="k-label">Acima da meta</div><div class="k-val">' + acima + '</div><div class="k-sub">colaboradores ≥ 80%</div></div>' +
         '<div class="kpi-card danger"><div class="k-label">Abaixo da meta</div><div class="k-val">' + (lista.length - acima) + '</div><div class="k-sub">colaboradores &lt; 80%</div></div>';
 
+    // Monta o cabeçalho dinamicamente: Colaborador, Turno, Unidade, S1..Sn, Total, Meta, Aderência, Status
+    let theadEl = document.getElementById('adh-thead');
+    if (theadEl) {
+        let semanaCols = '';
+        for (let w = 1; w <= meta; w++) {
+            semanaCols += '<th style="text-align:center">S' + w + '</th>';
+        }
+        theadEl.innerHTML = '<tr><th>Colaborador</th><th>Turno</th><th>Unidade</th>' + semanaCols +
+            '<th style="text-align:center">Total</th><th style="text-align:center">Meta</th><th style="min-width:130px">Aderência</th><th>Status</th></tr>';
+    }
+
+    let totalCols = meta + 8; // colaborador, turno, unidade, semanas, total, meta, aderencia, status
     if (!lista.length) {
-        document.getElementById('adh-tbody').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:#999">Nenhuma blitz registrada para ' + mesNome + semLabel + '.</td></tr>';
+        document.getElementById('adh-tbody').innerHTML = '<tr><td colspan="' + totalCols + '" style="text-align:center;padding:32px;color:#999">Nenhuma blitz registrada para ' + mesNome + semLabel + '.</td></tr>';
         return;
     }
 
@@ -605,13 +623,22 @@ function renderAderencia() {
         let cor = l.pct >= 80 ? '#1b5e20' : l.pct >= 50 ? '#e65100' : '#c62828';
         let sc = l.pct >= 80 ? 'status-ok' : l.pct >= 50 ? 'status-warn' : 'status-danger';
         let st = l.pct >= 80 ? 'OK' : l.pct >= 50 ? 'Atenção' : 'Crítico';
+
+        let semanaCells = '';
+        for (let w = 1; w <= meta; w++) {
+            let qtd = l.semanas[w] || 0;
+            let bg = qtd > 0 ? 'background:#1b5e2022;color:#1b5e20;font-weight:600' : 'color:#bbb';
+            semanaCells += '<td style="text-align:center;font-family:var(--mono);' + bg + '">' + qtd + '</td>';
+        }
+
         return '<tr><td style="font-weight:500">' + l.nome + '</td>' +
-            '<td style="font-size:12px;color:let(--text2)">' + l.turno + '</td>' +
-            '<td style="font-size:12px;color:let(--text3)">' + l.unidade + '</td>' +
-            '<td style="text-align:center;font-family:let(--mono);font-weight:500">' + l.realizado + '/' + l.meta + '</td>' +
-            '<td style="text-align:center;font-size:12px;color:let(--text3)">80%</td>' +
+            '<td style="font-size:12px;color:var(--text2)">' + l.turno + '</td>' +
+            '<td style="font-size:12px;color:var(--text3)">' + l.unidade + '</td>' +
+            semanaCells +
+            '<td style="text-align:center;font-family:var(--mono);font-weight:600">' + l.blitz + '</td>' +
+            '<td style="text-align:center;font-family:var(--mono);color:var(--text3)">' + meta + '</td>' +
             '<td><div style="display:flex;align-items:center;gap:8px"><div class="adh-bar-wrap"><div class="adh-bar-fill" style="width:' + Math.min(l.pct, 100) + '%;background:' + cor + '"></div></div>' +
-            '<span style="font-size:12px;font-weight:600;color:' + cor + ';font-family:let(--mono)">' + l.pct + '%</span></div></td>' +
+            '<span style="font-size:12px;font-weight:600;color:' + cor + ';font-family:var(--mono)">' + l.pct + '%</span></div></td>' +
             '<td><span class="status-pill ' + sc + '">' + st + '</span></td></tr>';
     }).join('');
 }

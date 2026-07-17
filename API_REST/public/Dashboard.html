@@ -104,7 +104,15 @@
         <select id="fil-adh-semana" onchange="renderAderencia()"><option value="0">Todas</option><option value="1">Semana 1</option><option value="2">Semana 2</option><option value="3">Semana 3</option><option value="4">Semana 4</option><option value="5">Semana 5</option></select>
       </div>
       <div class="kpi-grid" id="kpi-aderencia"></div>
-      <div class="chart-card"><div class="card-title">Aderência individual — blitz por colaborador</div><div class="table-wrap"><table class="adh-table"><thead><tr><th>Colaborador</th><th>Turno</th><th>Unidade</th><th style="text-align:center">Realizado/Meta</th><th style="text-align:center">Meta mínima</th><th style="min-width:130px">Aderência</th><th>Status</th></tr></thead><tbody id="adh-tbody"></tbody></table></div></div>
+      <div class="chart-card">
+        <div class="card-title">Aderência individual — blitz por colaborador, semana a semana</div>
+        <div class="table-wrap">
+          <table class="adh-table">
+            <thead id="adh-thead"></thead>
+            <tbody id="adh-tbody"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
     <!-- PIRÂMIDE DE SEGURANÇA -->

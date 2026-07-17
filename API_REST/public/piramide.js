@@ -63,7 +63,6 @@ const renderPiramide = async () => {
     const incid = ocs.filter(r => r.tipo === 'incidente').length;
     const condicao = als.filter(r => (r.tipo_relato || '').toLowerCase() === 'condicao').length;
     const compor = als.filter(r => (r.tipo_relato || '').toLowerCase() === 'ato').length;
-    const totalAlertas = condicao + compor;
 
     // Pirâmide SVG
     const pirSvg = document.getElementById('piramide-svg-container');
@@ -98,8 +97,8 @@ const renderPiramide = async () => {
         kpiEl.innerHTML =
             '<div class="kpi-card danger"><div class="k-label">Ocorrências</div><div class="k-val">' + totalOc + '</div><div class="k-sub">fatal + caf + saf + incidente</div></div>' +
             '<div class="kpi-card warn"><div class="k-label">CAF + SAF</div><div class="k-val">' + (caf + saf) + '</div><div class="k-sub">acidentes registrados</div></div>' +
-            '<div class="kpi-card ok"><div class="k-label">Alertas SSO</div><div class="k-val">' + totalAlertas + '</div><div class="k-sub">condição + comportamento</div></div>' +
-            '<div class="kpi-card accent"><div class="k-label">Total geral</div><div class="k-val">' + (totalOc + totalAlertas) + '</div><div class="k-sub">pirâmide completa</div></div>';
+            '<div class="kpi-card ok"><div class="k-label">Alertas Condição</div><div class="k-val">' + condicao + '</div><div class="k-sub">tipo condição</div></div>' +
+            '<div class="kpi-card accent"><div class="k-label">Alertas Comportamento</div><div class="k-val">' + compor + '</div><div class="k-sub">tipo ato/comportamento</div></div>';
     }
 
     renderTabelaMensal(ocs, als);
@@ -117,8 +116,7 @@ const renderTabelaMensal = (ocs, als) => {
         { tipo: 'REATIVO', nome: 'SAF', unid: 'Quant.', melhor: '↓', filtro: r => r.tipo === 'saf', src: 'oc' },
         { tipo: 'REATIVO', nome: 'INCIDENTE', unid: 'Quant.', melhor: '↓', filtro: r => r.tipo === 'incidente', src: 'oc' },
         { tipo: 'PROATIVO', nome: 'ALERTAS CONDIÇÃO', unid: 'Quant.', melhor: '↑', filtro: r => (r.tipo_relato || '').toLowerCase() === 'condicao', src: 'al' },
-        { tipo: 'PROATIVO', nome: 'ALERTAS COMPORTAMENTO', unid: 'Quant.', melhor: '↑', filtro: r => (r.tipo_relato || '').toLowerCase() === 'ato', src: 'al' },
-        { tipo: 'PROATIVO', nome: 'TOTAL ALERTAS', unid: 'Quant.', melhor: '↑', filtro: r => { const t = (r.tipo_relato || '').toLowerCase(); return t === 'condicao' || t === 'ato'; }, src: 'al' }
+        { tipo: 'PROATIVO', nome: 'ALERTAS COMPORTAMENTO', unid: 'Quant.', melhor: '↑', filtro: r => (r.tipo_relato || '').toLowerCase() === 'ato', src: 'al' }
     ];
 
     tbody.innerHTML = indicadores.map(ind => {
