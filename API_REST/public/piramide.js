@@ -1,6 +1,6 @@
 'use strict';
 
-// allOcorrencias já declarada no dashboard.js — não redeclarar
+// allOcorrencias já declarada no dashboard.js
 
 const loadOcorrencias = async () => {
     try {
@@ -63,8 +63,6 @@ const renderPiramide = async () => {
     const incid = ocs.filter(r => r.tipo === 'incidente').length;
     const condicao = als.filter(r => (r.tipo_relato || '').toLowerCase() === 'condicao').length;
     const compor = als.filter(r => (r.tipo_relato || '').toLowerCase() === 'ato').length;
-
-    // Total alertas = só condição + comportamento
     const totalAlertas = condicao + compor;
 
     // Pirâmide SVG
@@ -153,10 +151,66 @@ const renderTabelaMensal = (ocs, als) => {
     }).join('');
 };
 
+// ── Formatar data segura ──
+const formatarData = (dataStr) => {
+    if (!dataStr) return '—';
+    try {
+        const d = new Date(dataStr + 'T12:00:00');
+        if (isNaN(d.getTime())) return '—';
+        return d.toLocaleDateString('pt-BR');
+    } catch {
+        return '—';
+    }
+};
+
+// ── Tipo label com cor ──
+const tipoLabel = (tipo) => {
+    const cores = {
+        fatal: '#b71c1c',
+        caf: '#e65100',
+        saf: '#f9a825',
+        incidente: '#66bb6a'
+    };
+    const nomes = {
+        fatal: 'FATAL',
+        caf: 'CAF',
+        saf: 'SAF',
+        incidente: 'INCIDENTE'
+    };
+    const cor = cores[tipo] || '#666';
+    const nome = nomes[tipo] || tipo.toUpperCase();
+    const textColor = tipo === 'saf' ? '#333' : '#fff';
+    return '<span class="pir-recente-tipo" style="background:' + cor + ';color:' + textColor + '">' + nome + '</span>';
+};
+
+// ── Excluir ocorrência ──
+const excluirOcorrencia = async (id) => {
+    if (!confirm('Deseja excluir esta ocorrência?')) return;
+    try {
+        const res = await fetch('/ocorrencia/' + id, { method: 'DELETE' });
+        if (!res.ok) throw new Error('Erro ao excluir');
+        alert('Ocorrência excluída!');
+        await renderPiramide();
+        // Atualiza dias sem acidente também
+        if (typeof loadAll === 'function') loadAll();
+    } catch (err) {
+        console.error(err);
+        alert('Erro ao excluir ocorrência.');
+    }
+};
+
+// ── Editar ocorrência (redireciona pro formulário) ──
+const editarOcorrencia = (id) => {
+    // Salva o ID no sessionStorage e abre o formulário
+    sessionStorage.setItem('editarOcorrenciaId', id);
+    window.location.href = 'FormOcorrencia.html?edit=' + id;
+};
+
+// ── Renderizar ocorrências recentes ──
 const renderRecentes = (ocs) => {
     const el = document.getElementById('pir-recentes');
     if (!el) return;
-    const recentes = ocs.slice(0, 5);
+    const recentes = ocs.slice(0, 10);
 
     if (!recentes.length) {
         el.innerHTML = '<div style="text-align:center;padding:24px;color:#999;font-size:13px">Nenhuma ocorrência registrada.</div>';
@@ -164,15 +218,47 @@ const renderRecentes = (ocs) => {
     }
 
     el.innerHTML = recentes.map(r => {
-        const data = r.data_ocorrencia ? new Date(r.data_ocorrencia + 'T12:00:00').toLocaleDateString('pt-BR') : '—';
-        const desc = (r.descricao || '').substring(0, 120);
-        return '<div class="pir-recente-item">' +
-            '<span class="pir-recente-tipo ' + r.tipo + '">' + r.tipo.toUpperCase() + '</span>' +
-            '<div class="pir-recente-info">' +
-            '<div class="pir-recente-nome">' + (r.nome_colaborador || 'Sem nome') + '</div>' +
-            '<div class="pir-recente-desc">' + desc + '</div>' +
-            '<div class="pir-recente-meta">' + data + ' · ' + (r.unidade || '—') + ' · ' + (r.funcao || '') + '</div>' +
-            '</div></div>';
+        const data = formatarData(r.data_ocorrencia);
+        const hora = r.hora_ocorrencia ? r.hora_ocorrencia.slice(0, 5) : '';
+        const desc = (r.descricao || '').substring(0, 200);
+        const tipoColab = r.tipo_colaborador === 'terceiro'
+            ? 'Terceiro' + (r.empresa_terceiro ? ' — ' + r.empresa_terceiro : '')
+            : 'Próprio';
+        const socorros = r.primeiros_socorros || '—';
+        const atestado = r.atestado_dias > 0 ? r.atestado_dias + ' dia(s)' : 'Não';
+        const cat = r.cat_aberta || '—';
+        const cid = r.cid || '—';
+
+        return '<div class="pir-recente-item" style="flex-direction:column;gap:10px">' +
+
+            '<div style="display:flex;align-items:center;justify-content:space-between;width:100%">' +
+                '<div style="display:flex;align-items:center;gap:10px">' +
+                    tipoLabel(r.tipo) +
+                    '<div>' +
+                        '<div class="pir-recente-nome">' + (r.nome_colaborador || 'Sem nome') + '</div>' +
+                        '<div style="font-size:11px;color:#999">' + (r.funcao || '') + ' · ' + tipoColab + '</div>' +
+                    '</div>' +
+                '</div>' +
+                '<div style="display:flex;gap:6px">' +
+                    '<button onclick="editarOcorrencia(' + r.id + ')" style="background:none;border:1px solid #d1d5db;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px;color:#1b5e20" title="Editar">✏️ Editar</button>' +
+                    '<button onclick="excluirOcorrencia(' + r.id + ')" style="background:none;border:1px solid #d1d5db;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px;color:#c62828" title="Excluir">🗑️ Excluir</button>' +
+                '</div>' +
+            '</div>' +
+
+            '<div class="pir-recente-desc" style="-webkit-line-clamp:3">' + desc + '</div>' +
+
+            '<div style="display:flex;flex-wrap:wrap;gap:16px;font-size:11px;color:#666;border-top:1px solid #eee;padding-top:8px">' +
+                '<span>📅 ' + data + (hora ? ' às ' + hora : '') + '</span>' +
+                '<span>📍 ' + (r.unidade || '—') + (r.local_especifico ? ' · ' + r.local_especifico : '') + '</span>' +
+                '<span>🏥 Socorros: ' + socorros + '</span>' +
+                '<span>📋 Atestado: ' + atestado + '</span>' +
+                '<span>📄 CAT: ' + cat + '</span>' +
+                '<span>🏷️ CID: ' + cid + '</span>' +
+            '</div>' +
+
+            (r.acoes_imediatas ? '<div style="font-size:11px;color:#4a5e4c;background:#f0f4ef;padding:8px 12px;border-radius:6px"><strong>Ações imediatas:</strong> ' + r.acoes_imediatas + '</div>' : '') +
+
+            '</div>';
     }).join('');
 };
 
