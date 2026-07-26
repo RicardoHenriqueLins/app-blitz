@@ -1,51 +1,7 @@
-import dns from 'dns'
-import { promisify } from 'util'
-import nodemailer from 'nodemailer'
+import { Resend } from 'resend'
 import gestorRepository from './app/repositories/gestorRepository.js'
 
-dns.setDefaultResultOrder('ipv4first')
-const resolve4 = promisify(dns.resolve4)
-
-let transporter = null
-
-async function getTransporter() {
-    if (transporter) return transporter
-
-    const smtpHost = process.env.SMTP_HOST || 'smtp.office365.com'
-    const smtpPort = parseInt(process.env.SMTP_PORT || '465')
-    const isSecure = smtpPort === 465
-
-    // Resolve pra IPv4
-    let host = smtpHost
-    try {
-        const ips = await resolve4(smtpHost)
-        if (ips && ips.length > 0) {
-            host = ips[0]
-            console.log('SMTP resolvido para IPv4:', smtpHost, '->', host)
-        }
-    } catch (err) {
-        console.log('Usando hostname direto:', smtpHost)
-    }
-
-    transporter = nodemailer.createTransport({
-        host: host,
-        port: smtpPort,
-        secure: isSecure,
-        auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASS
-        },
-        tls: {
-            rejectUnauthorized: false,
-            servername: smtpHost
-        },
-        connectionTimeout: 15000,
-        greetingTimeout: 15000,
-        socketTimeout: 15000
-    })
-
-    return transporter
-}
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 const formatarData = (d) => {
     if (!d) return '—'
@@ -55,8 +11,8 @@ const formatarData = (d) => {
 
 const enviarEmailAlerta = async (alerta) => {
     try {
-        if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-            console.log('SMTP não configurado — email não enviado')
+        if (!process.env.RESEND_API_KEY) {
+            console.log('RESEND_API_KEY não configurada — email não enviado')
             return
         }
 
@@ -69,8 +25,8 @@ const enviarEmailAlerta = async (alerta) => {
             return
         }
 
-        const to = gestores.map(g => g.email).join(', ')
-        console.log('Enviando email alerta para:', to, '(porta ' + (process.env.SMTP_PORT || '465') + ')')
+        const to = gestores.map(g => g.email)
+        console.log('Enviando email alerta para:', to.join(', '))
 
         const html = '<div style="font-family:Arial;max-width:600px;margin:0 auto;border:1px solid #ddd;border-radius:8px;overflow:hidden">' +
             '<div style="background:#1b5e20;color:#fff;padding:16px 24px"><h2 style="margin:0;font-size:18px">Novo Alerta de Segurança</h2></div>' +
@@ -88,15 +44,19 @@ const enviarEmailAlerta = async (alerta) => {
             '<p style="margin:0">' + (alerta.descricao || 'Sem descrição') + '</p>' +
             '</div></div></div>'
 
-        const smtp = await getTransporter()
-        await smtp.sendMail({
-            from: process.env.SMTP_USER,
+        const { data, error } = await resend.emails.send({
+            from: process.env.EMAIL_FROM || 'onboarding@resend.dev',
             to: to,
             subject: 'Alerta Segurança — ' + (alerta.tipo_relato || '') + ' — ' + (alerta.unidade || ''),
             html: html
         })
 
-        console.log('✅ Email alerta enviado com sucesso para:', to)
+        if (error) {
+            console.error('❌ Erro email alerta (Resend):', error.message || error)
+            return
+        }
+
+        console.log('✅ Email alerta enviado com sucesso para:', to.join(', '), '| id:', data?.id)
     } catch (err) {
         console.error('❌ Erro email alerta:', err.message)
     }
@@ -104,8 +64,8 @@ const enviarEmailAlerta = async (alerta) => {
 
 const enviarEmailOcorrencia = async (oc) => {
     try {
-        if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-            console.log('SMTP não configurado — email não enviado')
+        if (!process.env.RESEND_API_KEY) {
+            console.log('RESEND_API_KEY não configurada — email não enviado')
             return
         }
 
@@ -118,8 +78,8 @@ const enviarEmailOcorrencia = async (oc) => {
             return
         }
 
-        const to = gestores.map(g => g.email).join(', ')
-        console.log('Enviando email ocorrência para:', to)
+        const to = gestores.map(g => g.email)
+        console.log('Enviando email ocorrência para:', to.join(', '))
 
         const tipos = { fatal: 'FATAL', caf: 'CAF', saf: 'SAF', incidente: 'Incidente' }
         const cores = { fatal: '#b71c1c', caf: '#e65100', saf: '#f9a825', incidente: '#66bb6a' }
@@ -142,15 +102,19 @@ const enviarEmailOcorrencia = async (oc) => {
             '<p style="margin:0">' + (oc.descricao || 'Sem descrição') + '</p>' +
             '</div></div></div>'
 
-        const smtp = await getTransporter()
-        await smtp.sendMail({
-            from: process.env.SMTP_USER,
+        const { data, error } = await resend.emails.send({
+            from: process.env.EMAIL_FROM || 'onboarding@resend.dev',
             to: to,
             subject: 'Ocorrência ' + (tipos[oc.tipo] || oc.tipo) + ' — ' + (oc.unidade || '') + ' — ' + (oc.nome_colaborador || ''),
             html: html
         })
 
-        console.log('✅ Email ocorrência enviado com sucesso para:', to)
+        if (error) {
+            console.error('❌ Erro email ocorrência (Resend):', error.message || error)
+            return
+        }
+
+        console.log('✅ Email ocorrência enviado com sucesso para:', to.join(', '), '| id:', data?.id)
     } catch (err) {
         console.error('❌ Erro email ocorrência:', err.message)
     }
