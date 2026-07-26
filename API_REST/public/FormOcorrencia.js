@@ -37,6 +37,12 @@ async function carregarParaEdicao(id) {
             if (unidadeSelect) unidadeSelect.value = oc.unidade || '';
         }, 800);
 
+        // Área da ocorrência (aguarda o select ser populado, se for dinâmico)
+        setTimeout(function() {
+            const areaSelect = form.querySelector('[name="area_ocorrencia"]');
+            if (areaSelect) areaSelect.value = oc.area_ocorrencia || '';
+        }, 800);
+
         // Campos de texto
         const campos = {
             empresa_local: oc.empresa_local,
@@ -126,6 +132,7 @@ document.getElementById('formOcorrencia').addEventListener('submit', async funct
         tipo: fd.get('tipo'),
         unidade: fd.get('unidade'),
         empresa_local: fd.get('empresa_local') || null,
+        area_ocorrencia: fd.get('area_ocorrencia') || null,
         data_ocorrencia: fd.get('data_ocorrencia'),
         hora_ocorrencia: hora || null,
         nome_colaborador: fd.get('nome_colaborador'),

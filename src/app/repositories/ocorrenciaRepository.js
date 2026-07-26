@@ -19,13 +19,13 @@ class OcorrenciaRepository {
 
     create(oc) {
         const sql = `INSERT INTO ocorrencia
-            (tipo, unidade, empresa_local, data_ocorrencia, hora_ocorrencia,
+            (tipo, unidade, empresa_local, area_ocorrencia, data_ocorrencia, hora_ocorrencia,
              nome_colaborador, funcao, tipo_colaborador, empresa_terceiro,
              local_especifico, descricao, primeiros_socorros, atestado_dias,
              cid, cat_aberta, acoes_imediatas, observacoes, data_registro)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
         return consulta(sql, [
-            oc.tipo, oc.unidade, oc.empresa_local, oc.data_ocorrencia, oc.hora_ocorrencia,
+            oc.tipo, oc.unidade, oc.empresa_local, oc.area_ocorrencia, oc.data_ocorrencia, oc.hora_ocorrencia,
             oc.nome_colaborador, oc.funcao, oc.tipo_colaborador, oc.empresa_terceiro,
             oc.local_especifico, oc.descricao, oc.primeiros_socorros, oc.atestado_dias,
             oc.cid, oc.cat_aberta, oc.acoes_imediatas, oc.observacoes, oc.data_registro
@@ -34,13 +34,13 @@ class OcorrenciaRepository {
 
     update(oc, id) {
         const sql = `UPDATE ocorrencia SET
-            tipo=?, unidade=?, empresa_local=?, data_ocorrencia=?, hora_ocorrencia=?,
+            tipo=?, unidade=?, empresa_local=?, area_ocorrencia=?, data_ocorrencia=?, hora_ocorrencia=?,
             nome_colaborador=?, funcao=?, tipo_colaborador=?, empresa_terceiro=?,
             local_especifico=?, descricao=?, primeiros_socorros=?, atestado_dias=?,
             cid=?, cat_aberta=?, acoes_imediatas=?, observacoes=?, data_registro=?
             WHERE id=?;`
         return consulta(sql, [
-            oc.tipo, oc.unidade, oc.empresa_local, oc.data_ocorrencia, oc.hora_ocorrencia,
+            oc.tipo, oc.unidade, oc.empresa_local, oc.area_ocorrencia, oc.data_ocorrencia, oc.hora_ocorrencia,
             oc.nome_colaborador, oc.funcao, oc.tipo_colaborador, oc.empresa_terceiro,
             oc.local_especifico, oc.descricao, oc.primeiros_socorros, oc.atestado_dias,
             oc.cid, oc.cat_aberta, oc.acoes_imediatas, oc.observacoes, oc.data_registro, id
