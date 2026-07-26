@@ -6,7 +6,8 @@ const transporter = nodemailer.createTransport({
     port: parseInt(process.env.SMTP_PORT || '587'),
     secure: false,
     auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-    tls: { ciphers: 'SSLv3', rejectUnauthorized: false }
+    tls: { ciphers: 'SSLv3', rejectUnauthorized: false },
+    dnsOptions: { family: 4 }
 })
 
 const formatarData = (d) => { if (!d) return '—'; try { return new Date(d + 'T12:00:00').toLocaleDateString('pt-BR') } catch { return d } }
