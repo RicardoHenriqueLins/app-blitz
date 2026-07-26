@@ -12,8 +12,10 @@ async function getTransporter() {
     if (transporter) return transporter
 
     const smtpHost = process.env.SMTP_HOST || 'smtp.office365.com'
+    const smtpPort = parseInt(process.env.SMTP_PORT || '465')
+    const isSecure = smtpPort === 465
 
-    // Resolve o hostname pra IPv4
+    // Resolve pra IPv4
     let host = smtpHost
     try {
         const ips = await resolve4(smtpHost)
@@ -22,13 +24,13 @@ async function getTransporter() {
             console.log('SMTP resolvido para IPv4:', smtpHost, '->', host)
         }
     } catch (err) {
-        console.log('Não foi possível resolver IPv4, usando hostname:', smtpHost)
+        console.log('Usando hostname direto:', smtpHost)
     }
 
     transporter = nodemailer.createTransport({
         host: host,
-        port: parseInt(process.env.SMTP_PORT || '587'),
-        secure: false,
+        port: smtpPort,
+        secure: isSecure,
         auth: {
             user: process.env.SMTP_USER,
             pass: process.env.SMTP_PASS
@@ -36,7 +38,10 @@ async function getTransporter() {
         tls: {
             rejectUnauthorized: false,
             servername: smtpHost
-        }
+        },
+        connectionTimeout: 15000,
+        greetingTimeout: 15000,
+        socketTimeout: 15000
     })
 
     return transporter
@@ -65,7 +70,7 @@ const enviarEmailAlerta = async (alerta) => {
         }
 
         const to = gestores.map(g => g.email).join(', ')
-        console.log('Enviando email alerta para:', to)
+        console.log('Enviando email alerta para:', to, '(porta ' + (process.env.SMTP_PORT || '465') + ')')
 
         const html = '<div style="font-family:Arial;max-width:600px;margin:0 auto;border:1px solid #ddd;border-radius:8px;overflow:hidden">' +
             '<div style="background:#1b5e20;color:#fff;padding:16px 24px"><h2 style="margin:0;font-size:18px">Novo Alerta de Segurança</h2></div>' +
