@@ -5,6 +5,7 @@ import AcidenteController from './app/controllers/acidenteController.js'
 import UnidadeController from './app/controllers/unidadeController.js'
 import OcorrenciaController from './app/controllers/ocorrenciaController.js'
 import GestorController from './app/controllers/gestorController.js'
+import CadastroAuxController from './app/controllers/cadastroAuxController.js'
 
 const router = Router()
 
@@ -44,5 +45,11 @@ router.get('/gestor/:id', GestorController.show)
 router.post('/gestor', GestorController.store)
 router.put('/gestor/:id', GestorController.update)
 router.delete('/gestor/:id', GestorController.delete)
+
+// Cadastro auxiliar genérico (local, area, etc)
+router.get('/cadastro-aux/:tipo', CadastroAuxController.listar)
+router.post('/cadastro-aux/:tipo', CadastroAuxController.criar)
+router.put('/cadastro-aux/:id', CadastroAuxController.atualizar)
+router.delete('/cadastro-aux/:id', CadastroAuxController.deletar)
 
 export default router

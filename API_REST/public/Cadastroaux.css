@@ -1,0 +1,254 @@
+/* ============================================================
+   CADASTRO AUXILIAR — CSS
+   Modal + Lista para Local Específico e Área de Ocorrência
+   ============================================================ */
+
+/* ── Wrapper select + engrenagem ── */
+.aux-select-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.aux-select-wrapper select {
+    flex: 1;
+}
+
+.aux-select-wrapper .btn-config-inline {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    padding: 6px;
+    border: 1px solid #e3e9e0;
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.aux-select-wrapper .btn-config-inline:hover {
+    background: #e8f5e9;
+    border-color: #2e7d32;
+}
+
+.aux-select-wrapper .btn-config-inline svg {
+    width: 18px;
+    height: 18px;
+    fill: #4a5e4c;
+    transition: fill 0.2s;
+}
+
+.aux-select-wrapper .btn-config-inline:hover svg {
+    fill: #1b5e20;
+}
+
+/* ── Modal overlay ── */
+.aux-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.aux-modal-overlay.aberto {
+    display: flex;
+}
+
+/* ── Modal box ── */
+.aux-modal-box {
+    background: #fff;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 80vh;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
+    animation: auxFadeIn 0.2s ease;
+}
+
+@keyframes auxFadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Header ── */
+.aux-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e3e9e0;
+}
+
+.aux-modal-header h2 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #0a3d1a;
+    margin: 0;
+}
+
+.aux-modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #999;
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.aux-modal-close:hover {
+    color: #333;
+}
+
+/* ── Body ── */
+.aux-modal-body {
+    padding: 16px 20px;
+    overflow-y: auto;
+    max-height: calc(80vh - 60px);
+}
+
+/* ── Form add ── */
+.aux-form-add {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.aux-form-add input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #e3e9e0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    transition: border-color 0.2s;
+}
+
+.aux-form-add input:focus {
+    border-color: #2e7d32;
+    outline: none;
+}
+
+.aux-form-add button {
+    background: #1b5e20;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: 'Sora', sans-serif;
+    transition: background 0.2s;
+}
+
+.aux-form-add button:hover {
+    background: #0a3d1a;
+}
+
+/* ── Status ── */
+.aux-status {
+    font-size: 13px;
+    padding: 0;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    min-height: 0;
+    transition: all 0.2s;
+}
+
+.aux-status.ok {
+    padding: 6px 12px;
+    background: #e8f5e9;
+    color: #1b5e20;
+}
+
+.aux-status.erro {
+    padding: 6px 12px;
+    background: #ffebee;
+    color: #c62828;
+}
+
+/* ── Lista ── */
+.aux-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.aux-lista-vazio {
+    text-align: center;
+    padding: 24px;
+    color: #999;
+    font-size: 13px;
+}
+
+.aux-lista-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.15s;
+}
+
+.aux-lista-item:last-child {
+    border-bottom: none;
+}
+
+.aux-lista-item:hover {
+    background: #f4f7f3;
+}
+
+.aux-lista-nome {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a231b;
+}
+
+.aux-lista-acoes {
+    display: flex;
+    gap: 4px;
+}
+
+.aux-lista-acoes button {
+    background: none;
+    border: 1px solid #e3e9e0;
+    border-radius: 6px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.aux-lista-acoes .btn-aux-edit {
+    color: #1b5e20;
+}
+
+.aux-lista-acoes .btn-aux-edit:hover {
+    background: #e8f5e9;
+    border-color: #1b5e20;
+}
+
+.aux-lista-acoes .btn-aux-del {
+    color: #c62828;
+}
+
+.aux-lista-acoes .btn-aux-del:hover {
+    background: #ffebee;
+    border-color: #c62828;
+}
