@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadastro de Gestores — Segurança</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="seguranca.css">
+<link rel="stylesheet" href="formarBlitiz.css">
+<link rel="stylesheet" href="gestores.css">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-inner">
+        <div class="brand">
+            <a href="index.html"><img id="logo" src="LOGO-M.-DIAS-BRANCO-2021-BRANCA.png" alt="Logo"></a>
+        </div>
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+            <span></span><span></span><span></span>
+        </button>
+        <nav class="main-nav" id="mainNav">
+            <a href="index.html" class="nav-link">Início</a>
+            <a href="Dashboard.html" class="nav-link">Dashboard</a>
+            <a href="FormBlitiz.html" class="nav-link">Blitz</a>
+            <a href="FormAlerta.html" class="nav-link">Alertas</a>
+            <a href="FormOcorrencia.html" class="nav-link">Ocorrência</a>
+            <a href="CadastroGestores.html" class="nav-link active">⚙ Gestores</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+<div class="gestores-container">
+
+    <div class="gestor-form">
+        <h2>Cadastrar Gestor</h2>
+        <div class="form-row">
+            <div>
+                <label>Nome do Gestor</label>
+                <input type="text" id="inp-nome" placeholder="Nome completo">
+            </div>
+            <div>
+                <label>Email</label>
+                <input type="email" id="inp-email" placeholder="email@empresa.com">
+            </div>
+        </div>
+        <div class="form-row">
+            <div>
+                <label>Área Responsável</label>
+                <input type="text" id="inp-area" placeholder="Ex: Distribuição, Armazém, Produção">
+            </div>
+            <div>
+                <label>Unidade</label>
+                <select id="inp-unidade">
+                    <option value="">Todas (recebe de qualquer unidade)</option>
+                </select>
+            </div>
+        </div>
+        <button class="btn-add" id="btn-salvar">Adicionar Gestor</button>
+        <div class="status-msg" id="status-msg"></div>
+    </div>
+
+    <div class="gestores-lista">
+        <h2>Gestores Cadastrados</h2>
+        <div style="overflow-x:auto">
+            <table class="gestor-table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Área</th>
+                        <th>Unidade</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="gestores-tbody">
+                    <tr><td colspan="5" class="empty-msg">Carregando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</main>
+
+<footer id="footer">
+    <p id="titulo-footer">Fale com a Segurança do Trabalho</p>
+    <div id="contato-footer">
+        <span>📧 seguranca@empresa.com</span>
+        <span>📞 (11) 99999-9999</span>
+    </div>
+</footer>
+
+<script>
+    const toggle = document.getElementById('menuToggle');
+    const nav = document.getElementById('mainNav');
+    if (toggle) toggle.addEventListener('click', () => { nav.classList.toggle('open'); toggle.classList.toggle('active'); });
+</script>
+<script src="gestores.js"></script>
+<script src="auto-capitalize.js"></script>
+</body>
+</html>

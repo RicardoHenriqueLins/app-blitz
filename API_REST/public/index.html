@@ -4,231 +4,157 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Segurança e Saúde no Trabalho — M. Dias Branco</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="seguranca.css">
     <link rel="stylesheet" href="carrossel.css">
     <link rel="stylesheet" href="comemoracoes.css">
     <script src="carrossel.js"></script>
 </head>
 <body>
-
     <header class="site-header">
         <div class="header-inner">
             <div class="brand">
                 <img id="logo" src="LOGO-M.-DIAS-BRANCO-2021-BRANCA.png" alt="Logo M Dias Branco">
             </div>
-
             <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
                 <span></span><span></span><span></span>
             </button>
-
             <nav class="main-nav" id="mainNav">
-    <a href="index.html" class="nav-link active">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-            <path d="M9 22V12h6v10"/>
-        </svg>
-        Início
-    </a>
-
-    <a href="Dashboard.html" class="nav-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="4" width="18" height="18" rx="2"/>
-            <path d="M16 2v4M8 2v4M3 10h18"/>
-        </svg>
-        Dashboard
-    </a>
-
-    <a href="FormBlitiz.html" class="nav-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 11l3 3L22 4"/>
-            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-        </svg>
-        Blitz
-    </a>
-
-    <a href="FormAlerta.html" class="nav-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-            <line x1="12" y1="9" x2="12" y2="13"/>
-            <line x1="12" y1="17" x2="12.01" y2="17"/>
-        </svg>
-        Alertas
-    </a>
-
-    <a href="FormOcorrencia.html" class="nav-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2L2 22h20L12 2z"/>
-            <line x1="12" y1="9" x2="12" y2="13"/>
-            <line x1="12" y1="17" x2="12.01" y2="17"/>
-        </svg>
-        Ocorrência
-    </a>
-</nav>
+                <a href="index.html" class="nav-link active">Início</a>
+                <a href="Dashboard.html" class="nav-link">Dashboard</a>
+                <a href="FormBlitiz.html" class="nav-link">Blitz</a>
+                <a href="FormAlerta.html" class="nav-link">Alertas</a>
+                <a href="FormOcorrencia.html" class="nav-link">Ocorrência</a>
+                <a href="CadastroGestores.html" class="nav-link">⚙ Gestores</a>
+            </nav>
         </div>
     </header>
-
     <main>
-        <!-- HERO -->
         <section id="banner">
             <div class="banner-overlay-content">
                 <span class="banner-tag">M. Dias Branco S/A</span>
                 <h1 class="banner-title">Nosso compromisso com a segurança</h1>
-                <p id="formatarh2cabecalho">
-                    A segurança no trabalho é um valor inegociável. Atuamos diariamente na
-                    prevenção de riscos, no cuidado com as pessoas e na construção de um
-                    ambiente seguro, saudável e produtivo — porque proteger vidas é essencial
-                    para crescer de forma sustentável.
-                </p>
+                <p id="formatarh2cabecalho">A segurança no trabalho é um valor inegociável. Atuamos diariamente na prevenção de riscos, no cuidado com as pessoas e na construção de um ambiente seguro, saudável e produtivo — porque proteger vidas é essencial para crescer de forma sustentável.</p>
                 <div class="banner-actions">
                     <a href="Dashboard.html" class="btn-primary">Ver Dashboard</a>
                     <a href="FormBlitiz.html" class="btn-ghost">Registrar Blitz</a>
                     <a href="FormAlerta.html" class="btn-ghost">Registrar Alerta</a>
-                     <a href="FormOcorrencia.html" class="btn-ghost">Registrar Ocorrência</a>
+                    <a href="FormOcorrencia.html" class="btn-ghost">Registrar Ocorrência</a>
                 </div>
             </div>
         </section>
-
-        <!-- ACESSO RÁPIDO -->
         <section class="quick-access">
             <a href="Dashboard.html" class="qa-card">
-                <div class="qa-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="3" width="7" height="9" rx="1"/>
-                        <rect x="14" y="3" width="7" height="5" rx="1"/>
-                        <rect x="14" y="12" width="7" height="9" rx="1"/>
-                        <rect x="3" y="16" width="7" height="5" rx="1"/>
-                    </svg>
-                </div>
+                <div class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></div>
                 <h3>Dashboard</h3>
                 <p>Indicadores, dias sem acidente, Pareto e aderência das lideranças.</p>
                 <span class="qa-link">Acessar →</span>
             </a>
-
             <a href="FormBlitiz.html" class="qa-card">
-                <div class="qa-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="6" y="3" width="12" height="18" rx="2"/>
-                        <path d="M9 3V2.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5V3"/>
-                        <path d="M9 12l2 2 4-4"/>
-                    </svg>
-                </div>
+                <div class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 3V2.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5V3"/><path d="M9 12l2 2 4-4"/></svg></div>
                 <h3>Blitz de Segurança</h3>
                 <p>Registre inspeções de distribuição e armazém com checklist completo.</p>
                 <span class="qa-link">Preencher →</span>
             </a>
-
             <a href="FormAlerta.html" class="qa-card">
-                <div class="qa-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 3l7 4v5c0 5-3.5 8.5-7 9-3.5-.5-7-4-7-9V7l7-4z"/>
-                        <line x1="12" y1="8" x2="12" y2="13"/>
-                        <line x1="12" y1="16" x2="12.01" y2="16"/>
-                    </svg>
-                </div>
+                <div class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 4v5c0 5-3.5 8.5-7 9-3.5-.5-7-4-7-9V7l7-4z"/><line x1="12" y1="8" x2="12" y2="13"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
                 <h3>Alerta de Segurança</h3>
                 <p>Comunique atos inseguros, condições de risco e incidentes na hora.</p>
                 <span class="qa-link">Reportar →</span>
             </a>
+            <a href="CadastroGestores.html" class="qa-card">
+                <div class="qa-icon" style="background:#ede7f6"><svg viewBox="0 0 24 24" fill="none" stroke="#5e35b1" stroke-width="1.8"><path d="M19.14 12.94a7.07 7.07 0 000-1.88l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.49.49 0 00-.59-.22l-2.39.96a7.04 7.04 0 00-1.63-.94l-.36-2.54a.48.48 0 00-.48-.41h-3.84a.48.48 0 00-.48.41l-.36 2.54a7.04 7.04 0 00-1.63.94l-2.39-.96a.49.49 0 00-.59.22L2.74 8.87a.48.48 0 00.12.61l2.03 1.58a7.07 7.07 0 000 1.88L2.86 14.52a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.3.59.22l2.39-.96c.5.38 1.04.7 1.63.94l.36 2.54c.05.24.26.41.48.41h3.84c.23 0 .43-.17.48-.41l.36-2.54a7.04 7.04 0 001.63-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.49.49 0 00-.12-.61l-2.03-1.58zM12 15.6A3.6 3.6 0 1115.6 12 3.6 3.6 0 0112 15.6z"/></svg></div>
+                <h3>Gestores</h3>
+                <p>Cadastre gestores para receber alertas e ocorrências por email.</p>
+                <span class="qa-link">Configurar →</span>
+            </a>
         </section>
-
-        <!-- COMEMORAÇÕES E MOMENTOS DE SEGURANÇA (preenchido automaticamente por comemoracoes.js) -->
         <section id="comemoracoes-section" class="comemoracoes"></section>
-
-        <!-- CARDS DE CONTEÚDO -->
         <div id="section-card">
-
-        <section id="politica-seg">
-            <h2>Política de Segurança</h2>
-            <p>Nossa Política de Segurança e Saúde no Trabalho é guiada pelos seguintes princípios:</p>
-            <ol>
-                <li id="OlPoliticaseg">Prevenir acidentes, incidentes e doenças ocupacionais;</li>
-                <li id="OlPoliticaseg">Cumprir integralmente a legislação e as Normas Regulamentadoras aplicáveis;</li>
-                <li id="OlPoliticaseg">Identificar, avaliar e controlar os riscos presentes nas atividades;</li>
-                <li id="OlPoliticaseg">Garantir o uso adequado de EPIs e EPCs;</li>
-                <li id="OlPoliticaseg">Capacitar continuamente os colaboradores em práticas seguras;</li>
-                <li id="OlPoliticaseg">Incentivar a participação de todos na prevenção de riscos;</li>
-                <li id="OlPoliticaseg">Comunicar e investigar incidentes para evitar recorrências;</li>
-                <li id="OlPoliticaseg">Assegurar a preparação para situações de emergência;</li>
-                <li id="OlPoliticaseg">Promover a melhoria contínua dos processos de Segurança e Saúde no Trabalho;</li>
-                <li id="OlPoliticaseg">Fortalecer uma cultura de segurança baseada no respeito à vida e na responsabilidade de todos.</li>
-            </ol>
-        </section>
-
-        <section id="regras-seg">
-            <h2>Regras e Boas Práticas de Segurança</h2>
-            <p>Para garantir um ambiente seguro, todos devem seguir as orientações abaixo:</p>
-            <ol>
-                <li id="Olregraseg">Uso obrigatório de Equipamentos de Proteção Individual (EPIs);</li>
-                <li id="Olregraseg">Cumprimento dos procedimentos operacionais padrão (POPs);</li>
-                <li id="Olregraseg">Respeito à sinalização de segurança;</li>
-                <li id="Olregraseg">Comunicação de atos e condições inseguras;</li>
-                <li id="Olregraseg">Comunicação de incidentes e quase acidentes;</li>
-                <li id="Olregraseg">Operação de máquinas somente com treinamento e autorização;</li>
-                <li id="Olregraseg">Organização e limpeza do ambiente de trabalho (5S);</li>
-                <li id="Olregraseg">Proibição de remover dispositivos de segurança;</li>
-                <li id="Olregraseg">Cumprimento dos procedimentos de bloqueio e etiquetagem (LOTO);</li>
-                <li id="Olregraseg">Participação em treinamentos e Diálogos Diários de Segurança (DDS);</li>
-            </ol>
-        </section>
-
-        <section id="saude-seg">
-            <h2>Saúde Ocupacional</h2>
-            <p>Promovemos ações voltadas à preservação da saúde física e mental, incluindo:</p>
-            <ol>
-                <li id="Olsaudeseg">Prevenção de doenças ocupacionais;</li>
-                <li id="Olsaudeseg">Uso correto de Equipamentos de Proteção Individual (EPIs);</li>
-                <li id="Olsaudeseg">Ergonomia no ambiente de trabalho;</li>
-                <li id="Olsaudeseg">Controle da exposição a agentes físicos, químicos e biológicos;</li>
-                <li id="Olsaudeseg">Realização de exames ocupacionais;</li>
-                <li id="Olsaudeseg">Promoção da saúde e qualidade de vida;</li>
-                <li id="Olsaudeseg">Comunicação imediata de sintomas e problemas de saúde relacionados ao trabalho;</li>
-                <li id="Olsaudeseg">Cumprimento dos programas de Saúde Ocupacional (PCMSO e PGR);</li>
-                <li id="Olsaudeseg">Acompanhamento e monitoramento da saúde dos colaboradores;</li>
-                <li id="Olsaudeseg">Capacitação e conscientização sobre saúde ocupacional;</li>
-            </ol>
-        </section>
-
-        <section id="gestao-seg">
-            <h2>Gestão de Riscos e Emergências</h2>
-            <p>Contamos com planos estruturados para prevenção e resposta a emergências, tais como:</p>
-            <ol>
-                <li id="Olgestaoseg">Identificação de perigos e avaliação de riscos;</li>
-                <li id="Olgestaoseg">Implementação de medidas de controle;</li>
-                <li id="Olgestaoseg">Inspeções periódicas de segurança;</li>
-                <li id="Olgestaoseg">Análise e investigação de incidentes;</li>
-                <li id="Olgestaoseg">Plano de resposta a emergências;</li>
-                <li id="Olgestaoseg">Formação e treinamento da brigada de emergência;</li>
-                <li id="Olgestaoseg">Realização de simulados de emergência;</li>
-                <li id="Olgestaoseg">Disponibilidade e inspeção de equipamentos de emergência;</li>
-                <li id="Olgestaoseg">Comunicação e acionamento em situações de emergência;</li>
-                <li id="Olgestaoseg">Melhoria contínua na gestão de riscos e emergências;</li>
-            </ol>
-        </section>
-
-        <section id="Responsabilidade-seg">
-            <h2>Responsabilidade de Todos</h2>
-            <p>A segurança é um compromisso coletivo. Cada colaborador tem o dever de:</p>
-            <ol>
-                <li id="OlResponsabilidade">Cumprir as normas e procedimentos de segurança;</li>
-                <li id="OlResponsabilidade">Utilizar corretamente os EPIs e EPCs;</li>
-                <li id="OlResponsabilidade">Identificar e comunicar riscos e condições inseguras;</li>
-                <li id="OlResponsabilidade">RZelar pela própria segurança e pela dos colegas;</li>
-                <li id="OlResponsabilidade">Participar de treinamentos e DDS;</li>
-                <li id="OlResponsabilidade">Seguir os Procedimentos Operacionais Padrão (POPs);</li>
-                <li id="OlResponsabilidade">Comunicar incidentes e quase acidentes imediatamente;</li>
-                <li id="OlResponsabilidade">Interromper atividades em caso de risco grave e iminente;</li>
-                <li id="OlResponsabilidade">Contribuir para a melhoria contínua da segurança;</li>
-                <li id="OlResponsabilidade">Promover uma cultura de prevenção e responsabilidade compartilhada;</li>
-            </ol>
-        </section>
+            <section id="politica-seg">
+                <h2>Política de Segurança</h2>
+                <p>Nossa Política de Segurança e Saúde no Trabalho é guiada pelos seguintes princípios:</p>
+                <ol>
+                    <li id="OlPoliticaseg">Prevenir acidentes, incidentes e doenças ocupacionais;</li>
+                    <li id="OlPoliticaseg">Cumprir integralmente a legislação e as Normas Regulamentadoras;</li>
+                    <li id="OlPoliticaseg">Identificar, avaliar e controlar os riscos;</li>
+                    <li id="OlPoliticaseg">Garantir o uso adequado de EPIs e EPCs;</li>
+                    <li id="OlPoliticaseg">Capacitar continuamente os colaboradores;</li>
+                    <li id="OlPoliticaseg">Incentivar a participação de todos na prevenção;</li>
+                    <li id="OlPoliticaseg">Comunicar e investigar incidentes;</li>
+                    <li id="OlPoliticaseg">Assegurar a preparação para emergências;</li>
+                    <li id="OlPoliticaseg">Promover a melhoria contínua;</li>
+                    <li id="OlPoliticaseg">Fortalecer uma cultura de segurança baseada no respeito à vida.</li>
+                </ol>
+            </section>
+            <section id="regras-seg">
+                <h2>Regras e Boas Práticas de Segurança</h2>
+                <p>Para garantir um ambiente seguro, todos devem seguir:</p>
+                <ol>
+                    <li id="Olregraseg">Uso obrigatório de EPIs;</li>
+                    <li id="Olregraseg">Cumprimento dos POPs;</li>
+                    <li id="Olregraseg">Respeito à sinalização de segurança;</li>
+                    <li id="Olregraseg">Comunicação de atos e condições inseguras;</li>
+                    <li id="Olregraseg">Comunicação de incidentes e quase acidentes;</li>
+                    <li id="Olregraseg">Operação de máquinas somente com autorização;</li>
+                    <li id="Olregraseg">Organização e limpeza (5S);</li>
+                    <li id="Olregraseg">Proibição de remover dispositivos de segurança;</li>
+                    <li id="Olregraseg">Cumprimento de bloqueio e etiquetagem (LOTO);</li>
+                    <li id="Olregraseg">Participação em treinamentos e DDS;</li>
+                </ol>
+            </section>
+            <section id="saude-seg">
+                <h2>Saúde Ocupacional</h2>
+                <p>Promovemos ações voltadas à preservação da saúde:</p>
+                <ol>
+                    <li id="Olsaudeseg">Prevenção de doenças ocupacionais;</li>
+                    <li id="Olsaudeseg">Uso correto de EPIs;</li>
+                    <li id="Olsaudeseg">Ergonomia no ambiente de trabalho;</li>
+                    <li id="Olsaudeseg">Controle de agentes físicos, químicos e biológicos;</li>
+                    <li id="Olsaudeseg">Realização de exames ocupacionais;</li>
+                    <li id="Olsaudeseg">Promoção da saúde e qualidade de vida;</li>
+                    <li id="Olsaudeseg">Comunicação de sintomas relacionados ao trabalho;</li>
+                    <li id="Olsaudeseg">Cumprimento do PCMSO e PGR;</li>
+                    <li id="Olsaudeseg">Monitoramento da saúde dos colaboradores;</li>
+                    <li id="Olsaudeseg">Capacitação em saúde ocupacional;</li>
+                </ol>
+            </section>
+            <section id="gestao-seg">
+                <h2>Gestão de Riscos e Emergências</h2>
+                <p>Planos estruturados para prevenção e resposta:</p>
+                <ol>
+                    <li id="Olgestaoseg">Identificação de perigos e avaliação de riscos;</li>
+                    <li id="Olgestaoseg">Implementação de medidas de controle;</li>
+                    <li id="Olgestaoseg">Inspeções periódicas de segurança;</li>
+                    <li id="Olgestaoseg">Análise e investigação de incidentes;</li>
+                    <li id="Olgestaoseg">Plano de resposta a emergências;</li>
+                    <li id="Olgestaoseg">Treinamento da brigada de emergência;</li>
+                    <li id="Olgestaoseg">Simulados de emergência;</li>
+                    <li id="Olgestaoseg">Inspeção de equipamentos de emergência;</li>
+                    <li id="Olgestaoseg">Comunicação em situações de emergência;</li>
+                    <li id="Olgestaoseg">Melhoria contínua na gestão de riscos;</li>
+                </ol>
+            </section>
+            <section id="Responsabilidade-seg">
+                <h2>Responsabilidade de Todos</h2>
+                <p>A segurança é um compromisso coletivo:</p>
+                <ol>
+                    <li id="OlResponsabilidade">Cumprir normas e procedimentos de segurança;</li>
+                    <li id="OlResponsabilidade">Utilizar corretamente EPIs e EPCs;</li>
+                    <li id="OlResponsabilidade">Identificar e comunicar riscos;</li>
+                    <li id="OlResponsabilidade">Zelar pela própria segurança e dos colegas;</li>
+                    <li id="OlResponsabilidade">Participar de treinamentos e DDS;</li>
+                    <li id="OlResponsabilidade">Seguir os POPs;</li>
+                    <li id="OlResponsabilidade">Comunicar incidentes imediatamente;</li>
+                    <li id="OlResponsabilidade">Interromper atividades em caso de risco grave;</li>
+                    <li id="OlResponsabilidade">Contribuir para a melhoria contínua;</li>
+                    <li id="OlResponsabilidade">Promover cultura de prevenção e responsabilidade.</li>
+                </ol>
+            </section>
         </div>
     </main>
-
     <footer id="footer">
         <p id="titulo-footer">Fale com a Segurança do Trabalho</p>
         <div id="contato-footer">
@@ -236,19 +162,11 @@
             <span>📞 (11) 99999-9999</span>
         </div>
     </footer>
-
     <script>
         const toggle = document.getElementById('menuToggle');
         const nav = document.getElementById('mainNav');
-        if (toggle) {
-            toggle.addEventListener('click', () => {
-                nav.classList.toggle('open');
-                toggle.classList.toggle('active');
-            });
-        }
+        if (toggle) { toggle.addEventListener('click', () => { nav.classList.toggle('open'); toggle.classList.toggle('active'); }); }
     </script>
-
     <script src="comemoracoes.js" defer></script>
-
 </body>
 </html>

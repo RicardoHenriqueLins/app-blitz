@@ -1,114 +1,88 @@
+// =============================================
+// FORMULÁRIO DE OCORRÊNCIA — JS
+// =============================================
 'use strict';
 
 let editandoId = null;
 
-// ── Alternar terceiro ──
-const toggleTerceiro = () => {
+// ── Alternar campo terceiro ──
+function toggleTerceiro() {
     const tipo = document.querySelector('input[name="tipo_colaborador"]:checked')?.value;
     document.getElementById('sec_terceiro').style.display = tipo === 'terceiro' ? 'block' : 'none';
     if (tipo === 'proprio') {
         const emp = document.querySelector('input[name="empresa_terceiro"]');
         if (emp) emp.value = '';
     }
-};
+}
 
 // ── Carregar ocorrência para edição ──
-const carregarParaEdicao = async (id) => {
+async function carregarParaEdicao(id) {
     try {
         const res = await fetch('/ocorrencia/' + id);
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const dados = await res.json();
-
-        // A API retorna um array
         const oc = Array.isArray(dados) ? dados[0] : dados;
-        if (!oc) {
-            alert('Ocorrência não encontrada.');
-            return;
-        }
+        if (!oc) { alert('Ocorrência não encontrada.'); return; }
 
         editandoId = oc.id;
-
-        // Preenche os campos
         const form = document.getElementById('formOcorrencia');
 
         // Tipo
         const tipoSelect = form.querySelector('[name="tipo"]');
         if (tipoSelect) tipoSelect.value = oc.tipo || '';
 
-        // Unidade — aguarda o select ser populado pelo unidades.js
-        setTimeout(() => {
+        // Unidade (aguarda o select ser populado)
+        setTimeout(function() {
             const unidadeSelect = form.querySelector('[name="unidade"]');
             if (unidadeSelect) unidadeSelect.value = oc.unidade || '';
         }, 800);
 
-        // Empresa/Local
-        const empresaLocal = form.querySelector('[name="empresa_local"]');
-        if (empresaLocal) empresaLocal.value = oc.empresa_local || '';
+        // Campos de texto
+        const campos = {
+            empresa_local: oc.empresa_local,
+            nome_colaborador: oc.nome_colaborador,
+            funcao: oc.funcao,
+            empresa_terceiro: oc.empresa_terceiro,
+            local_especifico: oc.local_especifico,
+            descricao: oc.descricao,
+            acoes_imediatas: oc.acoes_imediatas,
+            atestado_dias: oc.atestado_dias || 0,
+            cid: oc.cid,
+            observacoes: oc.observacoes
+        };
+
+        Object.keys(campos).forEach(function(name) {
+            const el = form.querySelector('[name="' + name + '"]');
+            if (el) el.value = campos[name] || '';
+        });
 
         // Data
-        const dataOc = form.querySelector('[name="data_ocorrencia"]');
-        if (dataOc && oc.data_ocorrencia) {
-            dataOc.value = oc.data_ocorrencia.slice(0, 10);
+        if (oc.data_ocorrencia) {
+            const dataEl = form.querySelector('[name="data_ocorrencia"]');
+            if (dataEl) dataEl.value = oc.data_ocorrencia.slice(0, 10);
         }
 
         // Hora
-        const horaOc = form.querySelector('[name="hora_ocorrencia"]');
-        if (horaOc && oc.hora_ocorrencia) {
-            horaOc.value = oc.hora_ocorrencia.slice(0, 5);
+        if (oc.hora_ocorrencia) {
+            const horaEl = form.querySelector('[name="hora_ocorrencia"]');
+            if (horaEl) horaEl.value = oc.hora_ocorrencia.slice(0, 5);
         }
 
-        // Nome colaborador
-        const nomeColab = form.querySelector('[name="nome_colaborador"]');
-        if (nomeColab) nomeColab.value = oc.nome_colaborador || '';
-
-        // Função
-        const funcao = form.querySelector('[name="funcao"]');
-        if (funcao) funcao.value = oc.funcao || '';
-
-        // Tipo colaborador
+        // Tipo colaborador (radio)
         const tipoColabRadio = form.querySelector('input[name="tipo_colaborador"][value="' + (oc.tipo_colaborador || 'proprio') + '"]');
-        if (tipoColabRadio) {
-            tipoColabRadio.checked = true;
-            toggleTerceiro();
+        if (tipoColabRadio) { tipoColabRadio.checked = true; toggleTerceiro(); }
+
+        // Primeiros socorros (radio)
+        if (oc.primeiros_socorros) {
+            const socorrosRadio = form.querySelector('input[name="primeiros_socorros"][value="' + oc.primeiros_socorros + '"]');
+            if (socorrosRadio) socorrosRadio.checked = true;
         }
 
-        // Empresa terceiro
-        const empresaTerceiro = form.querySelector('[name="empresa_terceiro"]');
-        if (empresaTerceiro) empresaTerceiro.value = oc.empresa_terceiro || '';
+        // CAT (select)
+        const catSelect = form.querySelector('[name="cat_aberta"]');
+        if (catSelect) catSelect.value = oc.cat_aberta || '';
 
-        // Local específico
-        const localEsp = form.querySelector('[name="local_especifico"]');
-        if (localEsp) localEsp.value = oc.local_especifico || '';
-
-        // Descrição
-        const descricao = form.querySelector('[name="descricao"]');
-        if (descricao) descricao.value = oc.descricao || '';
-
-        // Ações imediatas
-        const acoes = form.querySelector('[name="acoes_imediatas"]');
-        if (acoes) acoes.value = oc.acoes_imediatas || '';
-
-        // Primeiros socorros
-        const socorrosRadio = form.querySelector('input[name="primeiros_socorros"][value="' + (oc.primeiros_socorros || '') + '"]');
-        if (socorrosRadio) socorrosRadio.checked = true;
-
-        // Atestado
-        const atestado = form.querySelector('[name="atestado_dias"]');
-        if (atestado) atestado.value = oc.atestado_dias || 0;
-
-        // CID
-        const cid = form.querySelector('[name="cid"]');
-        if (cid) cid.value = oc.cid || '';
-
-        // CAT
-        const cat = form.querySelector('[name="cat_aberta"]');
-        if (cat) cat.value = oc.cat_aberta || '';
-
-        // Observações
-        const obs = form.querySelector('[name="observacoes"]');
-        if (obs) obs.value = oc.observacoes || '';
-
-        // Muda o título e o botão
+        // Muda título e botão
         const h1 = document.querySelector('h1');
         if (h1) h1.textContent = 'Editar Ocorrência — Regional BA';
 
@@ -119,13 +93,13 @@ const carregarParaEdicao = async (id) => {
         console.error('Erro ao carregar ocorrência:', err);
         alert('Erro ao carregar dados da ocorrência.');
     }
-};
+}
 
 // ── Envio do formulário (criar ou atualizar) ──
-document.getElementById('formOcorrencia').addEventListener('submit', async (e) => {
+document.getElementById('formOcorrencia').addEventListener('submit', async function(e) {
     e.preventDefault();
 
-    const form = e.target;
+    const form = this;
     const fd = new FormData(form);
     const btn = form.querySelector('button[type="submit"]');
 
@@ -138,7 +112,8 @@ document.getElementById('formOcorrencia').addEventListener('submit', async (e) =
 
     const tipoColab = document.querySelector('input[name="tipo_colaborador"]:checked')?.value;
     if (tipoColab === 'terceiro' && !fd.get('empresa_terceiro')) {
-        alert('Informe a empresa terceira.'); return;
+        alert('Informe a empresa terceira.');
+        return;
     }
 
     let hora = fd.get('hora_ocorrencia');
@@ -203,10 +178,10 @@ document.getElementById('formOcorrencia').addEventListener('submit', async (e) =
 });
 
 // ── Init ──
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
     toggleTerceiro();
 
-    // Verifica se é modo edição
+    // Verifica se é modo edição (?edit=ID na URL)
     const params = new URLSearchParams(window.location.search);
     const editId = params.get('edit');
     if (editId) {

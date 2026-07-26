@@ -4,6 +4,7 @@ import AlertaController from './app/controllers/alertaController.js'
 import AcidenteController from './app/controllers/acidenteController.js'
 import UnidadeController from './app/controllers/unidadeController.js'
 import OcorrenciaController from './app/controllers/ocorrenciaController.js'
+import GestorController from './app/controllers/gestorController.js'
 
 const router = Router()
 
@@ -37,5 +38,11 @@ router.get('/ocorrencia/:id', OcorrenciaController.show)
 router.post('/ocorrencia', OcorrenciaController.store)
 router.put('/ocorrencia/:id', OcorrenciaController.update)
 router.delete('/ocorrencia/:id', OcorrenciaController.delete)
+
+router.get('/gestor', GestorController.index)
+router.get('/gestor/:id', GestorController.show)
+router.post('/gestor', GestorController.store)
+router.put('/gestor/:id', GestorController.update)
+router.delete('/gestor/:id', GestorController.delete)
 
 export default router

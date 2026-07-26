@@ -1,0 +1,180 @@
+/* ============================================================
+   CADASTRO DE GESTORES — CSS
+   ============================================================ */
+
+.gestores-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+/* ── Formulário ── */
+.gestor-form {
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    border: 1px solid #e3e9e0;
+}
+
+.gestor-form h2 {
+    font-family: 'Sora', sans-serif;
+    color: #0a3d1a;
+    margin-bottom: 16px;
+    font-size: 1.2rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.form-row > div {
+    flex: 1;
+    min-width: 200px;
+}
+
+.form-row label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #4a5e4c;
+    margin-bottom: 4px;
+}
+
+.form-row input,
+.form-row select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e3e9e0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s;
+}
+
+.form-row input:focus,
+.form-row select:focus {
+    border-color: #2e7d32;
+    outline: none;
+}
+
+/* ── Botão adicionar ── */
+.btn-add {
+    background: #1b5e20;
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Sora', sans-serif;
+    transition: background 0.2s;
+}
+
+.btn-add:hover {
+    background: #0a3d1a;
+}
+
+/* ── Status mensagem ── */
+.status-msg {
+    margin-top: 8px;
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    display: none;
+}
+
+.status-msg.ok {
+    display: block;
+    background: #e8f5e9;
+    color: #1b5e20;
+}
+
+.status-msg.erro {
+    display: block;
+    background: #ffebee;
+    color: #c62828;
+}
+
+/* ── Lista / Tabela ── */
+.gestores-lista {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    border: 1px solid #e3e9e0;
+}
+
+.gestores-lista h2 {
+    font-family: 'Sora', sans-serif;
+    color: #0a3d1a;
+    margin-bottom: 16px;
+    font-size: 1.2rem;
+}
+
+.gestor-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.gestor-table th {
+    text-align: left;
+    padding: 10px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #7a907c;
+    border-bottom: 2px solid #e3e9e0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.gestor-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.gestor-table tr:hover {
+    background: #f4f7f3;
+}
+
+.empty-msg {
+    text-align: center;
+    padding: 32px;
+    color: #999;
+    font-size: 13px;
+}
+
+/* ── Botões de ação ── */
+.btn-edit,
+.btn-del {
+    background: none;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-right: 4px;
+    transition: background 0.2s;
+}
+
+.btn-edit {
+    color: #1b5e20;
+}
+
+.btn-edit:hover {
+    background: #e8f5e9;
+}
+
+.btn-del {
+    color: #c62828;
+}
+
+.btn-del:hover {
+    background: #ffebee;
+}
