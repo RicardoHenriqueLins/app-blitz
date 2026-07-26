@@ -17,7 +17,7 @@ const AUX_CONFIGS = {
         titulo: 'Áreas de Ocorrência',
         placeholder: 'Nome da área',
         selectPlaceholder: 'Selecione a área',
-        selectNames: ['area_ocorrencia', 'area_ocorrencia_terceiro']
+        selectNames: ['area_ocorrencia', 'area_ocorrencia_terceiro', 'area_responsavel']
     }
 };
 
@@ -282,33 +282,20 @@ function criarEngrenagemAux(elemento, tipo) {
     wrapper.appendChild(btn);
 }
 
-// ── Init: engrenagem + datalist + popular na carga da página ──
+// ── Init: engrenagem + popular na carga da página ──
 document.addEventListener('DOMContentLoaded', () => {
 
-    // ── LOCAL ESPECÍFICO (input de texto) ──
-    document.querySelectorAll('input[name="local_especifico"]').forEach(input => {
-        // Cria a engrenagem ao lado da textbox
-        criarEngrenagemAux(input, 'local');
-
-        // Vincula (ou cria) um datalist de sugestões pro input
-        let listId = input.getAttribute('list');
-        if (!listId) {
-            listId = 'datalist-local-especifico-' + Math.random().toString(36).slice(2, 8);
-            const datalist = document.createElement('datalist');
-            datalist.id = listId;
-            input.parentNode.appendChild(datalist);
-            input.setAttribute('list', listId);
-        }
-    });
-    if (document.querySelector('input[name="local_especifico"]')) {
-        popularSelectsAux('local');
-    }
-
-    // ── ÁREA DE OCORRÊNCIA (select) ──
+    // ── ÁREA DE OCORRÊNCIA (select) — engrenagem só nos forms de Alerta/Ocorrência ──
     document.querySelectorAll('select[name="area_ocorrencia"], select[name="area_ocorrencia_terceiro"]').forEach(select => {
         criarEngrenagemAux(select, 'area');
     });
-    if (document.querySelector('select[name="area_ocorrencia"]') || document.querySelector('select[name="area_ocorrencia_terceiro"]')) {
+
+    // Popula qualquer select de área presente na página (inclui area_responsavel do Cadastro de Gestores)
+    if (
+        document.querySelector('select[name="area_ocorrencia"]') ||
+        document.querySelector('select[name="area_ocorrencia_terceiro"]') ||
+        document.querySelector('select[name="area_responsavel"]')
+    ) {
         popularSelectsAux('area');
     }
 });
