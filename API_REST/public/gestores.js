@@ -21,6 +21,7 @@ const carregarUnidades = async () => {
         const res = await fetch('/unidade');
         const unidades = await res.json();
         const select = document.getElementById('inp-unidade');
+        const valorAtual = select.value;
         select.innerHTML = '<option value="">Todas (recebe de qualquer unidade)</option>';
         unidades.forEach(u => {
             const opt = document.createElement('option');
@@ -28,8 +29,29 @@ const carregarUnidades = async () => {
             opt.textContent = u.nome + ' — ' + u.cidade + '/' + u.uf;
             select.appendChild(opt);
         });
+        if (valorAtual) select.value = valorAtual;
     } catch (err) {
         console.error('Erro ao carregar unidades:', err);
+    }
+};
+
+// ── Carregar áreas no select (mesmo cadastro usado em Alerta/Ocorrência) ──
+const carregarAreas = async () => {
+    try {
+        const res = await fetch('/cadastro-aux/area');
+        const areas = await res.json();
+        const select = document.getElementById('inp-area');
+        const valorAtual = select.value;
+        select.innerHTML = '<option value="">Todas (recebe de qualquer área)</option>';
+        areas.forEach(a => {
+            const opt = document.createElement('option');
+            opt.value = a.nome;
+            opt.textContent = a.nome;
+            select.appendChild(opt);
+        });
+        if (valorAtual) select.value = valorAtual;
+    } catch (err) {
+        console.error('Erro ao carregar áreas:', err);
     }
 };
 
@@ -90,7 +112,7 @@ const carregarGestores = async () => {
 const salvarGestor = async () => {
     const nome = document.getElementById('inp-nome').value.trim();
     const email = document.getElementById('inp-email').value.trim();
-    const area = document.getElementById('inp-area').value.trim();
+    const area = document.getElementById('inp-area').value;
     const unidade = document.getElementById('inp-unidade').value;
 
     if (!nome) { mostrarStatus('Informe o nome.', 'erro'); return; }
@@ -165,6 +187,7 @@ const esc = (str) => {
 // ── Init ──
 document.addEventListener('DOMContentLoaded', () => {
     carregarUnidades();
+    carregarAreas();
     carregarGestores();
 
     document.getElementById('btn-salvar').addEventListener('click', salvarGestor);

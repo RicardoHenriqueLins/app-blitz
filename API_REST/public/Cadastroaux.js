@@ -1,6 +1,6 @@
 // =============================================
 // CADASTRO AUXILIAR — JS
-// Modal para Local Específico e Área de Ocorrência
+// Modal para Local Específico (input texto) e Área de Ocorrência (select)
 // Tabela única: cadastro_aux (tipo diferencia)
 // =============================================
 'use strict';
@@ -68,7 +68,7 @@ function criarModalAux(tipo) {
     return modaisAux[tipo];
 }
 
-// ── Abrir modal (chamado pelo onclick do HTML) ──
+// ── Abrir modal (chamado pelo onclick do HTML ou pela engrenagem) ──
 function abrirModalAux(tipo) {
     const m = criarModalAux(tipo);
     m.modal.classList.add('aberto');
@@ -198,7 +198,9 @@ async function removerAux(tipo, id, nome) {
     }
 }
 
-// ── Popular selects do tipo ──
+// =============================================
+// POPULAR <select> E <datalist> (para <input> de texto)
+// =============================================
 async function popularSelectsAux(tipo) {
     const cfg = AUX_CONFIGS[tipo];
     const apiUrl = '/cadastro-aux/' + tipo;
@@ -207,12 +209,13 @@ async function popularSelectsAux(tipo) {
         const res = await fetch(apiUrl);
         const dados = await res.json();
 
-        // Pega todos os selects que precisam ser populados
-        const names = cfg.selectNames || [cfg.selectName];
+        const names = cfg.selectNames || (cfg.selectName ? [cfg.selectName] : []);
+
         names.forEach(name => {
+            // Selects (ex: área de ocorrência)
             document.querySelectorAll('select[name="' + name + '"]').forEach(select => {
                 const valorAtual = select.value;
-                const placeholder = tipo === 'local' ? 'Selecione o local' : 'Selecione a área';
+                const placeholder = cfg.selectPlaceholder || 'Selecione';
                 select.innerHTML = '<option value="">' + placeholder + '</option>';
                 dados.forEach(item => {
                     const opt = document.createElement('option');
@@ -222,19 +225,89 @@ async function popularSelectsAux(tipo) {
                 });
                 if (valorAtual) select.value = valorAtual;
             });
+
+            // Datalist vinculado a inputs de texto (ex: local específico)
+            document.querySelectorAll('input[name="' + name + '"]').forEach(input => {
+                const listId = input.getAttribute('list');
+                if (!listId) return;
+                const datalist = document.getElementById(listId);
+                if (!datalist) return;
+                datalist.innerHTML = '';
+                dados.forEach(item => {
+                    const opt = document.createElement('option');
+                    opt.value = item.nome;
+                    datalist.appendChild(opt);
+                });
+            });
         });
     } catch (err) {
-        console.error('Erro ao popular selects:', err);
+        console.error('Erro ao popular selects/datalist:', err);
     }
 }
 
-// ── Init: popular selects na carga da página ──
+// =============================================
+// ENGRENAGEM — cria botão + wrapper ao lado do campo
+// (mesmo ícone/padrão usado em unidades.js)
+// =============================================
+function criarEngrenagemAux(elemento, tipo) {
+    // Evita duplicar caso o script rode mais de uma vez
+    if (elemento.parentNode.classList && elemento.parentNode.classList.contains('aux-select-wrapper')) return;
+
+    const cfg = AUX_CONFIGS[tipo];
+    const wrapper = document.createElement('div');
+    wrapper.className = 'aux-select-wrapper';
+    elemento.parentNode.insertBefore(wrapper, elemento);
+    wrapper.appendChild(elemento);
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn-config-inline';
+    btn.setAttribute('aria-label', 'Gerenciar ' + cfg.titulo.toLowerCase());
+    btn.title = 'Gerenciar ' + cfg.titulo.toLowerCase();
+    btn.innerHTML = `
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.14 12.94a7.07 7.07 0 000-1.88l2.03-1.58a.49.49
+            0 00.12-.61l-1.92-3.32a.49.49 0 00-.59-.22l-2.39.96a7.04
+            7.04 0 00-1.63-.94l-.36-2.54a.48.48 0 00-.48-.41h-3.84a.48.48
+            0 00-.48.41l-.36 2.54a7.04 7.04 0 00-1.63.94l-2.39-.96a.49.49
+            0 00-.59.22L2.74 8.87a.48.48 0 00.12.61l2.03 1.58a7.07 7.07
+            0 000 1.88L2.86 14.52a.49.49 0 00-.12.61l1.92 3.32a.49.49
+            0 00.59.22l2.39-.96c.5.38 1.04.7 1.63.94l.36 2.54c.05.24
+            .26.41.48.41h3.84c.23 0 .43-.17.48-.41l.36-2.54a7.04 7.04
+            0 001.63-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.49.49
+            0 00-.12-.61l-2.03-1.58zM12 15.6A3.6 3.6 0 1115.6 12
+            3.6 3.6 0 0112 15.6z"/>
+        </svg>`;
+    btn.addEventListener('click', () => abrirModalAux(tipo));
+    wrapper.appendChild(btn);
+}
+
+// ── Init: engrenagem + datalist + popular na carga da página ──
 document.addEventListener('DOMContentLoaded', () => {
-    // Popula local se existir select na página
-    if (document.querySelector('select[name="local_especifico"]')) {
+
+    // ── LOCAL ESPECÍFICO (input de texto) ──
+    document.querySelectorAll('input[name="local_especifico"]').forEach(input => {
+        // Cria a engrenagem ao lado da textbox
+        criarEngrenagemAux(input, 'local');
+
+        // Vincula (ou cria) um datalist de sugestões pro input
+        let listId = input.getAttribute('list');
+        if (!listId) {
+            listId = 'datalist-local-especifico-' + Math.random().toString(36).slice(2, 8);
+            const datalist = document.createElement('datalist');
+            datalist.id = listId;
+            input.parentNode.appendChild(datalist);
+            input.setAttribute('list', listId);
+        }
+    });
+    if (document.querySelector('input[name="local_especifico"]')) {
         popularSelectsAux('local');
     }
-    // Popula area se existir select na página
+
+    // ── ÁREA DE OCORRÊNCIA (select) ──
+    document.querySelectorAll('select[name="area_ocorrencia"], select[name="area_ocorrencia_terceiro"]').forEach(select => {
+        criarEngrenagemAux(select, 'area');
+    });
     if (document.querySelector('select[name="area_ocorrencia"]') || document.querySelector('select[name="area_ocorrencia_terceiro"]')) {
         popularSelectsAux('area');
     }
