@@ -1,17 +1,46 @@
 import dns from 'dns'
+import { promisify } from 'util'
 import nodemailer from 'nodemailer'
 import gestorRepository from './app/repositories/gestorRepository.js'
 
-// Força IPv4 em todas as conexões
 dns.setDefaultResultOrder('ipv4first')
+const resolve4 = promisify(dns.resolve4)
 
-const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.office365.com',
-    port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: false,
-    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-    tls: { rejectUnauthorized: false }
-})
+let transporter = null
+
+async function getTransporter() {
+    if (transporter) return transporter
+
+    const smtpHost = process.env.SMTP_HOST || 'smtp.office365.com'
+
+    // Resolve o hostname pra IPv4
+    let host = smtpHost
+    try {
+        const ips = await resolve4(smtpHost)
+        if (ips && ips.length > 0) {
+            host = ips[0]
+            console.log('SMTP resolvido para IPv4:', smtpHost, '->', host)
+        }
+    } catch (err) {
+        console.log('Não foi possível resolver IPv4, usando hostname:', smtpHost)
+    }
+
+    transporter = nodemailer.createTransport({
+        host: host,
+        port: parseInt(process.env.SMTP_PORT || '587'),
+        secure: false,
+        auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS
+        },
+        tls: {
+            rejectUnauthorized: false,
+            servername: smtpHost
+        }
+    })
+
+    return transporter
+}
 
 const formatarData = (d) => {
     if (!d) return '—'
@@ -31,7 +60,7 @@ const enviarEmailAlerta = async (alerta) => {
         const gestores = await gestorRepository.findByAreaUnidade(alerta.area_emitente || '', alerta.unidade || '')
 
         if (!gestores || !gestores.length) {
-            console.log('Nenhum gestor encontrado para área/unidade:', alerta.area_emitente, alerta.unidade)
+            console.log('Nenhum gestor encontrado')
             return
         }
 
@@ -54,7 +83,8 @@ const enviarEmailAlerta = async (alerta) => {
             '<p style="margin:0">' + (alerta.descricao || 'Sem descrição') + '</p>' +
             '</div></div></div>'
 
-        await transporter.sendMail({
+        const smtp = await getTransporter()
+        await smtp.sendMail({
             from: process.env.SMTP_USER,
             to: to,
             subject: 'Alerta Segurança — ' + (alerta.tipo_relato || '') + ' — ' + (alerta.unidade || ''),
@@ -107,7 +137,8 @@ const enviarEmailOcorrencia = async (oc) => {
             '<p style="margin:0">' + (oc.descricao || 'Sem descrição') + '</p>' +
             '</div></div></div>'
 
-        await transporter.sendMail({
+        const smtp = await getTransporter()
+        await smtp.sendMail({
             from: process.env.SMTP_USER,
             to: to,
             subject: 'Ocorrência ' + (tipos[oc.tipo] || oc.tipo) + ' — ' + (oc.unidade || '') + ' — ' + (oc.nome_colaborador || ''),
