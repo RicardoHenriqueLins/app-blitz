@@ -1,11 +1,23 @@
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 import gestorRepository from './app/repositories/gestorRepository.js'
 
-let resend = null
-function getResend() {
-    if (!process.env.RESEND_API_KEY) return null
-    if (!resend) resend = new Resend(process.env.RESEND_API_KEY)
-    return resend
+let transporter = null
+
+function getTransporter() {
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) return null
+    if (transporter) return transporter
+
+    transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST || 'smtp.gmail.com',
+        port: parseInt(process.env.SMTP_PORT || '587'),
+        secure: false, // 587 usa STARTTLS, não SSL direto
+        auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS
+        }
+    })
+
+    return transporter
 }
 
 const formatarData = (d) => {
@@ -16,9 +28,9 @@ const formatarData = (d) => {
 
 const enviarEmailAlerta = async (alerta) => {
     try {
-        const client = getResend()
-        if (!client) {
-            console.log('RESEND_API_KEY não configurada — email não enviado')
+        const smtp = getTransporter()
+        if (!smtp) {
+            console.log('SMTP não configurado — email não enviado')
             return
         }
 
@@ -31,8 +43,8 @@ const enviarEmailAlerta = async (alerta) => {
             return
         }
 
-        const to = gestores.map(g => g.email)
-        console.log('Enviando email alerta para:', to.join(', '))
+        const to = gestores.map(g => g.email).join(', ')
+        console.log('Enviando email alerta para:', to)
 
         const html = '<div style="font-family:Arial;max-width:600px;margin:0 auto;border:1px solid #ddd;border-radius:8px;overflow:hidden">' +
             '<div style="background:#1b5e20;color:#fff;padding:16px 24px"><h2 style="margin:0;font-size:18px">Novo Alerta de Segurança</h2></div>' +
@@ -50,19 +62,14 @@ const enviarEmailAlerta = async (alerta) => {
             '<p style="margin:0">' + (alerta.descricao || 'Sem descrição') + '</p>' +
             '</div></div></div>'
 
-        const { data, error } = await client.emails.send({
-            from: process.env.EMAIL_FROM || 'onboarding@resend.dev',
+        await smtp.sendMail({
+            from: process.env.SMTP_USER,
             to: to,
             subject: 'Alerta Segurança — ' + (alerta.tipo_relato || '') + ' — ' + (alerta.unidade || ''),
             html: html
         })
 
-        if (error) {
-            console.error('❌ Erro email alerta (Resend):', error.message || error)
-            return
-        }
-
-        console.log('✅ Email alerta enviado com sucesso para:', to.join(', '), '| id:', data?.id)
+        console.log('✅ Email alerta enviado com sucesso para:', to)
     } catch (err) {
         console.error('❌ Erro email alerta:', err.message)
     }
@@ -70,9 +77,9 @@ const enviarEmailAlerta = async (alerta) => {
 
 const enviarEmailOcorrencia = async (oc) => {
     try {
-        const client = getResend()
-        if (!client) {
-            console.log('RESEND_API_KEY não configurada — email não enviado')
+        const smtp = getTransporter()
+        if (!smtp) {
+            console.log('SMTP não configurado — email não enviado')
             return
         }
 
@@ -85,8 +92,8 @@ const enviarEmailOcorrencia = async (oc) => {
             return
         }
 
-        const to = gestores.map(g => g.email)
-        console.log('Enviando email ocorrência para:', to.join(', '))
+        const to = gestores.map(g => g.email).join(', ')
+        console.log('Enviando email ocorrência para:', to)
 
         const tipos = { fatal: 'FATAL', caf: 'CAF', saf: 'SAF', incidente: 'Incidente' }
         const cores = { fatal: '#b71c1c', caf: '#e65100', saf: '#f9a825', incidente: '#66bb6a' }
@@ -109,19 +116,14 @@ const enviarEmailOcorrencia = async (oc) => {
             '<p style="margin:0">' + (oc.descricao || 'Sem descrição') + '</p>' +
             '</div></div></div>'
 
-        const { data, error } = await client.emails.send({
-            from: process.env.EMAIL_FROM || 'onboarding@resend.dev',
+        await smtp.sendMail({
+            from: process.env.SMTP_USER,
             to: to,
             subject: 'Ocorrência ' + (tipos[oc.tipo] || oc.tipo) + ' — ' + (oc.unidade || '') + ' — ' + (oc.nome_colaborador || ''),
             html: html
         })
 
-        if (error) {
-            console.error('❌ Erro email ocorrência (Resend):', error.message || error)
-            return
-        }
-
-        console.log('✅ Email ocorrência enviado com sucesso para:', to.join(', '), '| id:', data?.id)
+        console.log('✅ Email ocorrência enviado com sucesso para:', to)
     } catch (err) {
         console.error('❌ Erro email ocorrência:', err.message)
     }
