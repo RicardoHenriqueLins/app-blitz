@@ -1,20 +1,47 @@
+import dns from 'dns'
+import { promisify } from 'util'
 import nodemailer from 'nodemailer'
 import gestorRepository from './app/repositories/gestorRepository.js'
 
+dns.setDefaultResultOrder('ipv4first')
+const resolve4 = promisify(dns.resolve4)
+
 let transporter = null
 
-function getTransporter() {
+async function getTransporter() {
     if (!process.env.SMTP_USER || !process.env.SMTP_PASS) return null
     if (transporter) return transporter
 
+    const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com'
+    const smtpPort = parseInt(process.env.SMTP_PORT || '587')
+
+    // Resolve pra IPv4 manualmente (Railway não tem rota IPv6 de saída)
+    let host = smtpHost
+    try {
+        const ips = await resolve4(smtpHost)
+        if (ips && ips.length > 0) {
+            host = ips[0]
+            console.log('SMTP resolvido para IPv4:', smtpHost, '->', host)
+        }
+    } catch (err) {
+        console.log('Não foi possível resolver IPv4, usando hostname direto:', smtpHost)
+    }
+
     transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST || 'smtp.gmail.com',
-        port: parseInt(process.env.SMTP_PORT || '587'),
+        host: host,
+        port: smtpPort,
         secure: false, // 587 usa STARTTLS, não SSL direto
         auth: {
             user: process.env.SMTP_USER,
             pass: process.env.SMTP_PASS
-        }
+        },
+        tls: {
+            rejectUnauthorized: false,
+            servername: smtpHost // mantém o hostname original pra validação do certificado
+        },
+        connectionTimeout: 15000,
+        greetingTimeout: 15000,
+        socketTimeout: 15000
     })
 
     return transporter
@@ -28,7 +55,7 @@ const formatarData = (d) => {
 
 const enviarEmailAlerta = async (alerta) => {
     try {
-        const smtp = getTransporter()
+        const smtp = await getTransporter()
         if (!smtp) {
             console.log('SMTP não configurado — email não enviado')
             return
@@ -77,7 +104,7 @@ const enviarEmailAlerta = async (alerta) => {
 
 const enviarEmailOcorrencia = async (oc) => {
     try {
-        const smtp = getTransporter()
+        const smtp = await getTransporter()
         if (!smtp) {
             console.log('SMTP não configurado — email não enviado')
             return
