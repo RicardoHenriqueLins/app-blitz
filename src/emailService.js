@@ -1,7 +1,12 @@
 import { Resend } from 'resend'
 import gestorRepository from './app/repositories/gestorRepository.js'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+let resend = null
+function getResend() {
+    if (!process.env.RESEND_API_KEY) return null
+    if (!resend) resend = new Resend(process.env.RESEND_API_KEY)
+    return resend
+}
 
 const formatarData = (d) => {
     if (!d) return '—'
@@ -11,7 +16,8 @@ const formatarData = (d) => {
 
 const enviarEmailAlerta = async (alerta) => {
     try {
-        if (!process.env.RESEND_API_KEY) {
+        const client = getResend()
+        if (!client) {
             console.log('RESEND_API_KEY não configurada — email não enviado')
             return
         }
@@ -44,7 +50,7 @@ const enviarEmailAlerta = async (alerta) => {
             '<p style="margin:0">' + (alerta.descricao || 'Sem descrição') + '</p>' +
             '</div></div></div>'
 
-        const { data, error } = await resend.emails.send({
+        const { data, error } = await client.emails.send({
             from: process.env.EMAIL_FROM || 'onboarding@resend.dev',
             to: to,
             subject: 'Alerta Segurança — ' + (alerta.tipo_relato || '') + ' — ' + (alerta.unidade || ''),
@@ -64,7 +70,8 @@ const enviarEmailAlerta = async (alerta) => {
 
 const enviarEmailOcorrencia = async (oc) => {
     try {
-        if (!process.env.RESEND_API_KEY) {
+        const client = getResend()
+        if (!client) {
             console.log('RESEND_API_KEY não configurada — email não enviado')
             return
         }
@@ -102,7 +109,7 @@ const enviarEmailOcorrencia = async (oc) => {
             '<p style="margin:0">' + (oc.descricao || 'Sem descrição') + '</p>' +
             '</div></div></div>'
 
-        const { data, error } = await resend.emails.send({
+        const { data, error } = await client.emails.send({
             from: process.env.EMAIL_FROM || 'onboarding@resend.dev',
             to: to,
             subject: 'Ocorrência ' + (tipos[oc.tipo] || oc.tipo) + ' — ' + (oc.unidade || '') + ' — ' + (oc.nome_colaborador || ''),
