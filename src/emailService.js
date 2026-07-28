@@ -1,9 +1,7 @@
-import { Resend } from 'resend'
 import gestorRepository from './app/repositories/gestorRepository.js'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
-const EMAIL_FROM = process.env.EMAIL_FROM || 'onboarding@resend.dev'
+const BREVO_API_KEY = () => process.env.BREVO_API_KEY
+const EMAIL_FROM = () => process.env.EMAIL_FROM || 'expedicao.mdiasbranco@gmail.com'
 
 const formatarData = (d) => {
     if (!d) return '—'
@@ -11,10 +9,41 @@ const formatarData = (d) => {
     catch { return d }
 }
 
+// ── Enviar email via Brevo API ──
+const enviarViaBrevo = async (to, subject, html) => {
+    const toList = Array.isArray(to) ? to : [to]
+
+    const body = {
+        sender: { email: EMAIL_FROM(), name: 'Segurança do Trabalho - M. Dias Branco' },
+        to: toList.map(email => ({ email })),
+        subject: subject,
+        htmlContent: html
+    }
+
+    const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+            'accept': 'application/json',
+            'content-type': 'application/json',
+            'api-key': BREVO_API_KEY()
+        },
+        body: JSON.stringify(body)
+    })
+
+    const data = await res.json()
+
+    if (!res.ok) {
+        throw new Error(data.message || 'Erro Brevo: ' + res.status)
+    }
+
+    return data
+}
+
+// ── Email de Alerta ──
 const enviarEmailAlerta = async (alerta) => {
     try {
-        if (!process.env.RESEND_API_KEY) {
-            console.log('RESEND_API_KEY não configurada — email não enviado')
+        if (!BREVO_API_KEY()) {
+            console.log('BREVO_API_KEY não configurada — email não enviado')
             return
         }
 
@@ -27,11 +56,12 @@ const enviarEmailAlerta = async (alerta) => {
             return
         }
 
-        const to = gestores.map(g => g.email)
-        console.log('Enviando email alerta via Resend para:', to.join(', '))
+        const emails = gestores.map(g => g.email)
+        console.log('Enviando email alerta via Brevo para:', emails.join(', '))
 
         const html = '<div style="font-family:Arial;max-width:600px;margin:0 auto;border:1px solid #ddd;border-radius:8px;overflow:hidden">' +
-            '<div style="background:#1b5e20;color:#fff;padding:16px 24px"><h2 style="margin:0;font-size:18px">Novo Alerta de Segurança</h2>' +
+            '<div style="background:#1b5e20;color:#fff;padding:16px 24px">' +
+            '<h2 style="margin:0;font-size:18px">Novo Alerta de Segurança</h2>' +
             '<p style="margin:4px 0 0;font-size:13px;opacity:.8">M. Dias Branco — Segurança do Trabalho</p></div>' +
             '<div style="padding:20px 24px;font-size:14px;color:#333">' +
             '<table style="width:100%;border-collapse:collapse">' +
@@ -39,32 +69,35 @@ const enviarEmailAlerta = async (alerta) => {
             '<tr><td style="padding:8px 0;font-weight:600;color:#666">Emitente</td><td>' + (alerta.nome || '—') + '</td></tr>' +
             '<tr><td style="padding:8px 0;font-weight:600;color:#666">Unidade</td><td>' + (alerta.unidade || '—') + '</td></tr>' +
             '<tr><td style="padding:8px 0;font-weight:600;color:#666">Área</td><td>' + (alerta.area_emitente || '—') + '</td></tr>' +
+            '<tr><td style="padding:8px 0;font-weight:600;color:#666">Área Ocorrência</td><td>' + (alerta.area_ocorrencia || '—') + '</td></tr>' +
             '<tr><td style="padding:8px 0;font-weight:600;color:#666">Turno</td><td>' + (alerta.turno || '—') + '</td></tr>' +
             '<tr><td style="padding:8px 0;font-weight:600;color:#666">Data</td><td>' + formatarData(alerta.Data_ocorrencia) + '</td></tr>' +
+            '<tr><td style="padding:8px 0;font-weight:600;color:#666">Horário</td><td>' + (alerta.horario || '—') + '</td></tr>' +
             '</table>' +
             '<div style="margin-top:16px;padding:12px;background:#f5f5f5;border-radius:6px">' +
             '<p style="font-weight:600;color:#666;margin:0 0 4px">Descrição:</p>' +
             '<p style="margin:0">' + (alerta.descricao || 'Sem descrição') + '</p></div>' +
             (alerta.acoes ? '<div style="margin-top:12px;padding:12px;background:#e8f5e9;border-radius:6px"><p style="font-weight:600;color:#1b5e20;margin:0 0 4px">Ações tomadas:</p><p style="margin:0">' + alerta.acoes + '</p></div>' : '') +
-            '</div><div style="background:#f9f9f9;padding:12px 24px;font-size:11px;color:#999;border-top:1px solid #eee">Email automático — Sistema de Segurança do Trabalho</div></div>'
+            '</div>' +
+            '<div style="background:#f9f9f9;padding:12px 24px;font-size:11px;color:#999;border-top:1px solid #eee">Email automático — Sistema de Segurança do Trabalho</div></div>'
 
-        const result = await resend.emails.send({
-            from: EMAIL_FROM,
-            to: to,
-            subject: 'Alerta Segurança — ' + (alerta.tipo_relato || '') + ' — ' + (alerta.unidade || ''),
-            html: html
-        })
+        const result = await enviarViaBrevo(
+            emails,
+            'Alerta Segurança — ' + (alerta.tipo_relato || '') + ' — ' + (alerta.unidade || ''),
+            html
+        )
 
-        console.log('✅ Email alerta enviado:', result)
+        console.log('✅ Email alerta enviado com sucesso:', JSON.stringify(result))
     } catch (err) {
         console.error('❌ Erro email alerta:', err.message || err)
     }
 }
 
+// ── Email de Ocorrência ──
 const enviarEmailOcorrencia = async (oc) => {
     try {
-        if (!process.env.RESEND_API_KEY) {
-            console.log('RESEND_API_KEY não configurada — email não enviado')
+        if (!BREVO_API_KEY()) {
+            console.log('BREVO_API_KEY não configurada — email não enviado')
             return
         }
 
@@ -77,10 +110,10 @@ const enviarEmailOcorrencia = async (oc) => {
             return
         }
 
-        const to = gestores.map(g => g.email)
-        console.log('Enviando email ocorrência via Resend para:', to.join(', '))
+        const emails = gestores.map(g => g.email)
+        console.log('Enviando email ocorrência via Brevo para:', emails.join(', '))
 
-        const tipos = { fatal: 'FATAL', caf: 'CAF', saf: 'SAF', incidente: 'Incidente' }
+        const tipos = { fatal: 'FATAL', caf: 'CAF — Com Afastamento', saf: 'SAF — Sem Afastamento', incidente: 'Incidente' }
         const cores = { fatal: '#b71c1c', caf: '#e65100', saf: '#f9a825', incidente: '#66bb6a' }
 
         const html = '<div style="font-family:Arial;max-width:600px;margin:0 auto;border:1px solid #ddd;border-radius:8px;overflow:hidden">' +
@@ -96,7 +129,7 @@ const enviarEmailOcorrencia = async (oc) => {
             '<tr><td style="padding:8px 0;font-weight:600;color:#666">Local</td><td>' + (oc.local_especifico || oc.empresa_local || '—') + '</td></tr>' +
             '<tr><td style="padding:8px 0;font-weight:600;color:#666">Data</td><td>' + formatarData(oc.data_ocorrencia) + '</td></tr>' +
             '<tr><td style="padding:8px 0;font-weight:600;color:#666">Hora</td><td>' + (oc.hora_ocorrencia || '—') + '</td></tr>' +
-            '<tr><td style="padding:8px 0;font-weight:600;color:#666">Socorros</td><td>' + (oc.primeiros_socorros || '—') + '</td></tr>' +
+            '<tr><td style="padding:8px 0;font-weight:600;color:#666">Primeiros Socorros</td><td>' + (oc.primeiros_socorros || '—') + '</td></tr>' +
             '<tr><td style="padding:8px 0;font-weight:600;color:#666">Atestado</td><td>' + (oc.atestado_dias > 0 ? oc.atestado_dias + ' dia(s)' : 'Não') + '</td></tr>' +
             '<tr><td style="padding:8px 0;font-weight:600;color:#666">CID</td><td>' + (oc.cid || '—') + '</td></tr>' +
             '<tr><td style="padding:8px 0;font-weight:600;color:#666">CAT</td><td>' + (oc.cat_aberta || '—') + '</td></tr>' +
@@ -105,19 +138,19 @@ const enviarEmailOcorrencia = async (oc) => {
             '<p style="font-weight:600;color:#666;margin:0 0 4px">Descrição:</p>' +
             '<p style="margin:0">' + (oc.descricao || 'Sem descrição') + '</p></div>' +
             (oc.acoes_imediatas ? '<div style="margin-top:12px;padding:12px;background:#e8f5e9;border-radius:6px"><p style="font-weight:600;color:#1b5e20;margin:0 0 4px">Ações imediatas:</p><p style="margin:0">' + oc.acoes_imediatas + '</p></div>' : '') +
-            '</div><div style="background:#f9f9f9;padding:12px 24px;font-size:11px;color:#999;border-top:1px solid #eee">Email automático — Sistema de Segurança do Trabalho</div></div>'
+            '</div>' +
+            '<div style="background:#f9f9f9;padding:12px 24px;font-size:11px;color:#999;border-top:1px solid #eee">Email automático — Sistema de Segurança do Trabalho</div></div>'
 
-        const result = await resend.emails.send({
-            from: EMAIL_FROM,
-            to: to,
-            subject: 'Ocorrência ' + (tipos[oc.tipo] || oc.tipo) + ' — ' + (oc.unidade || '') + ' — ' + (oc.nome_colaborador || ''),
-            html: html
-        })
+        const result = await enviarViaBrevo(
+            emails,
+            'Ocorrência ' + (tipos[oc.tipo] || oc.tipo) + ' — ' + (oc.unidade || '') + ' — ' + (oc.nome_colaborador || ''),
+            html
+        )
 
-        console.log('✅ Email ocorrência enviado:', result)
+        console.log('✅ Email ocorrência enviado com sucesso:', JSON.stringify(result))
     } catch (err) {
         console.error('❌ Erro email ocorrência:', err.message || err)
     }
 }
 
-export { enviarEmailAlerta, enviarEmailOcorrencia }     
+export { enviarEmailAlerta, enviarEmailOcorrencia }
