@@ -42,7 +42,8 @@
   transform: translateY(-50%);
   width: 58px;
   height: 66px;
-  background: rgba(255, 255, 255, .08);
+  background: rgba(255, 255, 255, .22);
+  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, .35) inset;
   clip-path: polygon(50% 0%, 100% 18%, 100% 58%, 50% 100%, 0% 58%, 0% 18%);
 }
 
