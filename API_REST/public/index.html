@@ -37,40 +37,57 @@
                 <span class="banner-tag">M. Dias Branco S/A</span>
                 <h1 class="banner-title">Nosso compromisso com a segurança</h1>
                 <p id="formatarh2cabecalho">A segurança no trabalho é um valor inegociável. Atuamos diariamente na prevenção de riscos, no cuidado com as pessoas e na construção de um ambiente seguro, saudável e produtivo — porque proteger vidas é essencial para crescer de forma sustentável.</p>
-                <div class="banner-actions">
-                    <a href="Dashboard.html" class="btn-primary">Ver Dashboard</a>
-                    <a href="FormBlitiz.html" class="btn-ghost">Registrar Blitz</a>
-                    <a href="FormAlerta.html" class="btn-ghost">Registrar Alerta</a>
-                    <a href="FormOcorrencia.html" class="btn-ghost">Registrar Ocorrência</a>
-                </div>
             </div>
         </section>
-        <section class="quick-access">
-            <a href="Dashboard.html" class="qa-card">
-                <div class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></div>
-                <h3>Dashboard</h3>
-                <p>Indicadores, dias sem acidente, Pareto e aderência das lideranças.</p>
-                <span class="qa-link">Acessar →</span>
-            </a>
-            <a href="FormBlitiz.html" class="qa-card">
-                <div class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 3V2.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5V3"/><path d="M9 12l2 2 4-4"/></svg></div>
-                <h3>Blitz de Segurança</h3>
-                <p>Registre inspeções de distribuição e armazém com checklist completo.</p>
-                <span class="qa-link">Preencher →</span>
-            </a>
-            <a href="FormAlerta.html" class="qa-card">
-                <div class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 4v5c0 5-3.5 8.5-7 9-3.5-.5-7-4-7-9V7l7-4z"/><line x1="12" y1="8" x2="12" y2="13"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-                <h3>Alerta de Segurança</h3>
-                <p>Comunique atos inseguros, condições de risco e incidentes na hora.</p>
-                <span class="qa-link">Reportar →</span>
-            </a>
-            <a href="CadastroGestores.html" class="qa-card">
-                <div class="qa-icon" style="background:#ede7f6"><svg viewBox="0 0 24 24" fill="none" stroke="#5e35b1" stroke-width="1.8"><path d="M19.14 12.94a7.07 7.07 0 000-1.88l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.49.49 0 00-.59-.22l-2.39.96a7.04 7.04 0 00-1.63-.94l-.36-2.54a.48.48 0 00-.48-.41h-3.84a.48.48 0 00-.48.41l-.36 2.54a7.04 7.04 0 00-1.63.94l-2.39-.96a.49.49 0 00-.59.22L2.74 8.87a.48.48 0 00.12.61l2.03 1.58a7.07 7.07 0 000 1.88L2.86 14.52a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.3.59.22l2.39-.96c.5.38 1.04.7 1.63.94l.36 2.54c.05.24.26.41.48.41h3.84c.23 0 .43-.17.48-.41l.36-2.54a7.04 7.04 0 001.63-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.49.49 0 00-.12-.61l-2.03-1.58zM12 15.6A3.6 3.6 0 1115.6 12 3.6 3.6 0 0112 15.6z"/></svg></div>
-                <h3>Gestores</h3>
-                <p>Cadastre gestores para receber alertas e ocorrências por email.</p>
-                <span class="qa-link">Configurar →</span>
-            </a>
+
+        <!--
+            Carrossel de fotos.
+            Estrutura montada a partir das classes definidas em carrossel.css
+            (pos-center, pos-left1/2, pos-right1/2, pos-hidden, controls, dots, progress).
+            O carrossel.js (já referenciado no <head>) deve controlar a
+            rotação/posicionamento dessas classes. Troque as imagens/labels
+            abaixo pelas fotos reais.
+        -->
+        <section id="carrossel-section">
+            <h2>Galeria</h2>
+            <div class="carrossel-wrapper">
+                <div class="carrossel-slot pos-left2">
+                    <img src="foto1.jpeg" alt="Foto 1">
+                    <span class="carrossel-label">Foto 1</span>
+                </div>
+                <div class="carrossel-slot pos-left1">
+                    <img src="foto2.jpeg" alt="Foto 2">
+                    <span class="carrossel-label">Foto 2</span>
+                </div>
+                <div class="carrossel-slot pos-center">
+                    <img src="foto3.jpeg" alt="Foto 3">
+                    <span class="carrossel-label">Foto 3</span>
+                </div>
+                <div class="carrossel-slot pos-right1">
+                    <img src="foto4.jpeg" alt="Foto 4">
+                    <span class="carrossel-label">Foto 4</span>
+                </div>
+                <div class="carrossel-slot pos-right2">
+                    <img src="fotos/foto5.jpg" alt="Foto 5">
+                    <span class="carrossel-label">Foto 5</span>
+                </div>
+            </div>
+            <div class="carrossel-controls">
+                <button class="carrossel-btn" id="carrosselPrev" aria-label="Foto anterior">‹</button>
+                <div class="carrossel-dots" id="carrosselDots">
+                    <span class="carrossel-dot"></span>
+                    <span class="carrossel-dot"></span>
+                    <span class="carrossel-dot active"></span>
+                    <span class="carrossel-dot"></span>
+                    <span class="carrossel-dot"></span>
+                </div>
+                <button class="carrossel-btn" id="carrosselNext" aria-label="Próxima foto">›</button>
+            </div>
+            <div class="carrossel-progress">
+                <div class="carrossel-progress-bar" id="carrosselProgressBar"></div>
+            </div>
         </section>
+
         <section id="comemoracoes-section" class="comemoracoes"></section>
         <div id="section-card">
             <section id="politica-seg">
