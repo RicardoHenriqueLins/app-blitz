@@ -1,6 +1,8 @@
-'use strict';
-
+// =============================================
+// PIRÂMIDE DE SEGURANÇA — JS
 // allOcorrencias já declarada no dashboard.js
+// =============================================
+'use strict';
 
 const loadOcorrencias = async () => {
     try {
@@ -32,6 +34,21 @@ const filterOcorrencias = () => {
     });
 };
 
+// Filtra só por unidade e ano (sem mês) — pra coluna ACUM
+const filterOcorrenciasSemMes = () => {
+    const uFilt = document.getElementById('fil-pir-unidade')?.value || 'todas';
+    const aFilt = document.getElementById('fil-pir-ano')?.value || '';
+
+    return allOcorrencias.filter(r => {
+        if (uFilt !== 'todas' && r.unidade !== uFilt) return false;
+        if (aFilt) {
+            const a = new Date(r.data_ocorrencia || '').getFullYear().toString();
+            if (a !== aFilt) return false;
+        }
+        return true;
+    });
+};
+
 const filterAlertasPir = () => {
     const uFilt = document.getElementById('fil-pir-unidade')?.value || 'todas';
     const mFilt = parseInt(document.getElementById('fil-pir-mes')?.value || 0);
@@ -52,6 +69,22 @@ const filterAlertasPir = () => {
     });
 };
 
+// Filtra alertas só por unidade e ano (sem mês) — pra coluna ACUM
+const filterAlertasPirSemMes = () => {
+    const uFilt = document.getElementById('fil-pir-unidade')?.value || 'todas';
+    const aFilt = document.getElementById('fil-pir-ano')?.value || '';
+    const alertas = typeof allAlertas !== 'undefined' ? allAlertas : [];
+
+    return alertas.filter(r => {
+        if (uFilt !== 'todas' && r.unidade !== uFilt) return false;
+        if (aFilt) {
+            const a = new Date(r.data_registro || r.Data_ocorrencia || '').getFullYear().toString();
+            if (a !== aFilt) return false;
+        }
+        return true;
+    });
+};
+
 const renderPiramide = async () => {
     await loadOcorrencias();
     const ocs = filterOcorrencias();
@@ -63,6 +96,7 @@ const renderPiramide = async () => {
     const incid = ocs.filter(r => r.tipo === 'incidente').length;
     const condicao = als.filter(r => (r.tipo_relato || '').toLowerCase() === 'condicao').length;
     const compor = als.filter(r => (r.tipo_relato || '').toLowerCase() === 'ato').length;
+    const totalAlertas = condicao + compor;
 
     // Pirâmide SVG
     const pirSvg = document.getElementById('piramide-svg-container');
@@ -97,11 +131,15 @@ const renderPiramide = async () => {
         kpiEl.innerHTML =
             '<div class="kpi-card danger"><div class="k-label">Ocorrências</div><div class="k-val">' + totalOc + '</div><div class="k-sub">fatal + caf + saf + incidente</div></div>' +
             '<div class="kpi-card warn"><div class="k-label">CAF + SAF</div><div class="k-val">' + (caf + saf) + '</div><div class="k-sub">acidentes registrados</div></div>' +
-            '<div class="kpi-card ok"><div class="k-label">Alertas Condição</div><div class="k-val">' + condicao + '</div><div class="k-sub">tipo condição</div></div>' +
-            '<div class="kpi-card accent"><div class="k-label">Alertas Comportamento</div><div class="k-val">' + compor + '</div><div class="k-sub">tipo ato/comportamento</div></div>';
+            '<div class="kpi-card ok"><div class="k-label">Alertas SSO</div><div class="k-val">' + totalAlertas + '</div><div class="k-sub">condição + comportamento</div></div>' +
+            '<div class="kpi-card accent"><div class="k-label">Total geral</div><div class="k-val">' + (totalOc + totalAlertas) + '</div><div class="k-sub">pirâmide completa</div></div>';
     }
 
-    renderTabelaMensal(ocs, als);
+    // Dados sem filtro de mês pra coluna ACUM
+    const ocsSemMes = filterOcorrenciasSemMes();
+    const alsSemMes = filterAlertasPirSemMes();
+
+    renderTabelaMensal(ocsSemMes, alsSemMes);
     renderRecentes(ocs);
     populatePirUnidade();
 };
@@ -116,7 +154,8 @@ const renderTabelaMensal = (ocs, als) => {
         { tipo: 'REATIVO', nome: 'SAF', unid: 'Quant.', melhor: '↓', filtro: r => r.tipo === 'saf', src: 'oc' },
         { tipo: 'REATIVO', nome: 'INCIDENTE', unid: 'Quant.', melhor: '↓', filtro: r => r.tipo === 'incidente', src: 'oc' },
         { tipo: 'PROATIVO', nome: 'ALERTAS CONDIÇÃO', unid: 'Quant.', melhor: '↑', filtro: r => (r.tipo_relato || '').toLowerCase() === 'condicao', src: 'al' },
-        { tipo: 'PROATIVO', nome: 'ALERTAS COMPORTAMENTO', unid: 'Quant.', melhor: '↑', filtro: r => (r.tipo_relato || '').toLowerCase() === 'ato', src: 'al' }
+        { tipo: 'PROATIVO', nome: 'ALERTAS COMPORTAMENTO', unid: 'Quant.', melhor: '↑', filtro: r => (r.tipo_relato || '').toLowerCase() === 'ato', src: 'al' },
+        { tipo: 'PROATIVO', nome: 'TOTAL ALERTAS', unid: 'Quant.', melhor: '↑', filtro: r => { const t = (r.tipo_relato || '').toLowerCase(); return t === 'condicao' || t === 'ato'; }, src: 'al' }
     ];
 
     tbody.innerHTML = indicadores.map(ind => {
@@ -131,6 +170,9 @@ const renderTabelaMensal = (ocs, als) => {
             if (m >= 0 && m < 12) porMes[m]++;
         });
 
+        // Acumulado = soma de todos os meses
+        const acumulado = porMes.reduce((a, b) => a + b, 0);
+
         const tipoClass = ind.tipo === 'REATIVO' ? 'pir-tipo-reativo' : 'pir-tipo-proativo';
         const arrowClass = ind.melhor === '↓' ? 'pir-arrow-down' : 'pir-arrow-up';
 
@@ -144,37 +186,26 @@ const renderTabelaMensal = (ocs, als) => {
             '<td>' + ind.nome + '</td>' +
             '<td style="text-align:center">' + ind.unid + '</td>' +
             '<td style="text-align:center" class="' + arrowClass + '">' + ind.melhor + '</td>' +
+            '<td style="text-align:center;background:#e8f5e9;font-weight:700;font-size:14px;color:#1b5e20">' + acumulado + '</td>' +
             mesesHtml +
             '</tr>';
     }).join('');
 };
 
-// ── Formatar data segura ──
+// ── Formatar data ──
 const formatarData = (dataStr) => {
     if (!dataStr) return '—';
     try {
         const d = new Date(dataStr + 'T12:00:00');
         if (isNaN(d.getTime())) return '—';
         return d.toLocaleDateString('pt-BR');
-    } catch {
-        return '—';
-    }
+    } catch { return '—'; }
 };
 
-// ── Tipo label com cor ──
+// ── Tipo label ──
 const tipoLabel = (tipo) => {
-    const cores = {
-        fatal: '#b71c1c',
-        caf: '#e65100',
-        saf: '#f9a825',
-        incidente: '#66bb6a'
-    };
-    const nomes = {
-        fatal: 'FATAL',
-        caf: 'CAF',
-        saf: 'SAF',
-        incidente: 'INCIDENTE'
-    };
+    const cores = { fatal: '#b71c1c', caf: '#e65100', saf: '#f9a825', incidente: '#66bb6a' };
+    const nomes = { fatal: 'FATAL', caf: 'CAF', saf: 'SAF', incidente: 'INCIDENTE' };
     const cor = cores[tipo] || '#666';
     const nome = nomes[tipo] || tipo.toUpperCase();
     const textColor = tipo === 'saf' ? '#333' : '#fff';
@@ -189,7 +220,6 @@ const excluirOcorrencia = async (id) => {
         if (!res.ok) throw new Error('Erro ao excluir');
         alert('Ocorrência excluída!');
         await renderPiramide();
-        // Atualiza dias sem acidente também
         if (typeof loadAll === 'function') loadAll();
     } catch (err) {
         console.error(err);
@@ -197,14 +227,12 @@ const excluirOcorrencia = async (id) => {
     }
 };
 
-// ── Editar ocorrência (redireciona pro formulário) ──
+// ── Editar ocorrência ──
 const editarOcorrencia = (id) => {
-    // Salva o ID no sessionStorage e abre o formulário
-    sessionStorage.setItem('editarOcorrenciaId', id);
     window.location.href = 'FormOcorrencia.html?edit=' + id;
 };
 
-// ── Renderizar ocorrências recentes ──
+// ── Renderizar recentes ──
 const renderRecentes = (ocs) => {
     const el = document.getElementById('pir-recentes');
     if (!el) return;
@@ -222,13 +250,8 @@ const renderRecentes = (ocs) => {
         const tipoColab = r.tipo_colaborador === 'terceiro'
             ? 'Terceiro' + (r.empresa_terceiro ? ' — ' + r.empresa_terceiro : '')
             : 'Próprio';
-        const socorros = r.primeiros_socorros || '—';
-        const atestado = r.atestado_dias > 0 ? r.atestado_dias + ' dia(s)' : 'Não';
-        const cat = r.cat_aberta || '—';
-        const cid = r.cid || '—';
 
         return '<div class="pir-recente-item" style="flex-direction:column;gap:10px">' +
-
             '<div style="display:flex;align-items:center;justify-content:space-between;width:100%">' +
                 '<div style="display:flex;align-items:center;gap:10px">' +
                     tipoLabel(r.tipo) +
@@ -238,24 +261,20 @@ const renderRecentes = (ocs) => {
                     '</div>' +
                 '</div>' +
                 '<div style="display:flex;gap:6px">' +
-                    '<button onclick="editarOcorrencia(' + r.id + ')" style="background:none;border:1px solid #d1d5db;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px;color:#1b5e20" title="Editar">✏️ Editar</button>' +
-                    '<button onclick="excluirOcorrencia(' + r.id + ')" style="background:none;border:1px solid #d1d5db;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px;color:#c62828" title="Excluir">🗑️ Excluir</button>' +
+                    '<button onclick="editarOcorrencia(' + r.id + ')" style="background:none;border:1px solid #d1d5db;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px;color:#1b5e20">✏️ Editar</button>' +
+                    '<button onclick="excluirOcorrencia(' + r.id + ')" style="background:none;border:1px solid #d1d5db;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px;color:#c62828">🗑️ Excluir</button>' +
                 '</div>' +
             '</div>' +
-
-            '<div class="pir-recente-desc" style="-webkit-line-clamp:3">' + desc + '</div>' +
-
+            '<div class="pir-recente-desc">' + desc + '</div>' +
             '<div style="display:flex;flex-wrap:wrap;gap:16px;font-size:11px;color:#666;border-top:1px solid #eee;padding-top:8px">' +
                 '<span>📅 ' + data + (hora ? ' às ' + hora : '') + '</span>' +
                 '<span>📍 ' + (r.unidade || '—') + (r.local_especifico ? ' · ' + r.local_especifico : '') + '</span>' +
-                '<span>🏥 Socorros: ' + socorros + '</span>' +
-                '<span>📋 Atestado: ' + atestado + '</span>' +
-                '<span>📄 CAT: ' + cat + '</span>' +
-                '<span>🏷️ CID: ' + cid + '</span>' +
+                '<span>🏥 Socorros: ' + (r.primeiros_socorros || '—') + '</span>' +
+                '<span>📋 Atestado: ' + (r.atestado_dias > 0 ? r.atestado_dias + ' dia(s)' : 'Não') + '</span>' +
+                '<span>📄 CAT: ' + (r.cat_aberta || '—') + '</span>' +
+                '<span>🏷️ CID: ' + (r.cid || '—') + '</span>' +
             '</div>' +
-
             (r.acoes_imediatas ? '<div style="font-size:11px;color:#4a5e4c;background:#f0f4ef;padding:8px 12px;border-radius:6px"><strong>Ações imediatas:</strong> ' + r.acoes_imediatas + '</div>' : '') +
-
             '</div>';
     }).join('');
 };
