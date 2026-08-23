@@ -87,31 +87,17 @@ async function carregar() {
     render();
 }
 
-// ── Renderiza resumo do farol + lista ──
 function render() {
     const busca = (document.getElementById('busca').value || '').toLowerCase();
     const fStatus = document.getElementById('filtro-status').value;
 
-    // Contadores do farol
-    let cont = { sem: 0, cinza: 0, amarelo: 0, verde: 0, vermelho: 0 };
-
     const linhas = alertas.map(a => {
         const plano = planoDoAlerta(a.id);
         const farol = calcularFarol(plano);
-        cont[farol.cor === 'sem' ? 'sem' : farol.cor]++;
         return { alerta: a, plano, farol };
     });
 
-    // Resumo do farol (cards)
-    document.getElementById('farol-resumo').innerHTML = `
-        <div class="fcard sem"><div class="fc-num">${cont.sem}</div><div class="fc-lbl">Sem plano</div></div>
-        <div class="fcard cinza"><div class="fc-num">${cont.cinza}</div><div class="fc-lbl">Aberto</div></div>
-        <div class="fcard amarelo"><div class="fc-num">${cont.amarelo}</div><div class="fc-lbl">Em tratamento</div></div>
-        <div class="fcard verde"><div class="fc-num">${cont.verde}</div><div class="fc-lbl">Concluído</div></div>
-        <div class="fcard vermelho"><div class="fc-num">${cont.vermelho}</div><div class="fc-lbl">Atrasado</div></div>
-    `;
-
-    // Filtra
+    // Filtra primeiro
     let filtradas = linhas.filter(l => {
         const a = l.alerta;
         const texto = `${a.descricao || ''} ${a.unidade || ''} ${a.tipo_relato || ''} ${a.area_emitente || ''}`.toLowerCase();
@@ -123,6 +109,20 @@ function render() {
         if (fStatus === 'Atrasado' && l.farol.label !== 'Atrasado') return false;
         return true;
     });
+
+    // Contadores do farol — agora baseados no resultado filtrado
+    let cont = { sem: 0, cinza: 0, amarelo: 0, verde: 0, vermelho: 0 };
+    filtradas.forEach(l => {
+        cont[l.farol.cor === 'sem' ? 'sem' : l.farol.cor]++;
+    });
+
+    document.getElementById('farol-resumo').innerHTML = `
+        <div class="fcard sem"><div class="fc-num">${cont.sem}</div><div class="fc-lbl">Sem plano</div></div>
+        <div class="fcard cinza"><div class="fc-num">${cont.cinza}</div><div class="fc-lbl">Aberto</div></div>
+        <div class="fcard amarelo"><div class="fc-num">${cont.amarelo}</div><div class="fc-lbl">Em tratamento</div></div>
+        <div class="fcard verde"><div class="fc-num">${cont.verde}</div><div class="fc-lbl">Concluído</div></div>
+        <div class="fcard vermelho"><div class="fc-num">${cont.vermelho}</div><div class="fc-lbl">Atrasado</div></div>
+    `;
 
     const cont2 = document.getElementById('lista-alertas');
 
