@@ -6,7 +6,7 @@ import UnidadeController from './app/controllers/unidadeController.js'
 import OcorrenciaController from './app/controllers/ocorrenciaController.js'
 import GestorController from './app/controllers/gestorController.js'
 import CadastroAuxController from './app/controllers/cadastroAuxController.js'
-import PlanoAcaoController from './app/controllers/planoAcaoController.js'
+import PlanoAcaoController from './app/controllers/planoacaoController.js'
 
 const router = Router()
 
