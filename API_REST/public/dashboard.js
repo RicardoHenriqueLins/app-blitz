@@ -6,6 +6,7 @@ let TURNOS = [];
 let allAlertas = [];
 let allBlitz = [];
 let allOcorrencias = [];
+let allPlanos = [];
 let accData = {};
 let editUnit = '';
 const charts = {};
@@ -17,7 +18,8 @@ const SECTION_TITLES = {
     indicadores: 'Indicadores',
     pareto: 'Gráfico de Pareto',
     aderencia: 'Aderência de Líderes',
-    'piramide-seg': 'Pirâmide de Segurança'
+    'piramide-seg': 'Pirâmide de Segurança',
+    'plano-acao': 'Plano de Acao'
 };
 
 const FRASES = [
@@ -152,7 +154,7 @@ function showSection(s) {
     });
     document.getElementById('sec-' + s).classList.add('active');
 
-    let keys = ['acidentes','indicadores','pareto','aderencia','piramide-seg'];
+    let keys = ['acidentes','indicadores','pareto','aderencia','piramide-seg','plano-acao'];
     document.querySelectorAll('.sidebar .nav-group:first-of-type .nav-item').forEach(function(el, i) {
         if (i < keys.length) el.classList.toggle('active', keys[i] === s);
     });
@@ -173,7 +175,8 @@ async function loadAll() {
             fetchJSON('/alerta'),
             fetchJSON('/blitiz'),
             fetchJSON('/acidente'),
-            fetchJSON('/ocorrencia')
+            fetchJSON('/ocorrencia'),
+            fetchJSON('/plano-acao')
         ]);
 
         let unidades  = results[0];
@@ -181,11 +184,13 @@ async function loadAll() {
         let blitz     = results[2];
         let acidentes = results[3];
         let ocorrencias = results[4];
+        let planos = results[5];
 
         UNIDADES = (Array.isArray(unidades) ? unidades : []).map(function(u) { return u.nome; });
         allAlertas = Array.isArray(alertas) ? alertas : [];
         allBlitz = Array.isArray(blitz) ? blitz : [];
         allOcorrencias = Array.isArray(ocorrencias) ? ocorrencias : [];
+        allPlanos = Array.isArray(planos) ? planos : [];
         extractTurnos();
         populateSelects();
 
@@ -222,6 +227,7 @@ async function loadAll() {
         renderPareto();
         renderAderencia();
         if (typeof renderPiramide === 'function') renderPiramide();
+        if (typeof renderPlanoAcao === 'function') renderPlanoAcao();
 
     } catch (err) {
         document.getElementById('last-updated').textContent = 'Erro ao carregar';
@@ -678,3 +684,111 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     loadAll();
 });
+
+
+/* ── Plano de Ação ── */
+function renderPlanoAcao() {
+    function farolDoAlerta(alertaId) {
+        const doAlerta = allPlanos.filter(function(p) { return String(p.alerta_id) === String(alertaId); });
+        if (!doAlerta.length) return { cor: 'sem', label: 'Sem plano' };
+        const plano = doAlerta.sort(function(a, b) { return new Date(b.criado_em || 0) - new Date(a.criado_em || 0); })[0];
+
+        if (plano.status === 'Concluído') return { cor: 'verde', label: 'Concluído' };
+
+        if (plano.data_criacao && plano.quando) {
+            const criacao = new Date(String(plano.data_criacao).slice(0, 10));
+            const prazo = new Date(String(plano.quando).slice(0, 10));
+            const agora = new Date();
+            const totalMs = prazo - criacao;
+            const decorridoMs = agora - criacao;
+            if (totalMs > 0 && decorridoMs / totalMs >= 0.9) return { cor: 'vermelho', label: 'Atrasado' };
+            if (totalMs <= 0 && agora > prazo) return { cor: 'vermelho', label: 'Atrasado' };
+        }
+
+        if (plano.status === 'Em tratamento') return { cor: 'amarelo', label: 'Em tratamento' };
+        return { cor: 'cinza', label: 'Aberto' };
+    }
+
+    let cont = { 'Sem plano': 0, 'Aberto': 0, 'Em tratamento': 0, 'Concluído': 0, 'Atrasado': 0 };
+    let semPlano = [];
+    allAlertas.forEach(function(a) {
+        const f = farolDoAlerta(a.id);
+        cont[f.label]++;
+        if (f.cor === 'sem') semPlano.push(a);
+    });
+
+    const kpiEl = document.getElementById('kpi-plano-acao');
+    if (kpiEl) {
+        kpiEl.innerHTML = Object.entries(cont).map(function(e) {
+            return '<div class="kpi-card"><div class="kpi-num">' + e[1] + '</div><div class="kpi-label">' + e[0] + '</div></div>';
+        }).join('');
+    }
+
+    const semPlanoEl = document.getElementById('plano-sem-plano');
+    if (semPlanoEl) {
+        if (!semPlano.length) {
+            semPlanoEl.innerHTML = '<div class="empty">Todos os alertas têm plano de ação.</div>';
+        } else {
+            semPlanoEl.innerHTML = semPlano.slice(0, 15).map(function(a) {
+                return '<div class="pareto-row"><span>' + (a.descricao || 'Sem descrição') + '</span><span>' + (a.unidade || '—') + '</span></div>';
+            }).join('');
+        }
+    }
+
+    destroyChart('ch-plano-status');
+    let ctxStatus = document.getElementById('ch-plano-status');
+    if (ctxStatus) {
+        charts['ch-plano-status'] = new Chart(ctxStatus, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(cont),
+                datasets: [{
+                    data: Object.values(cont),
+                    backgroundColor: ['#9e9e9e', '#607d8b', '#fbc02d', '#2e7d32', '#c62828']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } }
+            }
+        });
+    }
+
+    let porUnidade = {};
+    allPlanos.forEach(function(p) {
+        const alerta = allAlertas.find(function(a) { return String(a.id) === String(p.alerta_id); });
+        const unidade = alerta ? (alerta.unidade || 'N/A') : 'N/A';
+        if (!porUnidade[unidade]) porUnidade[unidade] = 0;
+        porUnidade[unidade]++;
+    });
+
+    destroyChart('ch-plano-unidade');
+    let ctxUnidade = document.getElementById('ch-plano-unidade');
+    if (ctxUnidade) {
+        charts['ch-plano-unidade'] = new Chart(ctxUnidade, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(porUnidade),
+                datasets: [{
+                    label: 'Planos de ação',
+                    data: Object.values(porUnidade),
+                    backgroundColor: '#1565c0'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+            }
+        });
+    }
+}
+
+
+
+
+
+
+
