@@ -1,4 +1,4 @@
-import planoAcaoRepository from "../repositories/planoAcaoRepository.js"
+import planoAcaoRepository from "../repositories/planoacaoRepository.js"
 
 class PlanoAcaoController {
 
