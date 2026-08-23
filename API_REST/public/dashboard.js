@@ -274,7 +274,6 @@ function renderAcidentes() {
             '<div class="acc-unit-phrase">' + (temCaf ? frase : 'Nenhum CAF registrado') + '</div>' +
             (d.record > 0 ? '<div class="acc-unit-record">Recorde: ' + d.record + 'd ' + (pct > 0 ? '(' + pct + '%)' : '') + '</div>' : '') +
             '<div class="acc-unit-date">' + (temCaf ? 'Último CAF: ' + dateLabel : 'Sem histórico de CAF') + '</div>' +
-            (d.colaborador ? '<div class="acc-unit-caf">' + d.colaborador + '</div>' : '') +
             '</div>';
     });
 

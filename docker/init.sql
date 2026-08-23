@@ -142,3 +142,20 @@ CREATE TABLE IF NOT EXISTS ocorrencia (
   KEY idx_ocorrencia_unidade  (unidade),
   KEY idx_ocorrencia_data     (data_ocorrencia)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS plano_acao (
+  id           INT AUTO_INCREMENT PRIMARY KEY,
+  alerta_id    INT NOT NULL,
+  o_que        TEXT,
+  por_que      TEXT,
+  onde         VARCHAR(200),
+  quando       DATE,
+  quem         VARCHAR(200),
+  como         TEXT,
+  quanto       VARCHAR(100),
+  status       VARCHAR(30) DEFAULT 'Aberto',
+  data_criacao DATE,
+  data_inicio  DATE,
+  data_fim     DATE,
+  criado_em    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

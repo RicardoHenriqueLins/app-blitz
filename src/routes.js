@@ -6,6 +6,7 @@ import UnidadeController from './app/controllers/unidadeController.js'
 import OcorrenciaController from './app/controllers/ocorrenciaController.js'
 import GestorController from './app/controllers/gestorController.js'
 import CadastroAuxController from './app/controllers/cadastroAuxController.js'
+import PlanoAcaoController from './app/controllers/planoAcaoController.js'
 
 const router = Router()
 
@@ -51,5 +52,13 @@ router.get('/cadastro-aux/:tipo', CadastroAuxController.listar)
 router.post('/cadastro-aux/:tipo', CadastroAuxController.criar)
 router.put('/cadastro-aux/:id', CadastroAuxController.atualizar)
 router.delete('/cadastro-aux/:id', CadastroAuxController.deletar)
+
+// Plano de Ação (baseado nos alertas)
+router.get('/plano-acao', PlanoAcaoController.index)
+router.get('/plano-acao/alerta/:alertaId', PlanoAcaoController.showByAlerta)
+router.get('/plano-acao/:id', PlanoAcaoController.show)
+router.post('/plano-acao', PlanoAcaoController.store)
+router.put('/plano-acao/:id', PlanoAcaoController.update)
+router.delete('/plano-acao/:id', PlanoAcaoController.delete)
 
 export default router
