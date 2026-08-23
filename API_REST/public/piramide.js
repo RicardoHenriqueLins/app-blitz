@@ -154,8 +154,7 @@ const renderTabelaMensal = (ocs, als) => {
         { tipo: 'REATIVO', nome: 'SAF', unid: 'Quant.', melhor: '↓', filtro: r => r.tipo === 'saf', src: 'oc' },
         { tipo: 'REATIVO', nome: 'INCIDENTE', unid: 'Quant.', melhor: '↓', filtro: r => r.tipo === 'incidente', src: 'oc' },
         { tipo: 'PROATIVO', nome: 'ALERTAS CONDIÇÃO', unid: 'Quant.', melhor: '↑', filtro: r => (r.tipo_relato || '').toLowerCase() === 'condicao', src: 'al' },
-        { tipo: 'PROATIVO', nome: 'ALERTAS COMPORTAMENTO', unid: 'Quant.', melhor: '↑', filtro: r => (r.tipo_relato || '').toLowerCase() === 'ato', src: 'al' },
-        { tipo: 'PROATIVO', nome: 'TOTAL ALERTAS', unid: 'Quant.', melhor: '↑', filtro: r => { const t = (r.tipo_relato || '').toLowerCase(); return t === 'condicao' || t === 'ato'; }, src: 'al' }
+        { tipo: 'PROATIVO', nome: 'ALERTAS COMPORTAMENTO', unid: 'Quant.', melhor: '↑', filtro: r => (r.tipo_relato || '').toLowerCase() === 'ato', src: 'al' }
     ];
 
     tbody.innerHTML = indicadores.map(ind => {

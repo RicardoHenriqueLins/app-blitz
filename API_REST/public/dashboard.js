@@ -415,9 +415,7 @@ function renderIndicadores() {
     let fbA = allBlitz.filter(function(r) { return (uF === 'todas' || r.unidade === uF) && (tF === 'todos' || r.turno === tF); });
 
     let aM = Array(12).fill(0);
-    let bM = Array(12).fill(0);
     faA.forEach(function(r) { let m = new Date(r.data_registro || r.Data_ocorrencia || '').getMonth(); if (m >= 0) aM[m]++; });
-    fbA.forEach(function(r) { let m = new Date(r.data_registro || '').getMonth(); if (m >= 0) bM[m]++; });
 
     destroyChart('ch-mensal');
     let ctx = document.getElementById('ch-mensal');
@@ -427,8 +425,7 @@ function renderIndicadores() {
             data: {
                 labels: MESES,
                 datasets: [
-                    { label: 'Alertas', data: aM, borderColor: '#1b5e20', backgroundColor: '#1b5e2022', fill: true, tension: 0.4, pointRadius: 4, pointBackgroundColor: '#1b5e20' },
-                    { label: 'Blitz', data: bM, borderColor: '#1565c0', backgroundColor: '#1565c022', fill: true, tension: 0.4, pointRadius: 4, pointBackgroundColor: '#1565c0', borderDash: [5, 3] }
+                    { label: 'Alertas', data: aM, borderColor: '#1b5e20', backgroundColor: '#1b5e2022', fill: true, tension: 0.4, pointRadius: 4, pointBackgroundColor: '#1b5e20' }
                 ]
             },
             options: {
@@ -565,7 +562,6 @@ function renderAderencia() {
     let anoRef = now.getFullYear();
     let meta = getWeeksInMonth(anoRef, mesRef);
 
-    // Filtra por mês e unidade (a semana é tratada à parte, para não perder o detalhamento semanal)
     let bf = allBlitz.filter(function(r) {
         return new Date(r.data_registro || '').getMonth() + 1 === mesRef;
     });
@@ -602,7 +598,6 @@ function renderAderencia() {
         '<div class="kpi-card ok"><div class="k-label">Acima da meta</div><div class="k-val">' + acima + '</div><div class="k-sub">colaboradores ≥ 80%</div></div>' +
         '<div class="kpi-card danger"><div class="k-label">Abaixo da meta</div><div class="k-val">' + (lista.length - acima) + '</div><div class="k-sub">colaboradores &lt; 80%</div></div>';
 
-    // Monta o cabeçalho dinamicamente: Colaborador, Turno, Unidade, S1..Sn, Total, Meta, Aderência, Status
     let theadEl = document.getElementById('adh-thead');
     if (theadEl) {
         let semanaCols = '';
@@ -613,7 +608,7 @@ function renderAderencia() {
             '<th style="text-align:center">Total</th><th style="text-align:center">Meta</th><th style="min-width:130px">Aderência</th><th>Status</th></tr>';
     }
 
-    let totalCols = meta + 8; // colaborador, turno, unidade, semanas, total, meta, aderencia, status
+    let totalCols = meta + 8;
     if (!lista.length) {
         document.getElementById('adh-tbody').innerHTML = '<tr><td colspan="' + totalCols + '" style="text-align:center;padding:32px;color:#999">Nenhuma blitz registrada para ' + mesNome + semLabel + '.</td></tr>';
         return;
