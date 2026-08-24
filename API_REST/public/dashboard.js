@@ -685,8 +685,63 @@ document.addEventListener('DOMContentLoaded', function() {
     loadAll();
 });
 
-
 /* ── Plano de Ação ── */
+let planoStatusSelected = new Set();  // rótulos selecionados no doughnut (Aberto, Concluído, ...)
+let planoUnidadeSelected = new Set(); // unidades selecionadas na barra
+
+if (!window.__doughnutLabelPluginRegistered) {
+    const doughnutLabelPlugin = {
+        id: 'doughnutLabelPlugin',
+        afterDatasetsDraw(chart) {
+            if (chart.config.type !== 'doughnut') return;
+            const ctx = chart.ctx;
+            const meta = chart.getDatasetMeta(0);
+            const dataset = chart.data.datasets[0];
+            if (!dataset) return;
+            const total = dataset.data.reduce(function(a, b) { return a + b; }, 0);
+            meta.data.forEach(function(arc, i) {
+                const val = dataset.data[i];
+                if (!val) return;
+                const pct = total ? Math.round(val / total * 100) : 0;
+                const angle = (arc.startAngle + arc.endAngle) / 2;
+                const radius = (arc.innerRadius + arc.outerRadius) / 2;
+                const x = arc.x + Math.cos(angle) * radius;
+                const y = arc.y + Math.sin(angle) * radius;
+                ctx.save();
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 11px DM Sans, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(val + ' (' + pct + '%)', x, y);
+                ctx.restore();
+            });
+        }
+    };
+    Chart.register(doughnutLabelPlugin);
+    window.__doughnutLabelPluginRegistered = true;
+}
+
+function toggleSetItem(setObj, key, nativeEvent) {
+    const multi = nativeEvent && (nativeEvent.ctrlKey || nativeEvent.metaKey);
+    if (!multi) {
+        if (setObj.size === 1 && setObj.has(key)) {
+            setObj.clear();
+        } else {
+            setObj.clear();
+            setObj.add(key);
+        }
+    } else {
+        if (setObj.has(key)) setObj.delete(key);
+        else setObj.add(key);
+    }
+}
+
+function limparSelecaoPlano() {
+    planoStatusSelected.clear();
+    planoUnidadeSelected.clear();
+    renderPlanoAcao();
+}
+
 function renderPlanoAcao() {
     function farolDoAlerta(alertaId) {
         const doAlerta = allPlanos.filter(function(p) { return String(p.alerta_id) === String(alertaId); });
@@ -709,25 +764,60 @@ function renderPlanoAcao() {
         return { cor: 'cinza', label: 'Aberto' };
     }
 
-    let cont = { 'Sem plano': 0, 'Aberto': 0, 'Em tratamento': 0, 'Concluído': 0, 'Atrasado': 0 };
-    let semPlano = [];
-    allAlertas.forEach(function(a) {
-        const f = farolDoAlerta(a.id);
-        cont[f.label]++;
-        if (f.cor === 'sem') semPlano.push(a);
+    // Farol calculado por alerta, junto com a unidade
+    let linhas = allAlertas.map(function(a) {
+        return { alerta: a, farol: farolDoAlerta(a.id) };
     });
 
+    const CORES_STATUS = {
+        'Sem plano': '#9e9e9e', 'Aberto': '#607d8b', 'Em tratamento': '#fbc02d',
+        'Concluído': '#2e7d32', 'Atrasado': '#c62828'
+    };
+    const labelsStatus = Object.keys(CORES_STATUS);
+
+    // Contagem por status: aplica o filtro de UNIDADE (cross-filter), mas não o de status (não filtra a si mesmo)
+    let linhasParaStatus = linhas.filter(function(l) {
+        if (planoUnidadeSelected.size && !planoUnidadeSelected.has(l.alerta.unidade || 'N/A')) return false;
+        return true;
+    });
+    let contStatus = { 'Sem plano': 0, 'Aberto': 0, 'Em tratamento': 0, 'Concluído': 0, 'Atrasado': 0 };
+    linhasParaStatus.forEach(function(l) { contStatus[l.farol.label]++; });
+
+    // Contagem por unidade: aplica o filtro de STATUS (cross-filter), mas não o de unidade
+    let linhasParaUnidade = linhas.filter(function(l) {
+        if (planoStatusSelected.size && !planoStatusSelected.has(l.farol.label)) return false;
+        return true;
+    });
+    let porUnidade = {};
+    linhasParaUnidade.forEach(function(l) {
+        const u = l.alerta.unidade || 'N/A';
+        porUnidade[u] = (porUnidade[u] || 0) + 1;
+    });
+
+    // KPI cards (mesmos números do doughnut)
     const kpiEl = document.getElementById('kpi-plano-acao');
     if (kpiEl) {
-        kpiEl.innerHTML = Object.entries(cont).map(function(e) {
-            return '<div class="kpi-card"><div class="kpi-num">' + e[1] + '</div><div class="kpi-label">' + e[0] + '</div></div>';
-        }).join('');
+        kpiEl.innerHTML = labelsStatus.map(function(l) {
+            return '<div class="kpi-card"><div class="kpi-num">' + contStatus[l] + '</div><div class="kpi-label">' + l + '</div></div>';
+        }).join('') + (
+            (planoStatusSelected.size || planoUnidadeSelected.size)
+                ? '<div class="filtro-limpar" onclick="limparSelecaoPlano()">✕ Limpar seleção</div>'
+                : ''
+        );
     }
+
+    // Lista de alertas sem plano — respeita AMBOS os filtros (interseção)
+    let semPlano = linhas.filter(function(l) {
+        if (l.farol.cor !== 'sem') return false;
+        if (planoStatusSelected.size && !planoStatusSelected.has(l.farol.label)) return false;
+        if (planoUnidadeSelected.size && !planoUnidadeSelected.has(l.alerta.unidade || 'N/A')) return false;
+        return true;
+    }).map(function(l) { return l.alerta; });
 
     const semPlanoEl = document.getElementById('plano-sem-plano');
     if (semPlanoEl) {
         if (!semPlano.length) {
-            semPlanoEl.innerHTML = '<div class="empty">Todos os alertas têm plano de ação.</div>';
+            semPlanoEl.innerHTML = '<div class="empty">Nenhum alerta sem plano para o filtro atual.</div>';
         } else {
             semPlanoEl.innerHTML = semPlano.slice(0, 15).map(function(a) {
                 return '<div class="pareto-row"><span>' + (a.descricao || 'Sem descrição') + '</span><span>' + (a.unidade || '—') + '</span></div>';
@@ -735,60 +825,73 @@ function renderPlanoAcao() {
         }
     }
 
+    // ── Doughnut: Planos por status ──
     destroyChart('ch-plano-status');
     let ctxStatus = document.getElementById('ch-plano-status');
     if (ctxStatus) {
+        let bgStatus = labelsStatus.map(function(l) {
+            let base = CORES_STATUS[l];
+            if (planoStatusSelected.size && !planoStatusSelected.has(l)) return base + '44'; // dimmed
+            return base;
+        });
         charts['ch-plano-status'] = new Chart(ctxStatus, {
             type: 'doughnut',
             data: {
-                labels: Object.keys(cont),
+                labels: labelsStatus,
                 datasets: [{
-                    data: Object.values(cont),
-                    backgroundColor: ['#9e9e9e', '#607d8b', '#fbc02d', '#2e7d32', '#c62828']
+                    data: labelsStatus.map(function(l) { return contStatus[l]; }),
+                    backgroundColor: bgStatus
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { position: 'bottom' } }
+                plugins: { legend: { position: 'bottom' } },
+                onClick: function(evt, elements) {
+                    if (!elements || !elements.length) return;
+                    const idx = elements[0].index;
+                    const label = labelsStatus[idx];
+                    toggleSetItem(planoStatusSelected, label, evt.native);
+                    renderPlanoAcao();
+                }
             }
         });
     }
 
-    let porUnidade = {};
-    allPlanos.forEach(function(p) {
-        const alerta = allAlertas.find(function(a) { return String(a.id) === String(p.alerta_id); });
-        const unidade = alerta ? (alerta.unidade || 'N/A') : 'N/A';
-        if (!porUnidade[unidade]) porUnidade[unidade] = 0;
-        porUnidade[unidade]++;
-    });
-
+    // ── Barra: Planos por unidade ──
+    let unidadesLabels = Object.keys(porUnidade);
     destroyChart('ch-plano-unidade');
     let ctxUnidade = document.getElementById('ch-plano-unidade');
     if (ctxUnidade) {
+        let bgUnidade = unidadesLabels.map(function(u) {
+            if (planoUnidadeSelected.size && !planoUnidadeSelected.has(u)) return '#1565c044';
+            return '#1565c0';
+        });
         charts['ch-plano-unidade'] = new Chart(ctxUnidade, {
             type: 'bar',
             data: {
-                labels: Object.keys(porUnidade),
+                labels: unidadesLabels,
                 datasets: [{
-                    label: 'Planos de ação',
-                    data: Object.values(porUnidade),
-                    backgroundColor: '#1565c0'
+                    label: 'Alertas',
+                    data: unidadesLabels.map(function(u) { return porUnidade[u]; }),
+                    backgroundColor: bgUnidade
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                layout: { padding: { top: 22 } },
                 plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
-            }
+                scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
+                onClick: function(evt, elements) {
+                    if (!elements || !elements.length) return;
+                    const idx = elements[0].index;
+                    const label = unidadesLabels[idx];
+                    toggleSetItem(planoUnidadeSelected, label, evt.native);
+                    renderPlanoAcao();
+                }
+            },
+            plugins: [datalabelPlugin]
         });
     }
 }
-
-
-
-
-
-
-

@@ -3,6 +3,7 @@
 const API = ''; // mesma origem
 let alertas = [];
 let planos = [];
+let filtroCores = new Set(); // seleção múltipla dos cards de farol (Power BI style)
 
 // ── Utilitários ──
 function msg(texto, ok = true) {
@@ -34,7 +35,6 @@ function calcularFarol(plano) {
         return { cor: 'verde', label: 'Concluído' };
     }
 
-    // Verifica atraso: passou de 90% do tempo entre criação e prazo (quando)
     if (plano.data_criacao && plano.quando) {
         const criacao = new Date(String(plano.data_criacao).slice(0, 10));
         const prazo = new Date(String(plano.quando).slice(0, 10));
@@ -64,7 +64,6 @@ function calcularFarol(plano) {
 function planoDoAlerta(alertaId) {
     const doAlerta = planos.filter(p => String(p.alerta_id) === String(alertaId));
     if (!doAlerta.length) return null;
-    // pega o mais recente
     return doAlerta.sort((a, b) => new Date(b.criado_em || 0) - new Date(a.criado_em || 0))[0];
 }
 
@@ -87,6 +86,29 @@ async function carregar() {
     render();
 }
 
+// ── Alterna seleção de um card de farol (clique = seleciona só ele; Ctrl/Cmd+clique = adiciona à seleção) ──
+function toggleFarolCard(cor, event) {
+    const multi = event && (event.ctrlKey || event.metaKey);
+    if (!multi) {
+        if (filtroCores.size === 1 && filtroCores.has(cor)) {
+            filtroCores.clear();
+        } else {
+            filtroCores.clear();
+            filtroCores.add(cor);
+        }
+    } else {
+        if (filtroCores.has(cor)) filtroCores.delete(cor);
+        else filtroCores.add(cor);
+    }
+    render();
+}
+
+function limparFiltroFarol() {
+    filtroCores.clear();
+    render();
+}
+
+// ── Renderiza resumo do farol + lista ──
 function render() {
     const busca = (document.getElementById('busca').value || '').toLowerCase();
     const fStatus = document.getElementById('filtro-status').value;
@@ -97,8 +119,8 @@ function render() {
         return { alerta: a, plano, farol };
     });
 
-    // Filtra primeiro
-    let filtradas = linhas.filter(l => {
+    // Filtra por busca + select de status (independente da seleção dos cards)
+    let baseLinhas = linhas.filter(l => {
         const a = l.alerta;
         const texto = `${a.descricao || ''} ${a.unidade || ''} ${a.tipo_relato || ''} ${a.area_emitente || ''}`.toLowerCase();
         if (busca && !texto.includes(busca)) return false;
@@ -110,19 +132,41 @@ function render() {
         return true;
     });
 
-    // Contadores do farol — agora baseados no resultado filtrado
+    // Contadores dos cards — refletem busca + select, mas NÃO a seleção dos próprios cards
+    // (assim os números não somem quando você clica neles, igual um slicer de Power BI)
     let cont = { sem: 0, cinza: 0, amarelo: 0, verde: 0, vermelho: 0 };
-    filtradas.forEach(l => {
+    baseLinhas.forEach(l => {
         cont[l.farol.cor === 'sem' ? 'sem' : l.farol.cor]++;
     });
+    const totalBase = baseLinhas.length || 1;
 
-    document.getElementById('farol-resumo').innerHTML = `
-        <div class="fcard sem"><div class="fc-num">${cont.sem}</div><div class="fc-lbl">Sem plano</div></div>
-        <div class="fcard cinza"><div class="fc-num">${cont.cinza}</div><div class="fc-lbl">Aberto</div></div>
-        <div class="fcard amarelo"><div class="fc-num">${cont.amarelo}</div><div class="fc-lbl">Em tratamento</div></div>
-        <div class="fcard verde"><div class="fc-num">${cont.verde}</div><div class="fc-lbl">Concluído</div></div>
-        <div class="fcard vermelho"><div class="fc-num">${cont.vermelho}</div><div class="fc-lbl">Atrasado</div></div>
-    `;
+    const cores = [
+        { key: 'sem', label: 'Sem plano' },
+        { key: 'cinza', label: 'Aberto' },
+        { key: 'amarelo', label: 'Em tratamento' },
+        { key: 'verde', label: 'Concluído' },
+        { key: 'vermelho', label: 'Atrasado' }
+    ];
+
+    const temSelecao = filtroCores.size > 0;
+
+    document.getElementById('farol-resumo').innerHTML =
+        cores.map(c => {
+            const pct = Math.round((cont[c.key] / totalBase) * 100);
+            const ativo = filtroCores.has(c.key) ? ' active' : '';
+            return `<div class="fcard ${c.key}${ativo}" onclick="toggleFarolCard('${c.key}', event)" title="Clique para filtrar · Ctrl+clique para selecionar vários">
+                <div class="fc-num">${cont[c.key]}</div>
+                <div class="fc-lbl">${c.label}</div>
+                <div class="fc-pct">${pct}%</div>
+            </div>`;
+        }).join('') +
+        (temSelecao ? `<div class="filtro-limpar" onclick="limparFiltroFarol()">✕ Limpar seleção (${filtroCores.size})</div>` : '');
+
+    // Filtra a lista final também pela seleção dos cards
+    let filtradas = baseLinhas.filter(l => {
+        if (temSelecao && !filtroCores.has(l.farol.cor)) return false;
+        return true;
+    });
 
     const cont2 = document.getElementById('lista-alertas');
 
@@ -201,7 +245,6 @@ function fecharModal() {
     document.getElementById('modal').style.display = 'none';
 }
 
-// Ao mudar status, preenche datas automaticamente
 function onStatusChange() {
     const status = document.getElementById('f-status').value;
     const inicio = document.getElementById('f-inicio');
