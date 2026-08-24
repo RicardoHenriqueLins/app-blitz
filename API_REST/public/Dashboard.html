@@ -27,6 +27,7 @@
       <div class="nav-item" onclick="showSection('pareto')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 20h18M5 20V10M9 20V6M13 20V12M17 20V4"/></svg> Pareto</div>
       <div class="nav-item" onclick="showSection('aderencia')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg> Aderência</div>
       <div class="nav-item" onclick="showSection('piramide-seg')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 22h20L12 2z"/></svg> Pirâmide</div>
+      <div class="nav-item" onclick="showSection('plano-acao')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Plano de Ação</div>
     </nav>
     <nav class="nav-group">
       <div class="nav-label">Formulários</div>
@@ -154,6 +155,19 @@
       </div>
     </div>
 
+    <!-- PLANO DE AÇÃO -->
+    <div class="content" id="sec-plano-acao">
+      <div class="kpi-grid" id="kpi-plano-acao"></div>
+      <div class="chart-grid">
+        <div class="chart-card"><div class="card-title">Planos por status</div><div class="chart-wrap" style="height:280px"><canvas id="ch-plano-status"></canvas></div></div>
+        <div class="chart-card"><div class="card-title">Planos por unidade</div><div class="chart-wrap" style="height:280px"><canvas id="ch-plano-unidade"></canvas></div></div>
+      </div>
+      <div class="chart-card">
+        <div class="card-title">Alertas sem plano de ação</div>
+        <div id="plano-sem-plano" class="pareto-ranking"></div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -164,6 +178,7 @@
   <div class="mobile-nav-item" onclick="showSection('pareto')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 20h18M5 20V10M9 20V6M13 20V12M17 20V4"/></svg> Pareto</div>
   <div class="mobile-nav-item" onclick="showSection('aderencia')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg> Aderência</div>
   <div class="mobile-nav-item" onclick="showSection('piramide-seg')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 22h20L12 2z"/></svg> Pirâmide</div>
+  <div class="mobile-nav-item" onclick="showSection('plano-acao')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Plano</div>
 </div>
 
 <script src="dashboard.js"></script>
