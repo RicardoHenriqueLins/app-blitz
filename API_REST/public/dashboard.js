@@ -717,10 +717,21 @@ function renderPlanoAcao() {
         todosComFarol.push({ alerta: a, farol: f });
     });
 
+    const totalPA = allAlertas.length || 1;
+    const mapaCorKpi = {
+        'Sem plano': 'sem', 'Aberto': 'cinza', 'Em tratamento': 'amarelo',
+        'Concluído': 'verde', 'Atrasado': 'vermelho'
+    };
     const kpiEl = document.getElementById('kpi-plano-acao');
     if (kpiEl) {
         kpiEl.innerHTML = Object.entries(cont).map(function(e) {
-            return '<div class="kpi-card"><div class="kpi-num">' + e[1] + '</div><div class="kpi-label">' + e[0] + '</div></div>';
+            var pct = Math.round((e[1] / totalPA) * 100);
+            var cor = mapaCorKpi[e[0]] || 'sem';
+            return '<div class="pa-kpi ' + cor + '">' +
+                '<div class="pa-kpi-num">' + e[1] + '</div>' +
+                '<div class="pa-kpi-lbl">' + e[0] + '</div>' +
+                '<div class="pa-kpi-pct">' + pct + '%</div>' +
+            '</div>';
         }).join('');
     }
 
@@ -732,11 +743,21 @@ function renderPlanoAcao() {
             semPlanoEl.innerHTML = todosComFarol.map(function(item) {
                 var a = item.alerta;
                 var f = item.farol;
-                return '<div class="pa-linha" onclick="irParaPlanoAcao(' + a.id + ')" title="Clique para abrir o plano de ação">' +
-                    '<span class="pa-farol ' + f.cor + '"></span>' +
-                    '<span class="pa-desc">' + (a.descricao || 'Sem descrição') + '</span>' +
-                    '<span class="pa-unid">' + (a.unidade || '—') + '</span>' +
-                    '<span class="pa-status ' + f.cor + '">' + f.label + '</span>' +
+                var tipo = (a.tipo_relato || '').toLowerCase();
+                var tipoLabel = tipo === 'ato' ? 'Ato' : tipo === 'condicao' ? 'Condição' : (a.tipo_relato || '—');
+                var dataOc = a.data_ocorrencia ? String(a.data_ocorrencia).slice(0,10).split('-').reverse().join('/') : '—';
+                return '<div class="pa-card" onclick="irParaPlanoAcao(' + a.id + ')" title="Clique para abrir o plano de ação">' +
+                    '<span class="pa-bola ' + f.cor + '"></span>' +
+                    '<div class="pa-corpo">' +
+                        '<div class="pa-titulo">' + (a.descricao || 'Sem descrição') + '</div>' +
+                        '<div class="pa-meta">' +
+                            '<span>📍 ' + (a.unidade || '—') + '</span>' +
+                            '<span>🏷️ ' + tipoLabel + '</span>' +
+                            '<span>📅 ' + dataOc + '</span>' +
+                        '</div>' +
+                        '<div class="pa-tag ' + f.cor + '">' + f.label + '</div>' +
+                    '</div>' +
+                    '<div class="pa-seta">›</div>' +
                 '</div>';
             }).join('');
         }
