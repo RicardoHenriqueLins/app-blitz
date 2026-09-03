@@ -27,7 +27,6 @@ function hoje() {
 }
 
 // ── Calcula o farol de um plano ──
-// Cinza=Aberto, Amarelo=Em tratamento, Verde=Concluído, Vermelho=Atrasado (>90% do prazo, não concluído)
 function calcularFarol(plano) {
     if (!plano) return { cor: 'sem', label: 'Sem plano' };
 
@@ -86,7 +85,7 @@ async function carregar() {
     render();
 }
 
-// ── Alterna seleção de um card de farol (clique = seleciona só ele; Ctrl/Cmd+clique = adiciona à seleção) ──
+// ── Alterna seleção de um card de farol ──
 function toggleFarolCard(cor, event) {
     const multi = event && (event.ctrlKey || event.metaKey);
     if (!multi) {
@@ -119,7 +118,6 @@ function render() {
         return { alerta: a, plano, farol };
     });
 
-    // Filtra por busca + select de status (independente da seleção dos cards)
     let baseLinhas = linhas.filter(l => {
         const a = l.alerta;
         const texto = `${a.descricao || ''} ${a.unidade || ''} ${a.tipo_relato || ''} ${a.area_emitente || ''}`.toLowerCase();
@@ -132,8 +130,6 @@ function render() {
         return true;
     });
 
-    // Contadores dos cards — refletem busca + select, mas NÃO a seleção dos próprios cards
-    // (assim os números não somem quando você clica neles, igual um slicer de Power BI)
     let cont = { sem: 0, cinza: 0, amarelo: 0, verde: 0, vermelho: 0 };
     baseLinhas.forEach(l => {
         cont[l.farol.cor === 'sem' ? 'sem' : l.farol.cor]++;
@@ -162,7 +158,6 @@ function render() {
         }).join('') +
         (temSelecao ? `<div class="filtro-limpar" onclick="limparFiltroFarol()">✕ Limpar seleção (${filtroCores.size})</div>` : '');
 
-    // Filtra a lista final também pela seleção dos cards
     let filtradas = baseLinhas.filter(l => {
         if (temSelecao && !filtroCores.has(l.farol.cor)) return false;
         return true;
@@ -181,9 +176,10 @@ function render() {
         const p = l.plano;
         const tipo = (a.tipo_relato || '').toLowerCase();
         const tipoLabel = tipo === 'ato' ? 'Ato' : tipo === 'condicao' ? 'Condição' : (a.tipo_relato || '—');
+        const acaoOnclick = p ? `abrirModal(${a.id}, ${p.id})` : `abrirModal(${a.id}, null)`;
 
         return `
-        <div class="alerta-card">
+        <div class="alerta-card" onclick="${acaoOnclick}" style="cursor:pointer">
             <div class="farol-bola ${f.cor}" title="${f.label}"></div>
             <div class="alerta-info">
                 <div class="alerta-desc">${a.descricao || 'Sem descrição'}</div>
@@ -201,8 +197,8 @@ function render() {
             </div>
             <div class="alerta-acoes">
                 ${p
-                    ? `<button class="btn-editar" onclick="abrirModal(${a.id}, ${p.id})">✏ Plano</button>`
-                    : `<button class="btn-criar" onclick="abrirModal(${a.id}, null)">＋ Criar Plano</button>`
+                    ? `<button class="btn-editar" onclick="event.stopPropagation(); abrirModal(${a.id}, ${p.id})">✏ Ver / Editar</button>`
+                    : `<button class="btn-criar" onclick="event.stopPropagation(); abrirModal(${a.id}, null)">＋ Criar Plano</button>`
                 }
             </div>
         </div>`;
@@ -243,6 +239,10 @@ function abrirModal(alertaId, planoId) {
 
 function fecharModal() {
     document.getElementById('modal').style.display = 'none';
+    // Limpa o ?alerta da URL para não reabrir ao atualizar
+    if (window.location.search.includes('alerta=')) {
+        history.replaceState(null, '', window.location.pathname);
+    }
 }
 
 function onStatusChange() {
@@ -310,5 +310,19 @@ async function salvarPlano() {
     }
 }
 
+// ── Abre automaticamente o plano de um alerta vindo por ?alerta=ID ──
+function abrirAlertaDaURL() {
+    const params = new URLSearchParams(window.location.search);
+    const alertaId = params.get('alerta');
+    if (!alertaId) return;
+    const alerta = alertas.find(a => String(a.id) === String(alertaId));
+    if (!alerta) return;
+    const plano = planoDoAlerta(alertaId);
+    abrirModal(alertaId, plano ? plano.id : null);
+}
+
 // ── Init ──
-carregar();
+(async function() {
+    await carregar();
+    abrirAlertaDaURL();
+})();
