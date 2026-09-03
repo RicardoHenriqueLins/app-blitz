@@ -1,6 +1,7 @@
 // =============================================
 // CADASTRO AUXILIAR — JS
 // Usa classes do unidades.css (já funciona)
+// AJUSTE: os selects de área mostram APENAS o que está no banco
 // =============================================
 'use strict';
 
@@ -45,37 +46,42 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => abrirModal(cfg.tipo));
         wrapper.appendChild(btn);
 
-        mergeSelectComBanco(select, cfg.tipo);
+        preencherSelectComBanco(select, cfg.tipo);
     });
 
-    // ── Merge: adiciona itens do banco que não existem no select ──
-    async function mergeSelectComBanco(select, tipo) {
+    // ── Substitui: mostra APENAS os itens do banco (limpa as opções fixas) ──
+    async function preencherSelectComBanco(select, tipo) {
+        // Guarda o valor selecionado atual (se houver)
+        const valorAtual = select.value;
+
         try {
             const res = await fetch('/cadastro-aux/' + tipo);
             const dados = await res.json();
 
-            const existentes = new Set();
-            for (let i = 0; i < select.options.length; i++) {
-                existentes.add(select.options[i].textContent.trim().toUpperCase());
-            }
+            // Limpa tudo e deixa só o "Selecione"
+            select.innerHTML = '<option value="">Selecione</option>';
 
             dados.forEach(item => {
-                if (!existentes.has(item.nome.toUpperCase())) {
-                    const opt = document.createElement('option');
-                    opt.value = item.nome;
-                    opt.textContent = item.nome;
-                    select.appendChild(opt);
-                }
+                const opt = document.createElement('option');
+                opt.value = item.nome;
+                opt.textContent = item.nome;
+                select.appendChild(opt);
             });
+
+            // Restaura o valor se ainda existir na nova lista
+            if (valorAtual) select.value = valorAtual;
         } catch (err) {
-            // Silencioso — se não tem a tabela, não faz nada
+            // Se falhar, deixa ao menos o "Selecione"
+            if (!select.options.length) {
+                select.innerHTML = '<option value="">Selecione</option>';
+            }
         }
     }
 
-    function mergeAllSelects(tipo) {
+    function preencherAllSelects(tipo) {
         campos.filter(c => c.tipo === tipo).forEach(cfg => {
             const select = document.querySelector('select[name="' + cfg.name + '"]');
-            if (select) mergeSelectComBanco(select, tipo);
+            if (select) preencherSelectComBanco(select, tipo);
         });
     }
 
@@ -201,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
             m.input.value = '';
             mostrarStatus(tipo, 'Adicionado!', 'ok');
             carregarLista(tipo);
-            mergeAllSelects(tipo);
+            preencherAllSelects(tipo);
         } catch (err) {
             mostrarStatus(tipo, 'Erro na conexão.', 'erro');
         }
@@ -221,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             mostrarStatus(tipo, 'Atualizado!', 'ok');
             carregarLista(tipo);
-            mergeAllSelects(tipo);
+            preencherAllSelects(tipo);
         } catch (err) {
             mostrarStatus(tipo, 'Erro ao atualizar.', 'erro');
         }
@@ -233,6 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
             await fetch('/cadastro-aux/' + id, { method: 'DELETE' });
             mostrarStatus(tipo, 'Removido!', 'ok');
             carregarLista(tipo);
+            preencherAllSelects(tipo);
         } catch (err) {
             mostrarStatus(tipo, 'Erro ao remover.', 'erro');
         }
