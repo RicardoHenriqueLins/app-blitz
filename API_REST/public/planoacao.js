@@ -197,7 +197,8 @@ function render() {
             </div>
             <div class="alerta-acoes">
                 ${p
-                    ? `<button class="btn-editar" onclick="event.stopPropagation(); abrirModal(${a.id}, ${p.id})">✏ Ver / Editar</button>`
+                    ? `<button class="btn-editar" onclick="event.stopPropagation(); abrirModal(${a.id}, ${p.id})">✏ Ver / Editar</button>
+                       <button class="btn-excluir" onclick="event.stopPropagation(); excluirPlano(${p.id})">🗑 Excluir</button>`
                     : `<button class="btn-criar" onclick="event.stopPropagation(); abrirModal(${a.id}, null)">＋ Criar Plano</button>`
                 }
             </div>
@@ -256,6 +257,19 @@ function onStatusChange() {
     if (status === 'Concluído') {
         if (!inicio.value) inicio.value = hoje();
         if (!fim.value) fim.value = hoje();
+    }
+}
+
+// ── Excluir plano ──
+async function excluirPlano(planoId) {
+    if (!confirm('Excluir este plano de ação? O alerta voltará a ficar sem plano.')) return;
+    try {
+        const resp = await fetch(API + '/plano-acao/' + planoId, { method: 'DELETE' });
+        if (!resp.ok) { msg('Erro ao excluir plano.', false); return; }
+        await carregar();
+        msg('Plano excluído.');
+    } catch {
+        msg('Sem conexão com o servidor.', false);
     }
 }
 
