@@ -43,11 +43,16 @@ body {
 }
 .sub { color: var(--text2); font-size: 14px; margin-top: 4px; }
 .btn-voltar {
-  text-decoration: none; color: var(--text2); background: var(--card);
+  text-decoration: none; color: var(ver); background: var(--card);
   border: 1px solid var(--border); border-radius: 10px; padding: 9px 18px;
   font-size: 14px; font-weight: 500; transition: .15s;
 }
+
 .btn-voltar:hover { color: var(--g2); border-color: var(--g3); background: var(--g6); }
+.refresh-btn svg {
+  width: 14px;
+  height: 14px;
+}
 
 /* ── Mensagem ── */
 .msg {
